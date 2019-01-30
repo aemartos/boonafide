@@ -41,10 +41,6 @@ class _LogInForm extends React.Component {
         <label>Password</label>
         <input value={password} type="password" onChange={e => this.setState({password: e.target.value})}/>
         <button onClick={() => this.handleLogin()}>Login</button>
-        <div>
-          <a href="http://localhost:3001/api/auth/facebook"><button>Facebook</button></a>
-          <a href="http://localhost:3001/api/auth/google"><button>Google</button></a>
-        </div>
       </div>
     );
   }

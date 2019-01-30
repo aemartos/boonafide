@@ -24,7 +24,7 @@ export const Menu = connect(store => ({user: store.user}))(({user, dispatch}) =>
   return (
     <NavMenu>
       <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}>Home</NavLink>
-      <NavLink to="/about" onClick={()=> dispatch(clearMessages())}>About</NavLink>
+      <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}>Philosophy</NavLink>
       {user ?
         <React.Fragment>
           <NavLink to="/profile" onClick={()=> dispatch(clearMessages())}>Profile</NavLink>

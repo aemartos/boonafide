@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addPicture } from '../lib/cloudinary';
 
-class _Profile extends Component {
+class _ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,4 +36,4 @@ class _Profile extends Component {
     }
 }
 
-export const Profile = connect(store => ({user: store.user}))(withRouter(_Profile));
+export const ProfilePage = connect(store => ({user: store.user}))(withRouter(_ProfilePage));
