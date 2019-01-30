@@ -14,9 +14,9 @@ const TopNav = styled.nav`
 export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch}) => {
   return (
     <TopNav>
+      <a href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout()))}>Logout</a>
       <NavLink to="/profile" onClick={()=> dispatch(clearMessages())}>Profile</NavLink>
       <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}>Notifications</NavLink>
-      <a href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout()))}>Logout</a>
     </TopNav>
   )
 });

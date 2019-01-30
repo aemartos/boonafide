@@ -23,21 +23,19 @@ export default class App extends Component {
     return (
       <Route render={({ location }) => (
         <div className="app">
-          <header className="header">
-            <PoseGroup>
-              <RouteContainer key={location.pathname}>
-                <Switch location={location}>
-                  <Route exact strict path="/" component={HomePage}/>
-                  <Route path="/getStarted" component={GetStartedPage}/>
-                  <Route path="/profile" component={ProfilePage}/>
-                  <Route path="/about" component={PhilosophyPage}/>
-                  <Route path="/login" component={LogInPage}/>
-                  <Route path="/signup" component={SignUpPage}/>
-                </Switch>
-              </RouteContainer>
-            </PoseGroup>
-            {/* <Menu/> */}
-          </header>
+          <PoseGroup>
+            <RouteContainer key={location.pathname}>
+              <Switch location={location}>
+                <Route exact strict path="/" component={HomePage}/>
+                <Route path="/getStarted" component={GetStartedPage}/>
+                <Route path="/profile" component={ProfilePage}/>
+                <Route path="/about" component={PhilosophyPage}/>
+                <Route path="/login" component={LogInPage}/>
+                <Route path="/signup" component={SignUpPage}/>
+              </Switch>
+            </RouteContainer>
+          </PoseGroup>
+          <Menu/>
         </div>
       )}/>
     );
