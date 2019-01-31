@@ -6,6 +6,15 @@ import { logout, clearMessages } from '../lib/redux/actions';
 import styled from '@emotion/styled';
 
 const TopNav = styled.nav`
+  height: 3em;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
   a {
     margin-right: 1em;
   }

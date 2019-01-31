@@ -19,21 +19,26 @@ class _ProfilePage extends Component {
   }
   render() {
     const {user} = this.props;
-    if (user){
-      return (
-        <div className="profile">
-          <h2>Profile</h2>
-          <p>Welcome {user.username}</p>
-          <img style={{width: "10em"}} src={user.pictureUrl} alt="profile pic"/>
-          <form onSubmit={(e)=>this.handleSubmit(e)}>
-            <input type="file" onChange={(e)=>this.handleChange(e)} /> <br/>
-            <button type="submit">Save new profile picture</button>
-          </form>
-        </div>
-        );
-    } else {
-      return <p>You r not logged in</p>}
-    }
+    return (
+      <div className="contentBox">
+        <div className="container">
+          {user ?
+            <div className="profile">
+              <h2>Profile</h2>
+              <p>Welcome {user.username}</p>
+              <img style={{width: "10em"}} src={user.pictureUrl} alt="profile pic"/>
+              <form onSubmit={(e)=>this.handleSubmit(e)}>
+                <input type="file" onChange={(e)=>this.handleChange(e)} /> <br/>
+                <button type="submit">Save new profile picture</button>
+              </form>
+            </div>
+            :
+            <p>You r not logged in</p>
+          }
+      </div>
+    </div>
+    );
+  }
 }
 
 export const ProfilePage = connect(store => ({user: store.user}))(withRouter(_ProfilePage));

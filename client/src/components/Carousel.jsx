@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {colors} from '../lib/common/colors';
 import styled from '@emotion/styled';
 import Slider from "react-slick";
 // import '../lib/common/slick/slick.min.css';
@@ -7,10 +8,28 @@ import Slider from "react-slick";
 
 
 const Item = styled.div`
-  color: white;
-  background: red;
-  padding: 20px 0;
-  height: 30em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    width: 90%;
+    margin: 6em auto .5em;
+    color: ${colors.darkGrey};
+    font-family: "Baloo Bhaina";
+    line-height: 1.2em;
+    text-align: center;
+  }
+  img {
+    /* flex: 1; */
+    width: 100%;
+    &.logo {
+      width: 40%;
+      margin: 0 auto 1em;
+    }
+    &.illus {
+    }
+  }
 `;
 
 export const Carousel = () => {
@@ -27,13 +46,19 @@ export const Carousel = () => {
   return (
     <Slider {...settings}>
       <Item>
-        <h3>1</h3>
+        <h3>When someone does you a big favor,<br/> dont’t pay it back... PAY IT FORWARD!</h3>
+        <img className="logo" src="/images/logo.png" alt="logo"/>
+        <img className="illus" src="/images/illus01.png" alt="illustration01"/>
       </Item>
       <Item>
-        <h3>2</h3>
+        <h3>Join free and start doing and <br/> receiving selfless favors</h3>
+        <img className="logo" src="/images/logo.png" alt="logo"/>
+        <img className="illus" src="/images/illus02.png" alt="illustration02"/>
       </Item>
       <Item>
-        <h3>3</h3>
+        <h3>Take part in the favor chain <br/> that is changing the world!</h3>
+        <img className="logo" src="/images/logo.png" alt="logo"/>
+        <img className="illus" src="/images/illus03.png" alt="illustration03"/>
       </Item>
     </Slider>
   );

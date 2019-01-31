@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Container } from '../components/Container';
+// import { Container } from '../components/Container';
 
 export default class HomePage extends Component {
   render() {
     return (
-      <Container className="homePage">
-        <p>This is the home Page</p>
-      </Container>
+      <div className="contentBox">
+        <div className="container">
+          <p>This is the home Page</p>
+        </div>
+      </div>
     );
   }
 }
