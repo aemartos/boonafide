@@ -2,8 +2,17 @@ import React from 'react';
 import { AuthAPI } from '../lib/auth';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from '@emotion/styled';
+
 import { login, clearMessages } from '../lib/redux/actions';
 import { timeOutMessages } from '../lib/common/helpers';
+import { Button } from './Button';
+import FormField from './FormField';
+
+
+const StyledForm = styled.div`
+
+`;
 
 class _LogInForm extends React.Component {
 
@@ -20,6 +29,7 @@ class _LogInForm extends React.Component {
     const {history, dispatch} = this.props;
     AuthAPI.login(username, password)
     .then( user => {
+      console.log(history);
       dispatch(clearMessages());
       dispatch(login(user))
       history.push('/profile');
@@ -34,14 +44,15 @@ class _LogInForm extends React.Component {
   render() {
     const {username, password} = this.state;
     return (
-      <div>
+      <StyledForm>
+        <h3>or</h3>
         <h2>Login</h2>
-        <label>Username</label>
-        <input value={username} onChange={e => this.setState({username: e.target.value})}/>
-        <label>Password</label>
-        <input value={password} type="password" onChange={e => this.setState({password: e.target.value})}/>
-        <button onClick={() => this.handleLogin()}>Login</button>
-      </div>
+        <div className="form">
+          <FormField label="username" type="text" placeholder="write your username" onChange={e => this.setState({username: e.target.value})} value={username}/>
+          <FormField label="password" type="password" placeholder="write your password" onChange={e => this.setState({password: e.target.value})} value={password}/>
+          <Button className="btn" onClick={() => this.handleLogin()}>login</Button>
+        </div>
+      </StyledForm>
     );
   }
 };

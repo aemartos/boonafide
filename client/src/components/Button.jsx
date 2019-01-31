@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import {colors} from '../lib/common/colors';
 
-const StyledNavLink = styled(NavLink)`
+const StyledLink = styled.span`
     width: 80%;
     display: block;
     margin: 0 auto;
@@ -30,12 +30,33 @@ const StyledNavLink = styled(NavLink)`
       background-color: ${colors.purple};
       color: ${colors.darkGrey};
     }
+    &.btn-fcbk {
+      background-color: ${colors.facebook};
+      color: ${colors.grey};
+    }
+    &.btn-ggl {
+      background-color: ${colors.google};
+      color: ${colors.grey};
+    }
   }
 `;
 
-export const Button = (props) => {
-  const {link, className, children, onClick} = props;
+const handleClick= (props) => {
+  props.onClick && props.onClick();
+  if(props.redirect) {
+    console.log("if");
+    window.location = props.link;
+  } else {
+    console.log("else", props);
+    props.history.push(props.link);
+  }
+}
+
+const _Button = (props) => {
+  const {className, children} = props;
   return (
-    <StyledNavLink to={link} className={className} onClick={onClick}>{children}</StyledNavLink>
+    <StyledLink className={className} onClick={e => {handleClick(props)}}>{children}</StyledLink>
   );
 };
+
+export const Button = withRouter(_Button);

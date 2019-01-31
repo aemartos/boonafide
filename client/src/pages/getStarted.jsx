@@ -6,7 +6,7 @@ import { Button } from '../components/Button';
 import { Carousel } from '../components/Carousel';
 import {colors} from '../lib/common/colors';
 
-const GetStarted = styled.div`
+const StyledGetStarted = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -31,14 +31,14 @@ const GetStarted = styled.div`
 export const GetStartedPage = connect(store => ({user: store.user}))(({user, dispatch}) => {
 
   return (
-    <GetStarted>
+    <StyledGetStarted>
       <Carousel/>
       <div className="actions">
-        <Button link="/login" className="btn" onClick={()=> dispatch()}>login</Button>
+        <Button link="/login" className="btn">login</Button>
         <Button link="/signup" className="btn btn-primary">sign up</Button>
         {/* <NavLink to="/login" onClick={()=> dispatch()}>Login</NavLink>
         <NavLink to="/signup" onClick={()=> dispatch()}>Signup</NavLink> */}
       </div>
-    </GetStarted>
+    </StyledGetStarted>
   )
 });
