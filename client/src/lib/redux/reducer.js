@@ -1,5 +1,6 @@
 const initialStore = {
-	user: null,
+	user: undefined,
+	isBusy: true,
   messages:[]
 }
 
@@ -15,13 +16,15 @@ export const rootReducer = (store = initialStore, action) => {
 		break;
 
 		case "LOGIN":
-			store = {...store, user: action.user}
+			store = {...store, user: action.user, isBusy: false}
 		break;
 
 		case "LOGOUT":
-			store = {...store, user: null}
+			store = {...store, user: null, isBusy: false}
 		break;
-
+		case "SET_BUSY":
+			store = {...store, isBusy: action.status}
+			break;
 		default: return store
 	}
 	return store

@@ -18,12 +18,16 @@ const StyledGetStarted = styled.div`
     width: 100%;
     margin: 0 auto;
   }
-  .actions {
+  .bottom-box {
     flex: 1;
     width: 100%;
     padding-top: 3em;
     margin-top: -.2em;
     background-color: ${colors.darkGrey};
+    .actions {
+      width: 80%;
+      margin: 0 auto;
+    }
   }
 `;
 
@@ -33,11 +37,11 @@ export const GetStartedPage = connect(store => ({user: store.user}))(({user, dis
   return (
     <StyledGetStarted>
       <Carousel/>
-      <div className="actions">
-        <Button link="/login" className="btn">login</Button>
-        <Button link="/signup" className="btn btn-primary">sign up</Button>
-        {/* <NavLink to="/login" onClick={()=> dispatch()}>Login</NavLink>
-        <NavLink to="/signup" onClick={()=> dispatch()}>Signup</NavLink> */}
+      <div className="bottom-box">
+        <div className="actions">
+          <Button link="/login" className="btn">login</Button>
+          <Button link="/signup" className="btn btn-primary">sign up</Button>
+        </div>
       </div>
     </StyledGetStarted>
   )

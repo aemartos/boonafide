@@ -3,8 +3,8 @@ import React from 'react';
 import {colors} from '../lib/common/colors';
 import styled from '@emotion/styled';
 import Slider from "react-slick";
-// import '../lib/common/slick/slick.min.css';
-// import '../lib/common/slick/slick-theme.min.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 const Item = styled.div`
@@ -51,12 +51,12 @@ export const Carousel = () => {
         <img className="illus" src="/images/illus01.png" alt="illustration01"/>
       </Item>
       <Item>
-        <h3>Join free and start doing and <br/> receiving selfless favors</h3>
+        <h3>Join for free and start doing and <br/> receiving selfless favors</h3>
         <img className="logo" src="/images/logo.png" alt="logo"/>
         <img className="illus" src="/images/illus02.png" alt="illustration02"/>
       </Item>
       <Item>
-        <h3>Take part in the favor chain <br/> that is changing the world!</h3>
+        <h3>Take part in the favor chain <br/> that is making the world a better place!</h3>
         <img className="logo" src="/images/logo.png" alt="logo"/>
         <img className="illus" src="/images/illus03.png" alt="illustration03"/>
       </Item>

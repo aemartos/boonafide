@@ -12,6 +12,10 @@ const StyledContainer = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  @media (orientation: landscape) {
+    display: block;
+    height: unset;
+  }
   h1, h2, h3, h4, p {
     margin-top: 0;
   }

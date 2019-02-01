@@ -1,22 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from '@emotion/styled'
-import { clearMessages } from '../lib/redux/actions';
+// import { clearMessages } from '../lib/redux/actions';
+import { colors } from '../lib/common/colors';
 
 const Message = styled.div`
-  color: white;
-  border: 1px solid tomato;
-  background: red;
-  padding: 20px;
+  text-align: center;
+  font-size: .8em;
+  color: ${colors.grey};
+  opacity: .5;
+  padding-top: .5em;
 `;
 
 const InternalMessages = ({messages, dispatch}) => {
   return (
-    <div>
+    <div style={{height: "1em"}}>
       {messages.map((m,i) =>
         <Message key={i}>
           {m}
-          <span onClick={() => dispatch(clearMessages())}> (x)</span>
+          {/* <span onClick={() => dispatch(clearMessages())}> x</span> */}
         </Message>
       )}
     </div>

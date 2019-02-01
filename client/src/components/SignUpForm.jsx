@@ -11,14 +11,15 @@ class _SignUpForm extends React.Component {
     super();
     this.state = {
       username:"",
+      email: "",
       password:""
     }
   }
 
   handleSignUp(){
-    const {username, password} = this.state;
+    const {username, email, password} = this.state;
     const {history, dispatch} = this.props;
-    AuthAPI.signup(username, password)
+    AuthAPI.signup(username, email, password)
     .then( user =>{
       dispatch(clearMessages());
       dispatch(login(user))
@@ -31,12 +32,14 @@ class _SignUpForm extends React.Component {
   }
 
   render() {
-    const {username, password} = this.state;
+    const {username, email, password} = this.state;
     return (
       <div>
         <h2>Signup</h2>
         <label>Username</label>
         <input value={username} onChange={e => this.setState({username: e.target.value})}/>
+        <label>Email</label>
+        <input value={email} type="email" onChange={e => this.setState({email: e.target.value})}/>
         <label>Password</label>
         <input value={password} type="password" onChange={e => this.setState({password: e.target.value})}/>
         <button onClick={() => this.handleSignUp()}>Signup</button>

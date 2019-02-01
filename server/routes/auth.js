@@ -20,7 +20,7 @@ let loginPromise = (req, user) => {
   })
 }
 
-router.post("/login", (req, res, next) => {
+router.post("/login", isLoggedOut, (req, res, next) => {
   passport.authenticate("local",(err, theUser, failureDetails) => {
     if (err) return res.status(500).json({ message: 'Something went wrong' });
     if (!theUser) return res.status(401).json(failureDetails);
@@ -30,11 +30,12 @@ router.post("/login", (req, res, next) => {
   })(req,res,next)
 });
 
-router.post("/signup", (req, res, next) => {
+router.post("/signup", isLoggedOut, (req, res, next) => {
   const username = req.body.username;
+  const email = req.body.email;
   const password = req.body.password;
-  if (username === "" || password === "") {
-    res.status(400).send("Indicate username and password");
+  if (username === "" || email === "" || password === "") {
+    res.status(400).send("Indicate username, email and password");
     return;
   }
 
@@ -42,25 +43,33 @@ router.post("/signup", (req, res, next) => {
     if (user !== null) {
       res.status(409).send("The username already exists");
       return;
+    } else {
+        User.findOne({email}, "email", (err, user) => {
+          if (user !== null) {
+            req.status(409).send("The email already exists");
+            return;
+          }
+
+        const salt = bcrypt.genSaltSync(bcryptSalt);
+        const hashPass = bcrypt.hashSync(password, salt);
+
+        const newUser = new User({
+          username,
+          email,
+          password: hashPass,
+          pictureUrl: "https://picsum.photos/200/300/?random"
+        });
+
+        newUser.save()
+        .then(user => loginPromise(req,user))
+        .then(user => {
+          res.json({user})
+        })
+        .catch(err => {
+          res.status(500).send("Something went wrong");
+        })
+      });
     }
-
-    const salt = bcrypt.genSaltSync(bcryptSalt);
-    const hashPass = bcrypt.hashSync(password, salt);
-
-    const newUser = new User({
-      username,
-      password: hashPass,
-      pictureUrl: "https://picsum.photos/200/300/?random"
-    });
-
-    newUser.save()
-    .then(user => loginPromise(req,user))
-    .then(user => {
-      res.json({user})
-    })
-    .catch(err => {
-      res.status(500).send("Something went wrong");
-    })
   });
 });
 
@@ -73,24 +82,24 @@ router.get("/currentuser", (req, res) => {
   }
 });
 
-router.get("/facebook", passport.authenticate("facebook"));
-router.get("/facebook/callback",
+router.get("/facebook", isLoggedOut, passport.authenticate("facebook"));
+router.get("/facebook/callback", isLoggedOut,
   passport.authenticate("facebook", {
     successRedirect: `${process.env.URL_CLIENT}/profile`,
     failureRedirect: `${process.env.URL_CLIENT}/api/auth/login`
   })
 );
 
-router.get("/google", passport.authenticate("google", {
+router.get("/google", isLoggedOut, passport.authenticate("google", {
   scope: ["https://www.googleapis.com/auth/plus.login",
           "https://www.googleapis.com/auth/plus.profile.emails.read"]
 }));
-router.get("/google/callback", passport.authenticate("google", {
+router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
   successRedirect: `${process.env.URL_CLIENT}/profile`,
   failureRedirect: `${process.env.URL_CLIENT}/api/auth/login`
 }));
 
-router.get("/logout", (req, res) => {
+router.get("/logout", isLoggedIn, (req, res) => {
   req.logout();
   res.json({success: "OK"})
 });

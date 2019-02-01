@@ -24,3 +24,10 @@ export const clearMessages = () => {
     type: "DELETE_ALL_MESSAGES",
   }
 }
+
+export const setBusy = (status) => {
+  return {
+    type: "SET_BUSY",
+    status
+  }
+}

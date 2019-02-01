@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
-// import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-// import { Menu } from './components/Menu';
 import { Container } from './components/Container';
+import { WithUser, ConditionalUser } from './components/UserComponent';
 
 import PhilosophyPage from './pages/philosophy';
 import HomePage from './pages/home';
@@ -11,8 +11,7 @@ import { ProfilePage } from './pages/profile';
 import { GetStartedPage } from './pages/getStarted';
 import { LogInPage } from './pages/login';
 import { SignUpPage } from './pages/signup';
-import { withUser } from './components/withUser';
-import { conditionalUser } from './components/conditionalUser';
+import Page404 from './pages/page404';
 // import posed, { PoseGroup } from 'react-pose';
 
 
@@ -21,32 +20,32 @@ import { conditionalUser } from './components/conditionalUser';
 //   exit: { opacity: 0 }
 // });
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <Route render={({ location }) => (
         <div className="app">
-          <Container className={location.pathname}>
+          <Container>
             {/* <PoseGroup> */}
               {/* <RouteContainer key={location.pathname}> */}
                 <Switch location={location}>
 
-                  <Route exact strict path="/" component={conditionalUser(HomePage,GetStartedPage)}/>
-                  {/* <Route path="/getStarted" component={GetStartedPage}/> */}
-                  <Route path="/profile" component={withUser(ProfilePage)}/>
-                  <Route path="/philosophy" component={withUser(PhilosophyPage)}/>
-                  <Route path="/login" component={LogInPage}/>
-                  <Route path="/signup" component={SignUpPage}/>
+                  <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)}/>
+                  <Route path="/profile" component={WithUser(ProfilePage)}/>
+                  {/* <Route path="/notifications" component={WithUser(NotificationsPage)}/> */}
+                  {/* <Route path="/search" component={WithUser(SearchPage)}/> */}
+                  {/* <Route path="/newFavor" component={WithUser(newFavorPage)}/> */}
+                  {/* <Route path="/messages" component={WithUser(MessagesPage)}/> */}
+                  <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
+                  <Route path="/login" component={ConditionalUser(()=> <Redirect to="/profile"/>, LogInPage)}/>
+                  <Route path="/signup" component={ConditionalUser(()=> <Redirect to="/profile"/>, SignUpPage)}/>
+                  <Route component={Page404}/>
                 </Switch>
               {/* </RouteContainer> */}
             {/* </PoseGroup> */}
           </Container>
-          {/* <Menu/> */}
         </div>
       )}/>
     );
   }
 }
-
-//export default connect(store => ({user: store.user}))(App);
-export default App;

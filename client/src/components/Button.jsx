@@ -5,11 +5,10 @@ import { withRouter } from 'react-router-dom';
 import {colors} from '../lib/common/colors';
 
 const StyledLink = styled.span`
-    width: 80%;
     display: block;
-    margin: 0 auto;
+    /* width: 80%; */
+    /* margin: 0 auto; */
   &.btn {
-    text-decoration: none;
     outline: 0;
     box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.33);
     cursor: pointer;
@@ -44,10 +43,8 @@ const StyledLink = styled.span`
 const handleClick= (props) => {
   props.onClick && props.onClick();
   if(props.redirect) {
-    console.log("if");
     window.location = props.link;
   } else {
-    console.log("else", props);
     props.history.push(props.link);
   }
 }

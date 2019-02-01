@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import {colors} from '../lib/common/colors';
 import { Button } from '../components/Button';
@@ -14,24 +14,63 @@ const StyledLogIn = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${colors.purple};
-  .social-login {
-    width: 100%;
+  color: ${colors.grey};
+  @media (orientation: landscape) {
+    display: block;
+    height: unset;
+  }
+  .box-container {
+    width: 80%;
+    margin: 0 auto;
+    .title-box {
+      text-align: center;
+      font-family: "Baloo Bhaina";
+      line-height: 1.3em;
+      h2 {
+        font-size: 2em;
+        margin-bottom: .5em;
+      }
+      p {
+        font-size: 1.2em;
+        opacity: .6;
+      }
+    }
+    .basic-text, .account-message {
+      text-align: center;
+      margin-top: 2em;
+      font-size: .8em;
+      opacity: .5;
+    }
+    .account-message {
+      a {
+        color: ${colors.grey};
+        text-decoration: underline;
+      }
+    }
   }
 `;
 
 export const LogInPage = () => {
   return (
     <StyledLogIn>
-      <div className="social-login">
-        <Button link="http://localhost:3001/api/auth/facebook" className="btn btn-fcbk" redirect={true}>facebook</Button>
-        <Button link="http://localhost:3001/api/auth/google" className="btn btn-ggl" redirect={true}>google</Button>
-      </div>
-      <LogInForm/>
-      <Messages/>
-      <div>
-        <p className="account-message">
-          <span>don't have an account yet?</span> <span><a href="/signup">signup</a> or <a href="/">go back</a></span>
-        </p>
+      <div className="box-container">
+        <div className="title-box">
+          <h2>login</h2>
+          <p>login your account to start changing the world!</p>
+        </div>
+        <p className="basic-text">continue with</p>
+        <div className="social-login">
+          <Button link="http://localhost:3001/api/auth/facebook" className="btn btn-fcbk" redirect={true}>facebook</Button>
+          <Button link="http://localhost:3001/api/auth/google" className="btn btn-ggl" redirect={true}>google</Button>
+        </div>
+        <p className="basic-text">or your username</p>
+        <LogInForm/>
+        <Messages/>
+        <div>
+          <p className="account-message">
+            <span>don't have an account yet?</span> <span><Link to="/signup">signup</Link> or <Link to="/">go back</Link></span>
+          </p>
+        </div>
       </div>
     </StyledLogIn>
   )
