@@ -4,7 +4,7 @@ import {colors} from '../lib/common/colors';
 
 const StyledForm = styled.div`
   width: 100%;
-  margin-top: ${label => (label === undefined) ? '0' : '.8em'};
+  /* margin-top: ${label => (label === undefined) ? '0' : '.8em'}; */
   label {
     width: 100%;
     font-weight: bold;
@@ -29,11 +29,16 @@ const StyledForm = styled.div`
       color: ${colors.purple};
       font-size: .9em;
       font-weight: 800;
-      border: none;
+      /* border: none; */
+      border: 2px solid ${colors.purple};
       &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
         -webkit-text-fill-color: ${colors.purple};
         -webkit-box-shadow: 0 0 0px 1000px ${colors.lightPurple} inset;
         transition: background-color 5000s ease-in-out 0s;
+      }
+      &:focus, &:active {
+        -webkit-text-fill-color: ${colors.grey};
+        border: 2px solid ${colors.grey};
       }
       &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder {
         color: ${colors.purple};
@@ -43,7 +48,7 @@ const StyledForm = styled.div`
     input {
       border-radius: 5em;
       padding: .7em 1em;
-      margin: ${label => (label === undefined) ? '0' : '.5em 0'};
+      /* margin: ${label => (label === undefined) ? '0' : '.5em 0'}; */
       &[type='checkbox'] {
         width: auto;
       }

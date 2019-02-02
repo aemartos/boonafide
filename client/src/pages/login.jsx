@@ -18,6 +18,7 @@ const StyledLogIn = styled.div`
   @media (orientation: landscape) {
     display: block;
     height: unset;
+    padding: 4em 0;
   }
   .box-container {
     width: 80%;
@@ -26,13 +27,16 @@ const StyledLogIn = styled.div`
       text-align: center;
       font-family: "Baloo Bhaina";
       line-height: 1.3em;
+      margin-bottom: 2em;
       h2 {
         font-size: 2em;
         margin-bottom: .5em;
       }
       p {
-        font-size: 1.2em;
+        font-size: 1.1em;
         opacity: .6;
+        font-family: "Open Sans";
+        font-weight: 600;
       }
     }
     .basic-text, .account-message {
@@ -40,8 +44,9 @@ const StyledLogIn = styled.div`
       margin-top: 2em;
       font-size: .8em;
       opacity: .5;
-    }
-    .account-message {
+      &.m-bottom {
+        margin-bottom: 1.5em;
+      }
       a {
         color: ${colors.grey};
         text-decoration: underline;
@@ -55,7 +60,7 @@ export const LogInPage = () => {
     <StyledLogIn>
       <div className="box-container">
         <div className="title-box">
-          <h2>login</h2>
+          <h2>welcome back ;)</h2>
           <p>login your account to start changing the world!</p>
         </div>
         <p className="basic-text">continue with</p>
@@ -63,7 +68,7 @@ export const LogInPage = () => {
           <Button link="http://localhost:3001/api/auth/facebook" className="btn btn-fcbk" redirect={true}>facebook</Button>
           <Button link="http://localhost:3001/api/auth/google" className="btn btn-ggl" redirect={true}>google</Button>
         </div>
-        <p className="basic-text">or your username</p>
+        <p className="basic-text m-bottom">or your username</p>
         <LogInForm/>
         <Messages/>
         <div>
