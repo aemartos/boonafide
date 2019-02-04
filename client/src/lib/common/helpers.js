@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
   crossDomain: true
 });
 
-export const setMarker = (position, marker, map, icon, draggable = false) => {
+export const setMarker = (position, marker, map, icon = "./images/marker.png", draggable = false) => {
   if (marker) {
     marker.setMap(null);
   }

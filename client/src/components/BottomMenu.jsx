@@ -14,12 +14,13 @@ const BottomNav = styled.nav`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.purple};
+  background-color: ${colors.grey};
   border-radius: 5em;
+  box-shadow: 0px 10px 20px 10px rgba(0,0,0,0.33);
   /*border-top-right-radius: 2.5em;
   border-top-left-radius: 2.5em;*/
   a {
-    color: ${colors.grey};
+    color: ${colors.purple};
     margin-right: 1em;
   }
 `;

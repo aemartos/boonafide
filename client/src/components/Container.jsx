@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { TopMenu } from './TopMenu';
 import { BottomMenu } from './BottomMenu';
+import { colors } from '../lib/common/colors';
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -12,6 +13,7 @@ const StyledContainer = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  background-color: ${colors.grey};
   @media (orientation: landscape) {
     display: block;
     height: unset;

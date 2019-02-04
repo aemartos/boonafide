@@ -108,6 +108,9 @@ const Item = styled.div`
       width: 80%;
     }
   }
+  img {
+    fill: red;
+  }
 `;
 
 const CategoryBox = (cat, index, action, cb) => (
@@ -164,7 +167,8 @@ export default class FirstStepsPage extends Component {
   handleSearch(places) {
     const geometry = places[0].geometry;
     const location = geometry.location;
-    setMarker(location, this.marker, this.mapObject, undefined, true);
+    this.marker && this.marker.setMap(null);
+    this.marker = setMarker(location, this.marker, this.mapObject, undefined, true);
     this.bounds = new window.google.maps.LatLngBounds();
     if (geometry.viewport) {
       this.bounds.union(geometry.viewport);
