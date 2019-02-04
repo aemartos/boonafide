@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import { categories, mapStyle } from '../lib/common/constants';
-import { colors } from '../lib/common/colors';
-import { Button } from '../components/Button';
-import FormField from '../components/FormField';
-import { UsersAPI } from '../lib/API/users';
-import { AuthAPI } from '../lib/API/auth';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { categories } from '../lib/common/constants';
+import { colors } from '../lib/common/colors';
+import { setMarker } from '../lib/common/helpers';
+import { UsersAPI } from '../lib/API/users';
+import { AuthAPI } from '../lib/API/auth';
 import { updateUser, setBusy } from '../lib/redux/actions';
+import { Button } from '../components/Button';
+import InputMapSearch from '../components/map/InputMapSearch';
+import MapComponent from '../components/map/MapComponent';
+
+const center = {lat :40.4169473, lng: -3.7035285};
 
 const StyledFirstSteps = styled.div`
   position: relative;
   height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
   .progress-box {
     width: 80%;
     margin: 0 auto;
@@ -43,7 +52,7 @@ const StyledFirstSteps = styled.div`
   }
   .btn {
     width: 80%;
-    margin: 0 auto;
+    z-index: 1;
     &:hover, &:active {
       opacity: 1 !important;
       transform: scale(1,1) !important;
@@ -53,17 +62,24 @@ const StyledFirstSteps = styled.div`
   .map {
     position: absolute;
     bottom: 0;
-    height: 35.3em;
+    height: 40em;
     width: 100%;
     background-color: ${colors.darkGrey};
+    z-index: 0;
+  }
+  input {
+    position: absolute;
+    bottom: 44.3em;
+    z-index: 1;
   }
   .slick-slider {
-    height: calc(100% - 8em);
+    height: calc(100% - 10em);
+    width: 100%;
+    z-index: -2;
   }
 `;
 
 const Item = styled.div`
-  height: 100%;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -92,13 +108,6 @@ const Item = styled.div`
       width: 80%;
     }
   }
-  input {
-    border: 0 !important;
-    border-radius: 0 !important;
-    margin: .6em 0 0 !important;
-    padding: 1em 2em !important;
-    color: ${colors.darkGrey} !important;
-  }
 `;
 
 const CategoryBox = (cat, index, action, cb) => (
@@ -117,6 +126,7 @@ export default class FirstStepsPage extends Component {
       slideIndex: 0
     }
     this.handleCat = this.handleCat.bind(this);
+    this.handleSearch = this.handleSearch.bind(this)
   }
 
   handleCat(cat, index, action) {
@@ -144,39 +154,24 @@ export default class FirstStepsPage extends Component {
         AuthAPI.currentUser()
         .then(user => {
           this.props.dispatch(updateUser(user));
-          this.props.history.push('/profile');
+          //this.props.history.push('/');
         })
         .catch(e => this.props.dispatch(setBusy(false)))
     })
     .catch(e=>alert(e));
-    //window.location = '/profile';
   }
 
-  componentDidUpdate() {
-    if(this.state.slideIndex === 2 && window.google) {
-      const lat = 40.4169473;
-      const lng = -3.7035285;
-      let map = new window.google.maps.Map(
-        this.map, {
-          zoom: 10,
-          center: {lat, lng },
-          disableDefaultUI: true,
-          clickableIcons: false,
-          clickableLabels: false,
-          styles: mapStyle
-        }
-      );
-      this.marker = new window.google.maps.Marker({
-        title: "User location",
-        position: {lat, lng},
-        map,
-        draggable: true,
-        animation: window.google.maps.Animation.DROP
-      });
-      this.marker.setMap(map);
-      window.google.maps.event.trigger(this.map,'resize');
-      //
+  handleSearch(places) {
+    const geometry = places[0].geometry;
+    const location = geometry.location;
+    setMarker(location, this.marker, this.mapObject, undefined, true);
+    this.bounds = new window.google.maps.LatLngBounds();
+    if (geometry.viewport) {
+      this.bounds.union(geometry.viewport);
+    } else {
+      this.bounds.extend(geometry.location);
     }
+    this.mapObject.fitBounds(this.bounds);
   }
 
   render() {
@@ -190,52 +185,55 @@ export default class FirstStepsPage extends Component {
       beforeChange: (current, next) => this.setState({ slideIndex: next })
     };
     return (
-      <div className="contentBox">
-        <div className="container" style={{width: "100%"}}>
-          <StyledFirstSteps>
-            <div className="progress-box">
-              <div className="progress-bar">
-                <div className="fill-bar" style={{width: ((this.state.slideIndex + 1) * 33.333333) + "%" }}></div>
-              </div>
-              <div className="numbers"><span className="current-step">{this.state.slideIndex+1}</span>/3</div>
-            </div>
-
-            <Slider ref={slider => (this.slider = slider)} {...settings}>
-
-              <Item>
-                <div className="box">
-                  <h3 className="question">how are you going to change the world? what can you offer?</h3>
-                  <div className="cats offer-cats">
-                    {categories.map((cat) => CategoryBox(cat, this.state.offerCategories.indexOf(cat), "offerCategories", this.handleCat))}
-                  </div>
-                </div>
-              </Item>
-
-              <Item>
-                <div className="box">
-                  <h3 className="question">help others to spread the favor chain? what do you need?</h3>
-                  <div className="cats need-cats">
-                    {categories.map((cat) => CategoryBox(cat, this.state.needCategories.indexOf(cat), "needCategories", this.handleCat))}
-                  </div>
-                </div>
-              </Item>
-
-              <Item>
-                <h3 className="question location">please, select a location</h3>
-                <FormField type="text" placeholder="write a search"/>
-              </Item>
-
-            </Slider>
-            {this.state.slideIndex === 2 ? <div className="map" id="map" ref={map => (this.map = map)}></div>:null}
-
-            {this.state.slideIndex === 2 ?
-              <Button className="btn btn-primary" onClick={()=>{this.handleFinish()}}>finish</Button>
-              :
-              <Button className="btn btn-primary" onClick={()=>{this.slider.slickGoTo(this.state.slideIndex+1)}}>next</Button>
-            }
-          </StyledFirstSteps>
+      <StyledFirstSteps>
+        <div className="progress-box">
+          <div className="progress-bar">
+            <div className="fill-bar" style={{width: ((this.state.slideIndex + 1) * 33.333333) + "%" }}></div>
+          </div>
+          <div className="numbers"><span className="current-step">{this.state.slideIndex+1}</span>/3</div>
         </div>
-      </div>
+
+        <Slider ref={slider => (this.slider = slider)} {...settings}>
+
+          <Item>
+            <div className="box">
+              <h3 className="question">how are you going to change the world? what can you offer?</h3>
+              <div className="cats offer-cats">
+                {categories.map((cat) => CategoryBox(cat, this.state.offerCategories.indexOf(cat), "offerCategories", this.handleCat))}
+              </div>
+            </div>
+          </Item>
+
+          <Item>
+            <div className="box">
+              <h3 className="question">help others to spread the favor chain? what do you need?</h3>
+              <div className="cats need-cats">
+                {categories.map((cat) => CategoryBox(cat, this.state.needCategories.indexOf(cat), "needCategories", this.handleCat))}
+              </div>
+            </div>
+          </Item>
+
+          <Item>
+            <h3 className="question location">please, select a location</h3>
+          </Item>
+
+        </Slider>
+        {this.state.slideIndex === 2 && window.google ?
+          <React.Fragment>
+            <InputMapSearch handleSearchResult={this.handleSearch}/>
+            <MapComponent center={center} setMap={(map)=>{
+              this.mapObject = map;
+              this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
+            }}/>
+          </React.Fragment>
+        : null}
+
+        {this.state.slideIndex === 2 ?
+          <Button className="btn btn-primary" onClick={()=>{this.handleFinish()}}>finish</Button>
+          :
+          <Button className="btn btn-primary" onClick={()=>{this.slider.slickGoTo(this.state.slideIndex + 1)}}>next</Button>
+        }
+      </StyledFirstSteps>
     );
   }
 }

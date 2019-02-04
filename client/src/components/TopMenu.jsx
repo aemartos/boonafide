@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AuthAPI } from '../lib/API/auth';
 import { logout, clearMessages, setBusy } from '../lib/redux/actions';
+import { colors } from '../lib/common/colors';
 import styled from '@emotion/styled';
 
 const TopNav = styled.nav`
-  height: 3em;
+  height: 5em;
   width: 100%;
   position: absolute;
   top: 0;
@@ -14,9 +15,11 @@ const TopNav = styled.nav`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  background-color: ${colors.purple};
   a {
+    color: ${colors.grey};
     margin-right: 1em;
+    margin-top: 1.5em;
   }
 `;
 

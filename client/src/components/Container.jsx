@@ -20,9 +20,10 @@ const StyledContainer = styled.div`
     margin-top: 0;
   }
   .contentBox {
-    height: calc(100% - 6em);
+    height: calc(100% - 9.5em);
     width: 100%;
     overflow: auto;
+    margin-top: .5em;
     .container {
       height: 100%;
       width: 80%;
@@ -35,9 +36,9 @@ const _Container = (props) => {
   const {className, children, user} = props;
   return (
     <StyledContainer className={className}>
-      {user ? <TopMenu/> : null}
+      {(user && !user.newUser) ? <TopMenu/> : null}
       {children}
-      {user ? <BottomMenu/> : null}
+      {(user && !user.newUser) ? <BottomMenu/> : null}
     </StyledContainer>
   );
 };

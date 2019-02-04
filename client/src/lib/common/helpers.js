@@ -12,3 +12,19 @@ export const axiosInstance = axios.create({
   withCredentials: true,
   crossDomain: true
 });
+
+export const setMarker = (position, marker, map, icon, draggable = false) => {
+  if (marker) {
+    marker.setMap(null);
+  }
+  marker = new window.google.maps.Marker({
+    title: "Point location",
+    position,
+    map,
+    draggable,
+    icon,
+    animation: window.google.maps.Animation.DROP
+  });
+  marker.setMap(map);
+  return marker;
+}
