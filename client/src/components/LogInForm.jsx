@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthAPI } from '../lib/auth';
+import { AuthAPI } from '../lib/API/auth';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -26,7 +26,7 @@ class _LogInForm extends React.Component {
     .then( user => {
       dispatch(clearMessages());
       dispatch(login(user))
-      history.push('/profile');
+      history.push('/');
     })
     .catch( e => {
       timeOutMessages(dispatch, e.message);

@@ -36,12 +36,11 @@ const corsOptions = {
   credentials: true
 };
 app.use(cors(corsOptions));
-//app.use(cors());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: true
 }));
 app.use(cookieParser());
 
@@ -87,10 +86,7 @@ require('./passport')(app);
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  console.log(req.user);
-  //let messages = [...req.flash('error'), ...req.flash('info')];
-  //console.log(messages);
-  //res.locals.messages = messages;
+  //console.log(req.user);
   next();
 });
 
@@ -101,7 +97,10 @@ const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
 const userRoutes = require('./routes/users');
-app.use('/users', userRoutes);
+app.use('/api/users', userRoutes);
+
+const favorRoutes = require('./routes/favors');
+app.use('/api/favors', favorRoutes);
 
 
 module.exports = app;

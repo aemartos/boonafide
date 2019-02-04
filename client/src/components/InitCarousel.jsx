@@ -32,7 +32,7 @@ const Item = styled.div`
   }
 `;
 
-export const Carousel = () => {
+export const InitCarousel = () => {
   const settings = {
     dots: true,
     arrows: false,

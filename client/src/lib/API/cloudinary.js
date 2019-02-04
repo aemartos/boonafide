@@ -18,7 +18,7 @@ const errHandler = err => {
 export const addPicture = (file) => {
   const formData = new FormData();
   formData.append("picture", file);
-  return service.post('/users/first-user/pictures', formData, {
+  return service.post('/api/users/pictures', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

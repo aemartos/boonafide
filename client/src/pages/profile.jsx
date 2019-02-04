@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addPicture } from '../lib/cloudinary';
+import { addPicture } from '../lib/API/cloudinary';
+import { AuthAPI } from '../lib/API/auth';
+import { updateUser, setBusy } from '../lib/redux/actions';
 
 class _ProfilePage extends Component {
   constructor(props) {
@@ -38,6 +40,11 @@ class _ProfilePage extends Component {
       </div>
     </div>
     );
+  }
+  componentDidMount(){
+    AuthAPI.currentUser()
+    .then(user => this.props.dispatch(updateUser(user)))
+    .catch(e => this.props.dispatch(setBusy(false)))
   }
 }
 

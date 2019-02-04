@@ -56,8 +56,7 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
         const newUser = new User({
           username,
           email,
-          password: hashPass,
-          pictureUrl: "https://picsum.photos/200/300/?random"
+          password: hashPass
         });
 
         newUser.save()

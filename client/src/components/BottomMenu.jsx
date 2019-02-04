@@ -24,10 +24,10 @@ export const BottomMenu = connect(store => ({user: store.user}))(({user, dispatc
   return (
     <BottomNav>
       <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}>Home</NavLink>
-      <NavLink to="/search" onClick={()=> dispatch(clearMessages())}>Search</NavLink>
-      <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}>NewFavor</NavLink>
-      <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}>Messages</NavLink>
       <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}>Philosophy</NavLink>
+      <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}>New</NavLink>
+      <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}>Messages</NavLink>
+      <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}>Notifications</NavLink>
     </BottomNav>
   )
 });

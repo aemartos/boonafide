@@ -5,12 +5,18 @@ import { Redirect } from 'react-router-dom';
 import { Container } from './components/Container';
 import { WithUser, ConditionalUser } from './components/UserComponent';
 
-import PhilosophyPage from './pages/philosophy';
-import HomePage from './pages/home';
-import { ProfilePage } from './pages/profile';
 import { GetStartedPage } from './pages/getStarted';
 import { LogInPage } from './pages/login';
 import { SignUpPage } from './pages/signup';
+import { ProfilePage } from './pages/profile';
+import FirstStepsPage from './pages/firstSteps';
+import HomePage from './pages/home';
+import PhilosophyPage from './pages/philosophy';
+import NewFavorPage from './pages/newFavor';
+import FavorPage from './pages/favor';
+import TicketPage from './pages/ticket';
+import MessagesPage from './pages/messages';
+import NotificationsPage from './pages/notifications';
 import Page404 from './pages/page404';
 // import posed, { PoseGroup } from 'react-pose';
 
@@ -29,16 +35,17 @@ export default class App extends Component {
             {/* <PoseGroup> */}
               {/* <RouteContainer key={location.pathname}> */}
                 <Switch location={location}>
-
                   <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)}/>
-                  <Route path="/profile" component={WithUser(ProfilePage)}/>
-                  {/* <Route path="/notifications" component={WithUser(NotificationsPage)}/> */}
-                  {/* <Route path="/search" component={WithUser(SearchPage)}/> */}
-                  {/* <Route path="/newFavor" component={WithUser(newFavorPage)}/> */}
-                  {/* <Route path="/messages" component={WithUser(MessagesPage)}/> */}
-                  <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
                   <Route path="/login" component={ConditionalUser(()=> <Redirect to="/profile"/>, LogInPage)}/>
                   <Route path="/signup" component={ConditionalUser(()=> <Redirect to="/profile"/>, SignUpPage)}/>
+                  <Route path="/firstSteps" component={WithUser(FirstStepsPage)}/>
+                  <Route path="/profile" component={WithUser(ProfilePage)}/>
+                  <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
+                  <Route path="/newFavor" component={WithUser(NewFavorPage)}/>
+                  <Route path="/favor" component={WithUser(FavorPage)}/>
+                  <Route path="/ticket" component={WithUser(TicketPage)}/>
+                  <Route path="/messages" component={WithUser(MessagesPage)}/>
+                  <Route path="/notifications" component={WithUser(NotificationsPage)}/>
                   <Route component={Page404}/>
                 </Switch>
               {/* </RouteContainer> */}

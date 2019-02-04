@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { Button } from '../components/Button';
-import { Carousel } from '../components/Carousel';
+import { InitCarousel } from '../components/InitCarousel';
 import {colors} from '../lib/common/colors';
 
 const StyledGetStarted = styled.div`
@@ -36,7 +36,7 @@ export const GetStartedPage = connect(store => ({user: store.user}))(({user, dis
 
   return (
     <StyledGetStarted>
-      <Carousel/>
+      <InitCarousel/>
       <div className="bottom-box">
         <div className="actions">
           <Button link="/login" className="btn">login</Button>

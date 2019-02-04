@@ -44,7 +44,7 @@ const handleClick= (props) => {
   props.onClick && props.onClick();
   if(props.redirect) {
     window.location = props.link;
-  } else {
+  } else if (props.link){
     props.history.push(props.link);
   }
 }
