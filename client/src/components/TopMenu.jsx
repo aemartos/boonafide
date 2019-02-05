@@ -20,6 +20,7 @@ const TopNav = styled.nav`
   a {
     color: ${colors.grey};
     &.logoutBtn {
+      font-size: 1.6em;
       margin: 1em 0 0 1em;
     }
     &.profile-pic {
@@ -39,7 +40,7 @@ const TopNav = styled.nav`
 export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch}) => {
   return (
     <TopNav>
-      <a className="logoutBtn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}>Logout</a>
+      <a className="logoutBtn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
       <NavLink className="profile-pic" to="/profile" onClick={()=> dispatch(clearMessages())}> <img src={user.pictureUrl} alt={`${user.name} profile`}/></NavLink>
     </TopNav>
   )

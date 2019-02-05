@@ -1,16 +1,16 @@
 @font-face {
-    font-family: 'boonafide font';
-    src: url('./boonafide-font.eot');
-    src: url('./boonafide-font.eot?#iefix') format('embedded-opentype'),
-        url('./boonafide-font.woff') format('woff'),
-        url('./boonafide-font.ttf') format('truetype'),
-        url('./boonafide-font.svg#boonafide-font') format('svg');
+    font-family: 'boonafide';
+    src: url('./fonts/boonafide-font/boonafide-font.eot');
+    src: url('./fonts/boonafide-font/boonafide-font.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/boonafide-font/boonafide-font.woff') format('woff'),
+        url('./fonts/boonafide-font/boonafide-font.ttf') format('truetype'),
+        url('./fonts/boonafide-font/boonafide-font.svg#boonafide-font') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 [class*='b-']:before{
 	display: inline-block;
-    font-family: 'boonafide font';
+    font-family: 'boonafide';
     font-style: normal;
     font-weight: normal;
     line-height: 1;

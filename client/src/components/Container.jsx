@@ -35,12 +35,12 @@ const StyledContainer = styled.div`
 `;
 
 const _Container = (props) => {
-  const {className, children, user} = props;
+  const {className, children, user, location} = props;
   return (
     <StyledContainer className={className}>
       {(user && !user.newUser) ? <TopMenu/> : null}
       {children}
-      {(user && !user.newUser) ? <BottomMenu/> : null}
+      {(user && !user.newUser) ? <BottomMenu location={location}/> : null}
     </StyledContainer>
   );
 };

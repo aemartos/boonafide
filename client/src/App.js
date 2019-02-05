@@ -31,7 +31,7 @@ export default class App extends Component {
     return (
       <Route render={({ location }) => (
         <div className="app">
-          <Container>
+          <Container location={location}>
             {/* <PoseGroup> */}
               {/* <RouteContainer key={location.pathname}> */}
                 <Switch location={location}>
@@ -46,7 +46,8 @@ export default class App extends Component {
                   <Route path="/ticket" component={WithUser(TicketPage)}/>
                   <Route path="/messages" component={WithUser(MessagesPage)}/>
                   <Route path="/notifications" component={WithUser(NotificationsPage)}/>
-                  <Route component={Page404}/>
+                  <Route path="/not-found" component={Page404}/>
+                  <Route component={()=> <Redirect to="/not-found"/>}/>
                 </Switch>
               {/* </RouteContainer> */}
             {/* </PoseGroup> */}

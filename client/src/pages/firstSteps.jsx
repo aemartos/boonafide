@@ -75,7 +75,6 @@ const StyledFirstSteps = styled.div`
   .slick-slider {
     height: calc(100% - 10em);
     width: 100%;
-    z-index: -2;
   }
 `;
 
@@ -97,9 +96,57 @@ const Item = styled.div`
     text-align: center;
   }
   .cats {
+    margin-top: 2em;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
     button {
+      width: 30%;
+      height: 8em;
+      padding: 1em 0;
+      margin-bottom: 2em;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      outline: none !important;
+      border: none;
+      border-radius: 1em;
+      color: ${colors.purple};
+      background-color: ${colors.grey};
+      box-shadow: 0px 10px 30px -10px rgba(0,0,0,0.33);
+      cursor: pointer;
+      span {
+        opacity: .7;
+        &.icon {
+          font-size: 4em;
+          &.b-home {
+            font-size: 4.2em;
+            line-height: 1.1em;
+            margin-top: -.01em;
+          }
+          &.b-clothes, &.b-electronics {
+            font-size: 4.4em;
+            line-height: 1em;
+            margin-top: -.02em;
+          }
+          &.b-loans, &.b-services {
+            font-size: 4.6em;
+            line-height: .9em;
+            margin-top: -.05em;
+          }
+          &.b-leisure, &.b-care, &.b-education, &.b-animals {
+            font-size: 5em;
+            line-height: .9em;
+            margin-top: -.1em;
+          }
+        }
+      }
       &.cat-selected {
-        color: red;
+        color: ${colors.orange};
+        span {
+          opacity: 1;
+        }
       }
     }
   }
@@ -115,7 +162,7 @@ const Item = styled.div`
 
 const CategoryBox = (cat, index, action, cb) => (
   <button key={cat} onClick={()=> cb(cat, index, action)} className={"cat" + (index !== -1 ? " cat-selected" : "")}>
-    <span className={`b-${cat}`}></span>
+    <span className={`icon b-${cat}`}></span>
     <span className="text">{cat}</span>
   </button>
 );
@@ -219,6 +266,15 @@ export default class FirstStepsPage extends Component {
 
           <Item>
             <h3 className="question location">please, select a location</h3>
+            {/* {this.state.slideIndex === 2 && window.google ?
+              <React.Fragment>
+                <InputMapSearch handleSearchResult={this.handleSearch}/>
+                <MapComponent center={center} setMap={(map)=>{
+                  this.mapObject = map;
+                  this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
+                }}/>
+              </React.Fragment>
+            : null} */}
           </Item>
 
         </Slider>
