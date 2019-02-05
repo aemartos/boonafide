@@ -37,7 +37,7 @@ export const wQuotes = [
   },
   {
     message: "I have a dream",
-    author: "Martin Luther King Jr"
+    author: "Martin Luther King Jr."
   },
   {
     message: "There is no such thing as can’t",

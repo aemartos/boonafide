@@ -6,6 +6,7 @@ import { colors } from '../lib/common/colors';
 import { wQuotes } from '../lib/common/waitingQuotes';
 
 const StyledSpinner = styled.div`
+  width: 100%;
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -19,16 +20,19 @@ const StyledSpinner = styled.div`
     font-size: 2em;
     line-height: 1.2em;
     color: ${colors.purple};
+    p {
+      width: 100%;
+    }
   }
   .message {
     text-align: center;
     margin-bottom: 1em;
   }
   .author {
+    text-align: right;
     opacity: .5;
     font-size: .6em;
     margin-bottom: .8em;
-    text-align: right;
   }
 `;
 
