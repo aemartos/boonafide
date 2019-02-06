@@ -42,7 +42,6 @@ const BottomNav = styled.nav`
 `;
 
 export const BottomMenu = connect(store => ({user: store.user}))(({user, dispatch, location}) => {
-  console.log(location);
   return (
     // <BottomNav style={{backgroundColor: (location.pathname === '/not-found' ? colors.purple : colors.grey), color: (location.pathname === '/not-found' ? colors.grey : colors.purple)}}>
     <BottomNav is404={location.pathname === '/not-found'}>

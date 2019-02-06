@@ -237,6 +237,8 @@ export default class FirstStepsPage extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       adaptiveHeight: true,
+      swipeToSlide: false,
+      swipe: false,
       beforeChange: (current, next) => this.setState({ slideIndex: next })
     };
     return (
@@ -275,6 +277,7 @@ export default class FirstStepsPage extends Component {
                 <InputMapSearch handleSearchResult={this.handleSearch}/>
                 <MapComponent center={center} setMap={(map)=>{
                   this.mapObject = map;
+                  this.marker && this.marker.setMap(null);
                   this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
                 }}/>
               </React.Fragment>
@@ -287,6 +290,7 @@ export default class FirstStepsPage extends Component {
             <InputMapSearch handleSearchResult={this.handleSearch}/>
             <MapComponent center={center} setMap={(map)=>{
               this.mapObject = map;
+              this.marker && this.marker.setMap(null);
               this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
             }}/>
           </React.Fragment>
