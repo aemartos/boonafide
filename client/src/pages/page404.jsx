@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import {colors} from '../lib/common/colors';
 import { Button } from '../components/Button';
+import {getScript} from '../lib/common/helpers';
 
 const StyledContainer = styled.div`
   height: 100%;
@@ -36,22 +37,27 @@ const StyledContainer = styled.div`
 
 class Page404 extends Component {
   componentDidMount() {
-    var MorphSVGPlugin = window.MorphSVGPlugin;
-    var TimelineMax = window.TimelineMax;
-    var Back = window.Back;
-    var Power1 = window.Power1;
-    var Power4 = window.Power4;
-
-    MorphSVGPlugin.convertToPath("ellipse", "circle");
-    new TimelineMax()
-      .to('#milk-spill--large', 60, {scale: 1.25, transformOrigin: "right", ease: Power1.easeInOut});
-    new TimelineMax({ yoyo: true, repeat: -1 })
-      .to('#milk-face', 10, { yPercent: -15, ease: Power1.easeInOut });
-    var tl = new TimelineMax({repeatDelay:5, repeat:-1, yoyo:true});
-      tl.to(["#eye-left-open", "#eye-right-open"], 0.10, {transformOrigin:"center", scaleY:0, ease:Power4.easeNone,  repeat:1,  yoyo:true},0);
-    new TimelineMax({repeatDelay:8, repeat:-1, yoyo:true});
-      tl.to('#mouth', 3, { morphSVG: { shape: 'M368.4 240.8s-15.4-10.5-27.3 3.5' }, ease: Back.easeOut.config(1.7) })
-    new TimelineMax({SVG2GIF:true, repeat:0}).timeScale(1);
+    getScript("/vendor/TweenMax.min.js", "tmax", ()=>{
+      getScript("/vendor/MorphSVGPlugin.min.js", "morph", ()=>{
+        var MorphSVGPlugin = window.MorphSVGPlugin;
+        var TimelineMax = window.TimelineMax;
+        var Back = window.Back;
+        var Power1 = window.Power1;
+        var Power4 = window.Power4;
+        MorphSVGPlugin.convertToPath("ellipse", "circle");
+        new TimelineMax().to('#milk-spill--large', 60, {scale: 1.25, transformOrigin: "right", ease: Power1.easeInOut});
+        new TimelineMax({yoyo: true, repeat: -1}).to('#milk-face', 10, {yPercent: -15, ease: Power1.easeInOut});
+        var tl = new TimelineMax({repeatDelay: 5, repeat: -1, yoyo: true});
+          tl.to(["#eye-left-open", "#eye-right-open"], 0.10, {transformOrigin:"center", scaleY: 0, ease: Power4.easeNone, repeat: 1, yoyo: true}, 0);
+        new TimelineMax({repeatDelay: 8, repeat: -1, yoyo: true});
+          tl.to('#mouth', 3, {morphSVG: {shape: 'M368.4 240.8s-15.4-10.5-27.3 3.5'}, ease: Back.easeOut.config(1.7)})
+        new TimelineMax({SVG2GIF: true, repeat: 0}).timeScale(1);
+      })
+    });
+  }
+  componentWillUnmount() {
+    document.getElementById("tmax").remove();
+    document.getElementById("morph").remove();
   }
   render() {
     return (

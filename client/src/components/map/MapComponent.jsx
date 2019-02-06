@@ -15,7 +15,7 @@ export default class MapComponent extends React.Component {
         styles: mapStyle
       }
     );
-    this.props.setMap(this.mapObject)
+    this.props.setMap(this.mapObject);
   }
 
   render(){

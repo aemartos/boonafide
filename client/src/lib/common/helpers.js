@@ -28,3 +28,19 @@ export const setMarker = (position, marker, map, icon = "./images/marker.png", d
   marker.setMap(map);
   return marker;
 }
+
+export const getScript = (source, id, callback) => {
+  var script = document.createElement('script');
+  var prior = document.getElementsByTagName('script')[0];
+  script.setAttribute('id', id);
+  script.async = 1;
+  script.onload = script.onreadystatechange = function( _, isAbort ) {
+    if(isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
+      script.onload = script.onreadystatechange = null;
+      script = undefined;
+      if(!isAbort) {if(callback) callback();}
+    }
+  };
+  script.src = source;
+  prior.parentNode.insertBefore(script, prior);
+}
