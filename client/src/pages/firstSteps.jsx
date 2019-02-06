@@ -151,6 +151,10 @@ const Item = styled.div`
     }
   }
   .question {
+    .mark {
+      /* text-decoration: underline; */
+      color: ${colors.orange};
+    }
     &.location {
       width: 80%;
     }
@@ -248,7 +252,7 @@ export default class FirstStepsPage extends Component {
 
           <Item>
             <div className="box">
-              <h3 className="question">how are you going to change the world? what can you offer?</h3>
+              <h3 className="question">how are you going to change the world? what can you <span className="mark">offer</span>?</h3>
               <div className="cats offer-cats">
                 {categories.map((cat) => CategoryBox(cat, this.state.offerCategories.indexOf(cat), "offerCategories", this.handleCat))}
               </div>
@@ -257,7 +261,7 @@ export default class FirstStepsPage extends Component {
 
           <Item>
             <div className="box">
-              <h3 className="question">help others to spread the favor chain? what do you need?</h3>
+              <h3 className="question">help others to spread the favor chain? what do you <span className="mark">need</span>?</h3>
               <div className="cats need-cats">
                 {categories.map((cat) => CategoryBox(cat, this.state.needCategories.indexOf(cat), "needCategories", this.handleCat))}
               </div>
@@ -265,7 +269,7 @@ export default class FirstStepsPage extends Component {
           </Item>
 
           <Item>
-            <h3 className="question location">please, select a location</h3>
+            <h3 className="question location">select your favorite location</h3>
             {/* {this.state.slideIndex === 2 && window.google ?
               <React.Fragment>
                 <InputMapSearch handleSearchResult={this.handleSearch}/>
