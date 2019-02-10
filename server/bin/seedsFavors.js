@@ -1,13 +1,5 @@
-const mongoose = require("mongoose");
 const Favor = require("../models/Favor");
-
-const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({path: path.join(__dirname, '../.private.env')});
-
-mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
-  .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)})
-  .catch(err => {console.error("Error connecting to mongo", err)});
+const {CATEGORIES_ENUM, selectRandomFromArray} = require("../config/constants");
 
 //lng, lat
 // let example = [
@@ -33,11 +25,11 @@ mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
 let favors = [
   {
     name: "Taking dogs for a walk",
-    description: "",
+    description: "Lucas a gramenawer va usté muy cargadoo por la gloria de mi madre ese pedazo de va usté muy cargadoo te voy a borrar el cerito no te digo trigo por no llamarte Rodrigor. Al ataquerl ese pedazo de llevame al sircoo qué dise usteer por la gloria de mi madre pecador benemeritaar.",
     remainingFavNum: 5,
+    date: new Date("09-21-18 20:30"),
     type: "need",
-    categories: ["services", "care", "animals"],
-    picturesUrls: [""],
+    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
     location: {
       type: "Point",
       coordinates: [-3.6678608, 40.5327046]
@@ -45,11 +37,11 @@ let favors = [
   },
   {
     name: "Hair cut",
-    description: "",
-    remainingFavNum: 5,
+    description: "Se calle ustée la caidita diodeno benemeritaar me cago en tus muelas jarl jarl ahorarr apetecan. Jarl no puedor pupita ese hombree diodeno a peich ese pedazo de diodeno la caidita fistro.",
+    remainingFavNum: 8,
+    date: new Date("12-13-18 15:30"),
     type: "offer",
-    categories: ["services", "care"],
-    picturesUrls: [""],
+    picturesUrls: ["https://picsum.photos/200/300/?random"],
     location: {
       type: "Point",
       coordinates: [-3.6704829, 40.4941498]
@@ -57,11 +49,11 @@ let favors = [
   },
   {
     name: "Computer repair",
-    description: "",
-    remainingFavNum: 5,
+    description: " A gramenawer me cago en tus muelas fistro pecador torpedo te va a hasé pupitaa torpedo diodeno tiene musho peligro diodeno te voy a borrar el cerito.",
+    remainingFavNum: 2,
+    date: new Date("05-06-18 15:30"),
     type: "need",
-    categories: ["services", "electronics"],
-    picturesUrls: [""],
+    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
     location: {
       type: "Point",
       coordinates: [-3.6675343, 40.4955688]
@@ -69,11 +61,11 @@ let favors = [
   },
   {
     name: "Bed and breakfast",
-    description: "",
-    remainingFavNum: 5,
+    description: "Al ataquerl ese pedazo de llevame al sircoo qué dise usteer por la gloria de mi madre pecador benemeritaar.",
+    remainingFavNum: 3,
+    date: new Date("01-13-19 11:30"),
     type: "offer",
-    categories: ["care", "shelter", "feeding"],
-    picturesUrls: [""],
+    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
     location: {
       type: "Point",
       coordinates: [-3.6890858, 40.39887]
@@ -81,11 +73,11 @@ let favors = [
   },
   {
     name: "Mathematics learning",
-    description: "",
-    remainingFavNum: 5,
+    description: "Mamaar caballo blanco caballo negroorl por la gloria de mi madre al ataquerl mamaar a peich amatomaa diodeno caballo blanco caballo negroorl pecador.",
+    remainingFavNum: 1,
+    date: new Date("02-07-19 18:30"),
     type: "offer",
-    categories: ["services", "education"],
-    picturesUrls: [""],
+    picturesUrls: ["https://picsum.photos/200/300/?random"],
     location: {
       type: "Point",
       coordinates: [-3.6890858, 40.39887]
@@ -93,9 +85,13 @@ let favors = [
   }
 ]
 
-Favor.collection.drop();
 
-Favor.create(favors)
-.then(favors => {
-  console.log(`Created ${favors.length} favors`);
-}).then(() => {mongoose.disconnect()});
+
+const createFavors = (creatorId, favWishing, favOffering, whoNeedsId, whoseFavId) => {
+  Favor.collection.drop();
+  const favorsModified = favors.map(f => ({...f, creatorId, favWishing, favOffering, whoNeedsId, whoseFavId, categories: selectRandomFromArray(CATEGORIES_ENUM, 5)}));
+  return Favor.create(favorsModified).then(favors => favors);
+}
+
+
+module.exports = createFavors;

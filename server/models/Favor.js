@@ -7,7 +7,7 @@ const favorSchema = new Schema({
   description:  {type: String, default: 'There is no description yet'},
   creatorId: {type: Schema.Types.ObjectId, ref:'User'},
   remainingFavNum: Number,
-  date: [{type: Date, default: Date.now}],
+  date: {type: [Date], required: true},
   type: {type: String, enum: ["offer", "need"]},
   categories: [{type: String, enum: CATEGORIES_ENUM}],
   picturesUrls: {type: Array, default: []},
@@ -15,7 +15,8 @@ const favorSchema = new Schema({
   whoseFavId: [{type: Schema.Types.ObjectId, ref:'User'}],
   whoNeedsId: [{type: Schema.Types.ObjectId, ref:'User'}],
   tickets: [{type: Schema.Types.ObjectId, ref:'Ticket'}],
-  location: {type: {type: String,default: 'Point'}, coordinates: [Number]}
+  reports: [{type: Schema.Types.ObjectId, ref:'User'}],
+  location: {type: {type: String, default: 'Point'}, coordinates: [Number]}
 }, {timestamps: true}
 );
 

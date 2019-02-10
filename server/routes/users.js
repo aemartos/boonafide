@@ -28,7 +28,7 @@ router.post('/pictures', isLoggedIn, parser.single('picture'), (req, res, next) 
 
 
 router.post('/updateUser', isLoggedIn, (req, res, next) => {
-  console.log(req.body.data);
+  //console.log(req.body.data);
   User.findByIdAndUpdate(req.user._id, {...req.body.data, newUser: false})
     .then(() => {
       res.json({success: true})

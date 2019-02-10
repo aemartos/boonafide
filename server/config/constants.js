@@ -22,6 +22,8 @@ const CATEGORIES_ENUM = [
   "others"
 ];
 
+const selectRandomFromArray = (array, n) => array.sort(() => .5 - Math.random()).slice(0, Math.ceil(Math.random() * n));
+
 module.exports = {
-  NEW_BOON, NEW_FAVORITE, NEW_FAVOR_DONE, NEW_FAVOR_RECEIVED, NEW_MESSAGE, CATEGORIES_ENUM
+  NEW_BOON, NEW_FAVORITE, NEW_FAVOR_DONE, NEW_FAVOR_RECEIVED, NEW_MESSAGE, CATEGORIES_ENUM, selectRandomFromArray
 }
