@@ -9,6 +9,7 @@ const userSchema = new Schema({
   caption: {type: String, default: "When someone does you a big favor, don't pay it back... PAY IT FORWARD!"},
   description: {type: String, default: "Edit your profile to change this"},
   location: {type: {type: String, default: 'Point'}, coordinates: [Number]},
+  locationName: {type: String, default: "Unknown"},
   offerCategories: [{type: String, enum: CATEGORIES_ENUM}],
   needCategories: [{type: String, enum: CATEGORIES_ENUM}],
   facebookID: {type: String, default: null},

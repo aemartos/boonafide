@@ -29,7 +29,7 @@ let favors = [
     remainingFavNum: 5,
     date: new Date("09-21-18 20:30"),
     type: "need",
-    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
+    picturesUrls: ["https://picsum.photos/200/300/?image=500", "https://picsum.photos/200/300/?image=487"],
     location: {
       type: "Point",
       coordinates: [-3.6678608, 40.5327046]
@@ -41,7 +41,7 @@ let favors = [
     remainingFavNum: 8,
     date: new Date("12-13-18 15:30"),
     type: "offer",
-    picturesUrls: ["https://picsum.photos/200/300/?random"],
+    picturesUrls: ["https://picsum.photos/200/300/?image=100"],
     location: {
       type: "Point",
       coordinates: [-3.6704829, 40.4941498]
@@ -53,7 +53,7 @@ let favors = [
     remainingFavNum: 2,
     date: new Date("05-06-18 15:30"),
     type: "need",
-    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
+    picturesUrls: ["https://picsum.photos/200/300/?image=234", "https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?image=27"],
     location: {
       type: "Point",
       coordinates: [-3.6675343, 40.4955688]
@@ -65,7 +65,7 @@ let favors = [
     remainingFavNum: 3,
     date: new Date("01-13-19 11:30"),
     type: "offer",
-    picturesUrls: ["https://picsum.photos/200/300/?random", "https://picsum.photos/200/300/?random"],
+    picturesUrls: ["https://picsum.photos/200/300/?image=120", "https://picsum.photos/200/300/?image=345"],
     location: {
       type: "Point",
       coordinates: [-3.6890858, 40.39887]
@@ -77,14 +77,13 @@ let favors = [
     remainingFavNum: 1,
     date: new Date("02-07-19 18:30"),
     type: "offer",
-    picturesUrls: ["https://picsum.photos/200/300/?random"],
+    picturesUrls: ["https://picsum.photos/200/300/?image=1000"],
     location: {
       type: "Point",
       coordinates: [-3.6890858, 40.39887]
     }
   }
 ]
-
 
 
 const createFavors = (creatorId, favWishing, favOffering, whoNeedsId, whoseFavId) => {

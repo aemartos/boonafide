@@ -4,7 +4,7 @@
     src: url('./fonts/boonafide-font/boonafide-font.eot?#iefix') format('embedded-opentype'),
         url('./fonts/boonafide-font/boonafide-font.woff') format('woff'),
         url('./fonts/boonafide-font/boonafide-font.ttf') format('truetype'),
-        url('./fonts/boonafide-font/boonafide-font.svg#boonafide-font') format('svg');
+        url('./fonts/boonafide-font/boonafide-font.svg#boonafide') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -15,29 +15,44 @@
     font-weight: normal;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: grayscale
 }
-.b-homem:before{content:'\0041';}
-.b-philosophy:before{content:'\0042';}
-.b-newfavor:before{content:'\0043';}
-.b-messages:before{content:'\0044';}
-.b-notifications:before{content:'\0045';}
-.b-logout:before{content:'\0046';}
-.b-cross:before{content:'\0047';}
-.b-plus:before{content:'\0048';}
-.b-search:before{content:'\0049';}
-.b-animals:before{content:'\004a';}
-.b-care:before{content:'\004b';}
-.b-clothes:before{content:'\004c';}
-.b-donations:before{content:'\004d';}
-.b-education:before{content:'\004e';}
-.b-electronics:before{content:'\004f';}
-.b-feeding:before{content:'\0050';}
-.b-home:before{content:'\0051';}
-.b-leisure:before{content:'\0052';}
-.b-loans:before{content:'\0053';}
-.b-others:before{content:'\0054';}
-.b-paperwork:before{content:'\0055';}
-.b-repairs:before{content:'\0056';}
-.b-services:before{content:'\0057';}
-.b-shelter:before{content:'\0058';}
+.b-animals:before{content:'\0041';}
+.b-care:before{content:'\0042';}
+.b-clothes:before{content:'\0043';}
+.b-donations:before{content:'\0044';}
+.b-education:before{content:'\0045';}
+.b-electronics:before{content:'\0046';}
+.b-feeding:before{content:'\0047';}
+.b-home:before{content:'\0048';}
+.b-leisure:before{content:'\0049';}
+.b-loans:before{content:'\004a';}
+.b-others:before{content:'\004b';}
+.b-paperwork:before{content:'\004c';}
+.b-repairs:before{content:'\004d';}
+.b-services:before{content:'\004e';}
+.b-shelter:before{content:'\004f';}
+.b-arrow:before{content:'\0050';}
+.b-arrow-fill:before{content:'\0051';}
+.b-arrow-short:before{content:'\0052';}
+.b-arrow-long:before{content:'\0053';}
+.b-boon:before{content:'\0054';}
+.b-call:before{content:'\0055';}
+.b-call-fill:before{content:'\0056';}
+.b-cross:before{content:'\0057';}
+.b-edit:before{content:'\0058';}
+.b-filters:before{content:'\0059';}
+.b-heart:before{content:'\005a';}
+.b-heart-fill:before{content:'\0061';}
+.b-homem:before{content:'\0062';}
+.b-location:before{content:'\0063';}
+.b-logout:before{content:'\0064';}
+.b-messages:before{content:'\0065';}
+.b-mp:before{content:'\0066';}
+.b-mp-fill:before{content:'\0067';}
+.b-newfavor:before{content:'\0068';}
+.b-notifications:before{content:'\0069';}
+.b-philosophy:before{content:'\006a';}
+.b-plus:before{content:'\006b';}
+.b-search:before{content:'\006c';}
+.b-sharing:before{content:'\006d';}

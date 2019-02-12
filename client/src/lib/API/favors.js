@@ -6,8 +6,14 @@ export class FavorsAPI {
     throw e.response;
   }
 
-  static searchBar(){
-    return axiosInstance.get('/api/favors/searchBar')
+  static getFavors (query) {
+    return axiosInstance.get('/api/favors')
+      .then((res) => res.data.favors)
+      .catch((e)=> FavorsAPI.errorHandler(e))
+  }
+
+  static getFavorSearch (query) {
+    return axiosInstance.get(`/api/favors/search?query=${query}`)
       .then((res) => res.data.favors)
       .catch((e)=> FavorsAPI.errorHandler(e))
   }

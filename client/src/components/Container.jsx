@@ -28,8 +28,12 @@ const StyledContainer = styled.div`
     margin-top: .5em;
     .container {
       height: 100%;
-      width: 80%;
-      margin: 0 auto;
+      /*width: 80%;*/
+      /*margin: 0 auto;*/
+      .content {
+        /* width: 80%; */
+        /* margin: 2em auto; */
+      }
     }
   }
 `;
@@ -38,6 +42,7 @@ const _Container = (props) => {
   const {className, children, user, location} = props;
   return (
     <StyledContainer className={className}>
+      <img className="iphoneMask" src="/images/iphoneMask_black.png" alt=""></img>
       {(user && !user.newUser) ? <TopMenu/> : null}
       {children}
       {(user && !user.newUser) ? <BottomMenu location={location}/> : null}

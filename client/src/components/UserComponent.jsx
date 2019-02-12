@@ -28,7 +28,7 @@ export const ConditionalUser = (ComponentUser, ComponentNoUser) => connect(state
       return <Redirect to={{pathname: firstSteps}}/>
     }
     return  <ComponentUser {...props}/>
-  } else if (user === undefined && isBusy) {
+  } else if (/*user === undefined &&*/ isBusy) {
     return <Spinner/>;
   } else {
     return  <ComponentNoUser {...props}/>

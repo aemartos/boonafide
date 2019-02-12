@@ -32,6 +32,7 @@ export default class App extends Component {
       <Route render={({ location }) => (
         <div className="app">
           <Container location={location}>
+          {/* {console.log(location)} */}
             {/* <PoseGroup> */}
               {/* <RouteContainer key={location.pathname}> */}
                 <Switch location={location}>
@@ -39,6 +40,7 @@ export default class App extends Component {
                   <Route path="/login" component={ConditionalUser(()=> <Redirect to="/profile"/>, LogInPage)}/>
                   <Route path="/signup" component={ConditionalUser(()=> <Redirect to="/profile"/>, SignUpPage)}/>
                   <Route path="/firstSteps" component={WithUser(FirstStepsPage)}/>
+                  <Route path="/profile/:id" component={WithUser(ProfilePage)}/>
                   <Route path="/profile" component={WithUser(ProfilePage)}/>
                   <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
                   <Route path="/newFavor" component={WithUser(NewFavorPage)}/>

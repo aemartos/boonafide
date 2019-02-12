@@ -35,6 +35,14 @@ const StyledForm = styled.div`
       opacity: .5;
     }
   }
+  input::placeholder {
+    color: ${colors.purple};
+    /* opacity: .5; */
+    font-weight: 400 !important;
+  }
+  input.light::placeholder {
+    color: ${colors.midPurple};
+  }
   input {
     border-radius: 5em;
     padding: .7em 1em;
@@ -42,22 +50,34 @@ const StyledForm = styled.div`
     &[type='checkbox'] {
       width: auto;
     }
+    &.light {
+      padding: .4em .7em;
+      margin: 0;
+      background: ${colors.midGrey};
+      color: ${colors.midPurple};
+      border: 2px solid ${colors.midPurple};
+      &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
+        -webkit-text-fill-color: ${colors.midPurple};
+        -webkit-box-shadow: 0 0 0px 1000px ${colors.midGrey} inset;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      &::placeholder, &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder {
+        color: ${colors.midPurple} !important;
+      }
+      &:focus, &:active {
+        -webkit-text-fill-color: ${colors.midPurple};
+        border: 2px solid ${colors.midPurple};
+      }
+    }
   }
-  input::placeholder {
-    color: ${colors.purple};
-    /* opacity: .5; */
-    font-weight: 400 !important;
-  }
-
 `;
-
 export default class FormField extends Component {
   render() {
-    const {label, type, placeholder, onChange, value} = this.props;
+    const {label, type, placeholder, onChange, value, clas} = this.props;
     return (
       <StyledForm>
         <label className="label">{label}</label>
-        <input className="input" type={type} placeholder={placeholder} onChange={onChange} value={value}/>
+        <input className={"input " + clas} type={type} placeholder={placeholder} onChange={onChange} value={value}/>
       </StyledForm>
     );
   }

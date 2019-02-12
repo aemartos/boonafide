@@ -160,9 +160,6 @@ const Item = styled.div`
       width: 80%;
     }
   }
-  img {
-    fill: red;
-  }
 `;
 
 const CategoryBox = (cat, index, action, cb) => (
@@ -199,26 +196,35 @@ export default class FirstStepsPage extends Component {
       type: "Point",
       coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
     };
-    const {offerCategories, needCategories} = this.state;
-    let data = {
-      location,
-      offerCategories,
-      needCategories
-    }
-    UsersAPI.updateUser(data).then(()=>{
-        AuthAPI.currentUser()
-        .then(user => {
-          this.props.dispatch(updateUser(user));
-          //this.props.history.push('/');
-        })
-        .catch(e => this.props.dispatch(setBusy(false)))
-    })
-    .catch(e=>alert(e));
+    let service = new window.google.maps.places.PlacesService(this.mapObject);
+    service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
+      let code = place.length > 0 ? place[0].plus_code.compound_code : "Unknown";
+      let arr = code.split(" ");
+      arr.shift();
+      let locationName = place.length > 0 ? arr.join(" ") : "Unknown";
+      const {offerCategories, needCategories} = this.state;
+      let data = {
+        location,
+        locationName,
+        offerCategories,
+        needCategories
+      };
+      UsersAPI.updateUser(data).then(()=>{
+          AuthAPI.currentUser()
+          .then(user => {
+            this.props.dispatch(updateUser(user));
+            //this.props.history.push('/');
+          })
+          .catch(e => this.props.dispatch(setBusy(false)))
+      })
+      .catch(e=>alert(e));
+    });
   }
 
   handleSearch(places) {
     const geometry = places[0].geometry;
     const location = geometry.location;
+
     this.marker && this.marker.setMap(null);
     this.marker = setMarker(location, this.marker, this.mapObject, undefined, true);
     this.bounds = new window.google.maps.LatLngBounds();

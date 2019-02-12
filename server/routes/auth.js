@@ -16,7 +16,7 @@ const bcryptSalt = 10;
 
 let loginPromise = (req, user) => {
   return new Promise((resolve,reject) => {
-    req.login(user, e => e? reject(e):resolve(user))
+    req.login(user, e => e ? reject(e) : resolve(user));
   })
 }
 

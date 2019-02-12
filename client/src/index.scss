@@ -36,6 +36,13 @@ a {
   text-decoration: none;
 }
 
+button, input, textarea, select {
+  outline: none;
+}
+
+
+/*---------------------------MAP GENERAL STYLES---------------------------*/
+
 #map {
   a[rel='noopener'] {
     display: none !important;
@@ -68,6 +75,37 @@ a {
     }
   }
 }
+
+/*---------------------------SWITCH RADIO BUTTON STYLES---------------------------*/
+
+.abg-switch {
+  color: #F0F0EC;
+  font-family: "Baloo Bhaina";
+  line-height: .5em;
+  margin: 0 !important;
+  .abg-switch__container {
+    min-height: 2em;
+    background-color: #C4C0C8;
+    border: none;
+    //border: 4px solid #C4C0C8;
+    .abg-switch__state {
+      outline: none;
+      padding: 1em 1em .7em;
+      &.abg-switch__state--on {
+        color: #F0F0EC !important;
+      }
+      &:not(.switch__state--disable):hover {
+        z-index: 1000;
+      }
+    }
+    .abg-switch__overlay {
+      box-shadow: none;
+      background-color: #4F5373;
+    }
+  }
+}
+
+/*---------------------------MASK IPHONEX IMAGE---------------------------*/
 
 .iphoneMask {
   position: fixed;

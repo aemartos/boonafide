@@ -7,29 +7,31 @@ const bcryptSalt = 10;
 //lng, lat
 let users = [
   {
-    username: "Gillian",
+    username: "gillian",
     email: "gillian@hotmail.com",
-    password: bcrypt.hashSync("test_1234", bcrypt.genSaltSync(bcryptSalt)),
+    password: bcrypt.hashSync("gillian_1234", bcrypt.genSaltSync(bcryptSalt)),
     caption: "Testing user",
     description: "Boonafide testing user",
     location: {
       type: "Point",
       coordinates: [-3.714485, 40.4453307]
     },
+    newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549800115/profile-pictures/gillian.jpg",
     status: "Active",
     role: "User"
   },
   {
-    username: "Julianne",
+    username: "julianne",
     email: "julianne@hotmail.com",
-    password: bcrypt.hashSync("test_1234", bcrypt.genSaltSync(bcryptSalt)),
+    password: bcrypt.hashSync("julianne_1234", bcrypt.genSaltSync(bcryptSalt)),
     caption: "Testing user",
     description: "Boonafide testing user",
     location: {
       type: "Point",
       coordinates: [-3.7162688, 40.4211463]
     },
+    newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549800116/profile-pictures/julianne.jpg",
     status: "Active",
     role: "User"
@@ -44,6 +46,7 @@ let users = [
       type: "Point",
       coordinates: [-3.7284008, 40.4523805]
     },
+    newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799760/profile-pictures/ana.jpg",
     status: "Active",
     role: "Admin",
@@ -58,13 +61,10 @@ let users = [
       type: "Point",
       coordinates: [-3.6678608, 40.5327046]
     },
+    newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799496/profile-pictures/boonafide.png",
     status: "Active",
-    role: "Admin",
-    favOffering: [],
-    favWishing: [],
-    favDone: [],
-    favReceived: []
+    role: "Admin"
   },
   {
     username: "IBO",
@@ -74,6 +74,7 @@ let users = [
       type: "Point",
       coordinates: [-3.6965963, 40.4186253]
     },
+    newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799696/profile-pictures/favicon.png",
     status: "Active",
     role: 'Bank'
