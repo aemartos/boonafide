@@ -9,6 +9,10 @@ import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
+import posed from 'react-pose';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import Switch, { State } from 'react-switchable';
 import 'react-switchable/dist/main.css';
@@ -148,6 +152,13 @@ const ContentBox = styled.div`
   }
 `;
 
+const Favors = posed.div({
+  on: {
+    x: '0%'
+  },
+  off: { x: '-100%', delay: 300 }
+});
+
 class _ProfilePage extends Component {
   constructor(props) {
     super(props);
@@ -161,6 +172,11 @@ class _ProfilePage extends Component {
   }
   handleSwitch(newValue) {
     this.setState({switchFav: newValue});
+    if (this.state.switchFav === "Offer") {
+      this.slider.slickNext();
+    } else if (this.state.switchFav === "Need") {
+      this.slider.slickPrev();
+    }
     // console.log('The new value is => ', newValue);
   }
   handleSubmit(e) {
@@ -191,7 +207,15 @@ class _ProfilePage extends Component {
     const {switchFav} = this.state;
     const {isBusy} = this.props;
     const favorsOption = `fav${switchFav}`;
-    // console.log(user, user.favOffer);
+    const settings = {
+      dots: false,
+      arrows: false,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      swipeToSlide: false,
+      swipe: false,
+      speed: 300,
+    };
     return (
       <div className="contentBox">
         <div className="container">
@@ -255,8 +279,18 @@ class _ProfilePage extends Component {
                     <State active value='Need'>Need</State>
                   </Switch>
 
-                  <div className="favors">
+                  {/* <Favors className="favors" pose={true ? 'on' : 'off'}>
                     {user[favorsOption].map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                  </Favors> */}
+                  <div className="favors">
+                    <Slider ref={slider => (this.slider = slider)} {...settings}>
+                      <div className="offer">
+                        {user.favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                      </div>
+                      <div className="need">
+                        {user.favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                      </div>
+                    </Slider>
                   </div>
                 </div>
 
