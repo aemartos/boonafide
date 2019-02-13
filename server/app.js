@@ -102,5 +102,8 @@ app.use('/api/users', userRoutes);
 const favorRoutes = require('./routes/favors');
 app.use('/api/favors', favorRoutes);
 
+const boonsRoutes = require('./routes/boons');
+app.use('/api/boons', boonsRoutes);
+
 
 module.exports = app;

@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
-import posed from 'react-pose';
+//import posed from 'react-pose';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -152,12 +152,12 @@ const ContentBox = styled.div`
   }
 `;
 
-const Favors = posed.div({
-  on: {
-    x: '0%'
-  },
-  off: { x: '-100%', delay: 300 }
-});
+// const Favors = posed.div({
+//   on: {
+//     x: '0%'
+//   },
+//   off: { x: '-100%', delay: 300 }
+// });
 
 class _ProfilePage extends Component {
   constructor(props) {
@@ -172,12 +172,11 @@ class _ProfilePage extends Component {
   }
   handleSwitch(newValue) {
     this.setState({switchFav: newValue});
-    if (this.state.switchFav === "Offer") {
-      this.slider.slickNext();
-    } else if (this.state.switchFav === "Need") {
-      this.slider.slickPrev();
+    if (newValue === "Offer") {
+      this.slider.slickGoTo(0);
+    } else if (newValue === "Need") {
+      this.slider.slickGoTo(1);
     }
-    // console.log('The new value is => ', newValue);
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -204,17 +203,18 @@ class _ProfilePage extends Component {
   render() {
     const myUser = !this.state.user;
     const {user} = myUser ? this.props : this.state;
-    const {switchFav} = this.state;
+    //const {switchFav} = this.state;
     const {isBusy} = this.props;
-    const favorsOption = `fav${switchFav}`;
+    //const favorsOption = `fav${switchFav}`;
     const settings = {
       dots: false,
       arrows: false,
+      infinite: false,
       slidesToShow: 1,
       slidesToScroll: 1,
       swipeToSlide: false,
       swipe: false,
-      speed: 300,
+      speed: 300
     };
     return (
       <div className="contentBox">
