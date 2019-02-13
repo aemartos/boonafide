@@ -43,12 +43,12 @@ createUsers()
         let fields = {boons, offerCategories, needCategories};
         if (u.role === "User") {
           createFavors(u._id.toString(), whoNeedsId, whoseFavId).then((favors) => {
-            let favOffering = favors.filter(f => f.type === "offer");
-            let favWishing = favors.filter(f => f.type === "need");
-            if (favWishing.length > 0) {
-              createTickets(selectRandomFromArray(otherUsers, 1)[0], u._id.toString(), favWishing[0]._id.toString()).then(ticket => console.log(`Created ticket`));
+            let favOffer = favors.filter(f => f.type === "Offer");
+            let favNeed = favors.filter(f => f.type === "Need");
+            if (favNeed.length > 0) {
+              createTickets(selectRandomFromArray(otherUsers, 1)[0], u._id.toString(), favNeed[0]._id.toString()).then(ticket => console.log(`Created ticket`));
             }
-            fields = {...fields, favWishing, favOffering};
+            fields = {...fields, favNeed, favOffer};
             User.findByIdAndUpdate(u._id, fields).then(() => console.log(`Created ${favors.length} favors`));
           });
         } else {

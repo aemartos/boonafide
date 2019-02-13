@@ -7,7 +7,7 @@ passport.serializeUser((loggedInUser, cb) => {
 });
 
 passport.deserializeUser((userIdFromSession, cb) => {
-  User.findById(userIdFromSession).populate('favOffering').populate('favWishing').populate('currentHelped').populate('favDone').populate('favReceived')
+  User.findById(userIdFromSession).populate('favOffer').populate('favNeed').populate('currentHelped').populate('favDone').populate('favReceived')
   .then(userDocument => {
     return cb(null, userDocument)})
   .catch(err => {cb(err)})

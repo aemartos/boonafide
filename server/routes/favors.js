@@ -41,8 +41,8 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
     .then((user) => {
       const categories = user.offerCategories.length === 0 ? CATEGORIES_ENUM : user.offerCategories;
       Favor.find({
-        type: "need",
-        $or: categories.map(c=>{return {categories: c}})
+        type: "Need",
+        $or: categories.map(c => {return {categories: c}})
         //creatorId: {$ne: req.user._id}
       })
       .populate('creatorId')

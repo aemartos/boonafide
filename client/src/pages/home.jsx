@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FavorsAPI } from '../lib/API/favors';
 import FormField from '../components/FormField';
-import {FavorCard} from '../components/FavorCard';
+import { FavorCard } from '../components/FavorCard';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import Slider from "react-slick";

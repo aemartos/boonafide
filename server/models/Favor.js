@@ -8,7 +8,7 @@ const favorSchema = new Schema({
   creatorId: {type: Schema.Types.ObjectId, ref:'User'},
   remainingFavNum: Number,
   date: {type: [Date], required: true},
-  type: {type: String, enum: ["offer", "need"]},
+  type: {type: String, enum: ["Offer", "Need"]},
   categories: [{type: String, enum: CATEGORIES_ENUM}],
   picturesUrls: {type: Array, default: []},
   reviewsId: [{type: Schema.Types.ObjectId, ref:'Review'}],

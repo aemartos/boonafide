@@ -7,7 +7,8 @@ import { updateUser, setBusy } from '../lib/redux/actions';
 import { UsersAPI } from '../lib/API/users';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
-import {Button} from '../components/Button';
+import { Button } from '../components/Button';
+import { FavorThumb } from '../components/FavorThumb';
 
 import Switch, { State } from 'react-switchable';
 import 'react-switchable/dist/main.css';
@@ -141,6 +142,10 @@ const ContentBox = styled.div`
     padding-bottom: 0;
     border-bottom: 0;
   }
+  .favors {
+    height: 22em;
+    overflow-y: auto;
+  }
 `;
 
 class _ProfilePage extends Component {
@@ -148,15 +153,15 @@ class _ProfilePage extends Component {
     super(props);
     this.state = {
       file: null,
-      switch: "Offer"
+      switchFav: "Offer"
     }
   }
   handleChange(e) {
     this.setState({file: e.target.files[0]});
   }
   handleSwitch(newValue) {
-    this.setState({switch: newValue});
-    console.log('The new value is => ', newValue);
+    this.setState({switchFav: newValue});
+    // console.log('The new value is => ', newValue);
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -183,8 +188,10 @@ class _ProfilePage extends Component {
   render() {
     const myUser = !this.state.user;
     const {user} = myUser ? this.props : this.state;
+    const {switchFav} = this.state;
     const {isBusy} = this.props;
-    console.log(this.state.switch);
+    const favorsOption = `fav${switchFav}`;
+    // console.log(user, user.favOffer);
     return (
       <div className="contentBox">
         <div className="container">
@@ -242,11 +249,15 @@ class _ProfilePage extends Component {
                 </form> : null} */}
 
 
-                <div className="content">
+                <div className="favSwitch">
                   <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
                     <State active value='Offer'>Offer</State>
                     <State active value='Need'>Need</State>
                   </Switch>
+
+                  <div className="favors">
+                    {user[favorsOption].map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                  </div>
                 </div>
 
                 <div className="tickets">
