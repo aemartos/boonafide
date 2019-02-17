@@ -25,8 +25,8 @@ class _LogInForm extends React.Component {
     AuthAPI.login(username, password)
     .then( user => {
       dispatch(clearMessages());
-      dispatch(login(user))
       history.push('/');
+      dispatch(login(user))
     })
     .catch( e => {
       timeOutMessages(dispatch, e.message);

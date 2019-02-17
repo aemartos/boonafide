@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
   crossDomain: true
 });
 
-export const setMarker = (position, marker, map, icon = "./images/marker.png", draggable = false) => {
+export const setMarker = (position, marker, map, icon = "/images/marker.png", draggable = false) => {
   if (marker) {
     marker.setMap(null);
   }
@@ -43,4 +43,19 @@ export const getScript = (source, id, callback) => {
   };
   script.src = source;
   prior.parentNode.insertBefore(script, prior);
+}
+
+export const formatDate = (date) => {
+  const monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();;
+  const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  return day + ' ' + monthNames[monthIndex] + ' ' + year + ', ' + hour + ':' + mins;
 }

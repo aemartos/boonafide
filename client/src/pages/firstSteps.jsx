@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { categories } from '../lib/common/constants';
 import { colors } from '../lib/common/colors';
-import { setMarker, getScript } from '../lib/common/helpers';
+import { setMarker } from '../lib/common/helpers';
 import { UsersAPI } from '../lib/API/users';
 import { AuthAPI } from '../lib/API/auth';
 import { updateUser, setBusy } from '../lib/redux/actions';
@@ -178,7 +178,7 @@ export default class FirstStepsPage extends Component {
       slideIndex: 0
     }
     this.handleCat = this.handleCat.bind(this);
-    this.handleSearch = this.handleSearch.bind(this)
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleCat(cat, index, action) {
@@ -234,14 +234,6 @@ export default class FirstStepsPage extends Component {
       this.bounds.extend(geometry.location);
     }
     this.mapObject.fitBounds(this.bounds);
-  }
-
-  componentWillMount() {
-    getScript("https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyALu32zEeld7aaedmR56pwWfXReBhv21IM", "mapScript");
-  }
-
-  componentWillUnmount() {
-    document.getElementById("mapScript").remove();
   }
 
   render() {

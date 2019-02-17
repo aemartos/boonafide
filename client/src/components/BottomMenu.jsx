@@ -13,8 +13,14 @@ const BottomNav = styled.nav`
   background-color: ${props => props.is404 ? colors.purple : colors.grey};
   border-radius: 5em;
   box-shadow: 0px 10px 20px 10px rgba(0,0,0,0.33);
-  /*border-top-right-radius: 2.5em;
-  border-top-left-radius: 2.5em;*/
+  z-index: 2;
+  -webkit-transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  &.isClosed {
+    bottom: -5em;
+    -webkit-transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
   .nav {
     width: 80%;
     margin: 1.3em auto 0;
@@ -44,7 +50,7 @@ const BottomNav = styled.nav`
 export const BottomMenu = connect(store => ({user: store.user}))(({user, dispatch, location}) => {
   return (
     // <BottomNav style={{backgroundColor: (location.pathname === '/not-found' ? colors.purple : colors.grey), color: (location.pathname === '/not-found' ? colors.grey : colors.purple)}}>
-    <BottomNav is404={location.pathname === '/not-found'}>
+    <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
       <div className="nav">
         <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}><span className="icon b-homem"></span></NavLink>
         <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>

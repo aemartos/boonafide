@@ -9,7 +9,6 @@ import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
-//import posed from 'react-pose';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,19 +18,10 @@ import 'react-switchable/dist/main.css';
 
 const ContentBox = styled.div`
   width: 90%;
-  margin: 2em auto;
+  margin: 2em auto 6em;
   > * {
     margin-bottom: 1.5em;
   }
-  /* > * {
-    margin-bottom: 1.5em;
-    padding-bottom: 1.3em;
-    border-bottom: 1px solid ${colors.darkGrey};
-    &:last-child {
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
-  } */
   .username {
     font-family: "Baloo Bhaina";
     text-transform: capitalize;
@@ -149,32 +139,36 @@ const ContentBox = styled.div`
   .favors {
     height: 22em;
     overflow-y: auto;
+    .offer, .need {
+      .noFavors {
+        font-family: "Baloo Bhaina";
+        font-size: 1.3em;
+        line-height: 1.2em;
+        color: ${colors.midPurple};
+        padding: 1em;
+        text-align: center;
+      }
+    }
   }
 `;
-
-// const Favors = posed.div({
-//   on: {
-//     x: '0%'
-//   },
-//   off: { x: '-100%', delay: 300 }
-// });
-
 class _ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      switchFav: "Offer"
+      switchFav: "Offer",
+      favOffer: [],
+      favNeed: []
     }
   }
   handleChange(e) {
     this.setState({file: e.target.files[0]});
   }
-  handleSwitch(newValue) {
-    this.setState({switchFav: newValue});
-    if (newValue === "Offer") {
+  handleSwitch(switchFav) {
+    this.setState({switchFav});
+    if (switchFav === "Offer") {
       this.slider.slickGoTo(0);
-    } else if (newValue === "Need") {
+    } else if (switchFav === "Need") {
       this.slider.slickGoTo(1);
     }
   }
@@ -188,11 +182,13 @@ class _ProfilePage extends Component {
   componentDidMount(){
     if (this.props.match.params.id) {
       let id = this.props.match.params.id;
-      UsersAPI.getUser(id).then(user => this.setState({user}))
+      UsersAPI.getUser(id).then(user => this.setState({user, favOffer: user.favOffer, favNeed: user.favNeed}))
         .catch(e => this.props.history.push('/not-found'));
     } else {
-      AuthAPI.currentUser().then(user => this.props.dispatch(updateUser(user)))
-        .catch(e => this.props.dispatch(setBusy(false)));
+      AuthAPI.currentUser().then(user => {
+        this.props.dispatch(updateUser(user));
+        this.setState({favOffer: user.favOffer, favNeed: user.favNeed})
+      }).catch(e => this.props.dispatch(setBusy(false)));
     }
   }
   componentWillUpdate(nextProps, nextState){
@@ -203,8 +199,10 @@ class _ProfilePage extends Component {
   render() {
     const myUser = !this.state.user;
     const {user} = myUser ? this.props : this.state;
-    //const {switchFav} = this.state;
     const {isBusy} = this.props;
+    const {favOffer, favNeed} = this.state;
+    //console.log(favOffer.length, favNeed.length);
+    // const {switchFav} = this.state;
     //const favorsOption = `fav${switchFav}`;
     const settings = {
       dots: false,
@@ -238,7 +236,7 @@ class _ProfilePage extends Component {
                 </div>
 
                 <div className="currentHelped">
-                  {user.currentHelped.map(u => <img src={u ? u.pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)}
+                  {/* {user.currentHelped.map(u => <img src={u ? u.pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)} */}
                   {[...Array(3)].map((u, i) => <img key={i} src={user.currentHelped[i] ? user.currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)}
                   {/* <img src={user.currentHelped[0] ? user.currentHelped[0].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
                   <img src={user.currentHelped[1] ? user.currentHelped[1].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
@@ -279,23 +277,29 @@ class _ProfilePage extends Component {
                     <State active value='Need'>Need</State>
                   </Switch>
 
-                  {/* <Favors className="favors" pose={true ? 'on' : 'off'}>
+                  {/* <div className="favors" pose={true ? 'on' : 'off'}>
                     {user[favorsOption].map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
-                  </Favors> */}
+                  </div> */}
                   <div className="favors">
                     <Slider ref={slider => (this.slider = slider)} {...settings}>
                       <div className="offer">
-                        {user.favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                        {favOffer.length > 0 ?
+                          favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)
+                          : <p className="noFavors">You have no favor offering, please consider adding some</p>
+                        }
                       </div>
                       <div className="need">
-                        {user.favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
+                        {favNeed.length > 0 ?
+                          favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)
+                          : <p className="noFavors">It seems you don't need anything, that's ok, but you may consider adding something</p>
+                        }
                       </div>
                     </Slider>
                   </div>
                 </div>
 
                 <div className="tickets">
-                  <Button link="" className="btn btn-primary">See tickets</Button>
+                  <Button link="/tickets" className="btn btn-primary">See tickets</Button>
                 </div>
               </React.Fragment>
               : null

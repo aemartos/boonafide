@@ -105,5 +105,8 @@ app.use('/api/favors', favorRoutes);
 const boonsRoutes = require('./routes/boons');
 app.use('/api/boons', boonsRoutes);
 
+const ticketRoutes = require('./routes/tickets');
+app.use('/api/tickets', ticketRoutes);
+
 
 module.exports = app;

@@ -17,11 +17,26 @@ const TopNav = styled.nav`
   justify-content: space-between;
   background-color: ${colors.purple};
   box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.33);
-  a {
+  z-index: 2;
+  .pathName {
+    font-family: "Baloo Bhaina";
+    font-size: 1.3em;
     color: ${colors.grey};
-    &.logoutBtn {
+    margin-top: 1.3em;
+    text-transform: capitalize;
+  }
+  a, .icon {
+    color: ${colors.grey};
+    &.btn {
       font-size: 1.6em;
       margin: 1em 0 0 1em;
+    }
+    &.btn-arrow {
+      margin: 1.3em 0 0 2em;
+      font-size: 1em;
+      &:before{
+        transform: rotate(180deg);
+      }
     }
     &.profile-pic {
       width: 3em;
@@ -37,10 +52,17 @@ const TopNav = styled.nav`
   }
 `;
 
-export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch}) => {
+export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch, location, history}) => {
   return (
     <TopNav>
-      <a className="logoutBtn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
+      {location.pathname.startsWith('/tickets') ?
+        <React.Fragment>
+          <span className="icon btn-arrow b-arrow-short" onClick={()=> history.goBack()}></span>
+          <span className="pathName">{location.pathname.split('/')[1]}</span>
+        </React.Fragment>
+      :
+        <a className="btn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
+      }
       <NavLink className="profile-pic" to="/profile" onClick={()=> dispatch(clearMessages())}> <img src={user.pictureUrl} alt={`${user.name} profile`}/></NavLink>
     </TopNav>
   )

@@ -22,10 +22,12 @@ const StyledContainer = styled.div`
     margin-top: 0;
   }
   .contentBox {
-    height: calc(100% - 9.5em);
+    /* height: calc(100% - 9.5em); */
+    height: 100%;
     width: 100%;
     overflow: auto;
-    margin-top: .5em;
+    margin-top: 5em;
+    /* margin-top: .5em; */
     .container {
       height: 100%;
       /*width: 80%;*/
@@ -39,11 +41,11 @@ const StyledContainer = styled.div`
 `;
 
 const _Container = (props) => {
-  const {className, children, user, location} = props;
+  const {className, children, user, location, history} = props;
   return (
     <StyledContainer className={className}>
       <img className="iphoneMask" src="/images/iphoneMask_black.png" alt=""></img>
-      {(user && !user.newUser) ? <TopMenu/> : null}
+      {(user && !user.newUser) ? <TopMenu location={location} history={history}/> : null}
       {children}
       {(user && !user.newUser) ? <BottomMenu location={location}/> : null}
     </StyledContainer>

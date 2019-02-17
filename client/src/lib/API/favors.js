@@ -7,7 +7,7 @@ export class FavorsAPI {
   }
 
   static getFavors (query) {
-    return axiosInstance.get('/api/favors')
+    return axiosInstance.get('/api/favors/allFavors')
       .then((res) => res.data.favors)
       .catch((e)=> FavorsAPI.errorHandler(e))
   }

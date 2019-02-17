@@ -34,7 +34,7 @@ const SearchBox = styled.div`
 
 const ContentBox = styled.div`
   width: 90%;
-  margin: 2em auto;
+  margin: 2em auto 6em;
   .slick-list {
     width: ${props => props.favors.length < 2 ? "100%" : "105.5%"};
   }

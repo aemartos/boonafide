@@ -6,7 +6,7 @@ const {isLoggedIn} = require('../middlewares/isLogged');
 const { CATEGORIES_ENUM } = require('../config/constants');
 
 
-router.get('/favors', isLoggedIn, (req, res, next) => {
+router.get('/allFavors', isLoggedIn, (req, res, next) => {
   Favor.find()
     .limit(15)
     //.skip(req.params.offset || 0)

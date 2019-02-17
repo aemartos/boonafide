@@ -37,6 +37,14 @@ const StyledLink = styled.span`
       background-color: ${colors.google};
       color: ${colors.grey};
     }
+    &.btn-confirm {
+      background-color: ${colors.green};
+      color: ${colors.grey};
+    }
+    &.btn-cancel {
+      background-color: ${colors.orange};
+      color: ${colors.grey};
+    }
   }
 `;
 
