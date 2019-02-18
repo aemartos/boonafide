@@ -82,7 +82,7 @@ export const FavorCard = (props) => {
         </div>
         {withBtns ?
           <div className="actions">
-            <Link to=""><span className="b-mp"></span></Link>
+            <Link to={`/messages/${userId}`}><span className="b-mp"></span></Link>
             <Link to=""><span className="b-heart"></span></Link>
             <Link to=""><span className="b-sharing"></span></Link>
           </div>

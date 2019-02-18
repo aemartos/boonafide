@@ -5,16 +5,6 @@ const parser = require('../config/cloudinary.js');
 const {isLoggedIn} = require('../middlewares/isLogged');
 
 
-// router.post('/first-user/pictures', isLoggedIn, parser.single('picture'), (req, res, next) => {
-//   User.findOneAndUpdate(req.user._id, { pictureUrl: req.file.url })
-//     .then(() => {
-//       res.json({
-//         success: true,
-//         pictureUrl: req.file.url
-//       })
-//     })
-// });
-
 router.post('/pictures', isLoggedIn, parser.single('picture'), (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { pictureUrl: req.file.url })
     .then(() => {
@@ -26,7 +16,6 @@ router.post('/pictures', isLoggedIn, parser.single('picture'), (req, res, next) 
     .catch(err => next(err))
 });
 
-
 router.post('/updateUser', isLoggedIn, (req, res, next) => {
   //console.log(req.body.data);
   User.findByIdAndUpdate(req.user._id, {...req.body.data, newUser: false})
@@ -35,7 +24,6 @@ router.post('/updateUser', isLoggedIn, (req, res, next) => {
     })
     .catch(err => next(err))
 });
-
 
 router.get('/:userId', isLoggedIn, (req, res, next) => {
   User.findById(req.params.userId).populate('favOffer').populate('favNeed').populate('currentHelped').populate('favDone').populate('favReceived')

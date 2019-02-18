@@ -9,7 +9,8 @@ import TicketThumb from '../components/TicketThumb';
 
 const ContentBox = styled.div`
   width: 90%;
-  margin: 2em auto;
+  margin: 0 auto;
+  padding: 1em 0 6em;
   .tickets {
     /* height: 22em; */
     /* overflow-y: auto; */

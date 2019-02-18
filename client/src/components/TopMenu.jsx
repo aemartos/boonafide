@@ -55,10 +55,10 @@ const TopNav = styled.nav`
 export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch, location, history}) => {
   return (
     <TopNav>
-      {location.pathname.startsWith('/tickets') ?
+      {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') ?
         <React.Fragment>
           <span className="icon btn-arrow b-arrow-short" onClick={()=> history.goBack()}></span>
-          <span className="pathName">{location.pathname.split('/')[1]}</span>
+          {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
         </React.Fragment>
       :
         <a className="btn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>

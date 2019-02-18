@@ -40,7 +40,7 @@ const StyledForm = styled.div`
     /* opacity: .5; */
     font-weight: 400 !important;
   }
-  input.light::placeholder {
+  input.light::placeholder, input.line::placeholder {
     color: ${colors.midPurple};
   }
   input {
@@ -69,15 +69,34 @@ const StyledForm = styled.div`
         border: 2px solid ${colors.midPurple};
       }
     }
+    &.line {
+      padding: .4em .7em;
+      margin: 0;
+      background: transparent;
+      color: ${colors.midPurple};
+      border: 1px solid ${colors.midPurple};
+      &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
+        -webkit-text-fill-color: ${colors.midPurple};
+        -webkit-box-shadow: 0 0 0px 1000px ${colors.midGrey} inset;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      &::placeholder, &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder {
+        color: ${colors.midPurple} !important;
+      }
+      &:focus, &:active {
+        -webkit-text-fill-color: ${colors.midPurple};
+        border: 1px solid ${colors.midPurple};
+      }
+    }
   }
 `;
 export default class FormField extends Component {
   render() {
-    const {label, type, placeholder, onChange, value, clas} = this.props;
+    const {label, type, placeholder, onChange, onKeyUp, value, clas} = this.props;
     return (
       <StyledForm>
         <label className="label">{label}</label>
-        <input className={"input " + clas} type={type} placeholder={placeholder} onChange={onChange} value={value}/>
+        <input className={"input " + clas} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value}/>
       </StyledForm>
     );
   }

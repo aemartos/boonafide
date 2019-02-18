@@ -8,9 +8,9 @@ const { CATEGORIES_ENUM } = require('../config/constants');
 
 router.get('/allFavors', isLoggedIn, (req, res, next) => {
   Favor.find()
-    .limit(15)
-    //.skip(req.params.offset || 0)
     .sort({ createdAt: -1 })
+    //.skip(parseInt(req.query.offset || 0))
+    //.limit(15)
     .then(favors => res.json({favors}))
     .catch(err => next(err));
 });
@@ -25,9 +25,9 @@ router.get('/search', isLoggedIn, (req, res, next) => {
     {"categories": regex},
     ]})
     .populate('creatorId')
-    //.limit(30)
-    //.skip(req.params.offset || 0)
     .sort({ createdAt: -1 })
+    //.skip(parseInt(req.query.offset || 0))
+    //.limit(30)
     .then(favorsUnfiltered => {
       let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
       let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
@@ -46,9 +46,9 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
         //creatorId: {$ne: req.user._id}
       })
       .populate('creatorId')
-      .limit(10)
-      //.skip(req.params.offset || 0)
       .sort({ createdAt: -1 })
+      //.skip(parseInt(req.query.offset || 0))
+      //.limit(10)
       .then(favorsUnfiltered => {
         let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
         let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
@@ -74,9 +74,9 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
         }
       })
       .populate('creatorId')
-      .limit(20)
-      //.skip(req.params.offset || 0)
       .sort({ createdAt: -1 })
+      //.skip(parseInt(req.query.offset || 0))
+      //.limit(20)
       .then(favorsUnfiltered => {
         let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
         let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});

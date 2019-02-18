@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addPicture } from '../lib/API/cloudinary';
@@ -18,7 +19,8 @@ import 'react-switchable/dist/main.css';
 
 const ContentBox = styled.div`
   width: 90%;
-  margin: 2em auto 6em;
+  margin: 0 auto;
+  padding: 2em 0 5em;
   > * {
     margin-bottom: 1.5em;
   }
@@ -228,7 +230,7 @@ class _ProfilePage extends Component {
                     <span className="b-edit"></span>
                   :
                     <React.Fragment>
-                      <span className="b-mp"></span>
+                      <Link to={`/messages/${user._id}`}><span className="b-mp"></span></Link>
                       <span className="b-sharing"></span>
                     </React.Fragment>
                   }

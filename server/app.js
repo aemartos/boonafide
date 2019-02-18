@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 dotenv.config({path: path.join(__dirname, '.private.env')});
 dotenv.config({path: path.join(__dirname, '.public.env')});
+const http = require('http');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -52,12 +53,10 @@ app.use(require('node-sass-middleware')({
   sourceMap: true
 }));
 
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-
 
 hbs.registerHelper('ifUndefined', (value, options) => {
   if (arguments.length < 2)
@@ -69,10 +68,8 @@ hbs.registerHelper('ifUndefined', (value, options) => {
   }
 });
 
-
 // default value for title local
 app.locals.title = 'boonafide';
-
 
 // Enable authentication using session + passport
 app.use(session({
@@ -89,6 +86,10 @@ app.use((req, res, next) => {
   //console.log(req.user);
   next();
 });
+
+let server = http.createServer(app);
+var io = require('socket.io')(server);
+global.io = io;
 
 const index = require('./routes/index');
 app.use('/', index);
@@ -108,5 +109,8 @@ app.use('/api/boons', boonsRoutes);
 const ticketRoutes = require('./routes/tickets');
 app.use('/api/tickets', ticketRoutes);
 
+const msgRoutes = require('./routes/messages');
+app.use('/api/messages', msgRoutes);
 
-module.exports = app;
+
+module.exports = {app:app,server:server};

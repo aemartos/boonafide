@@ -14,9 +14,9 @@ router.get('/allTickets', isLoggedIn, (req, res, next) => {
     .populate('donorId')
     .populate('receiverId')
     .populate('favorId')
-    //.limit(30)
-    //.skip(req.params.offset || 0)
     .sort({ createdAt: -1 })
+    //.skip(parseInt(req.query.offset || 0))
+    //.limit(30)
     .then(tickets => res.json({tickets}))
     .catch(err => next(err))
 });
@@ -26,8 +26,6 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
     .populate('donorId')
     .populate('receiverId')
     .populate('favorId')
-    //.limit(30)
-    //.skip(req.params.offset || 0)
     .then(ticket => res.json(ticket))
     .catch(err => next(err))
 });

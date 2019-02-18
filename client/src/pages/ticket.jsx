@@ -9,20 +9,66 @@ import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
 import MapComponent from '../components/map/MapComponent';
+import { Link } from 'react-router-dom';
+
 
 const StyledTicket = styled.div`
   /* width: 90%; */
   /* margin: 2em auto 6em; */
+  img {
+    width: 100%;
+    height: 10em;
+    object-fit: cover;
+  }
   .info, .validation {
     width: 90%;
     margin: 1em auto;
   }
   .info {
-
+    color: ${colors.purple};
+    font-family: "Baloo Bhaina";
+    line-height: 1em;
+    .text {
+      padding: .5em 0 .7em;
+      margin-bottom: .5em;
+      border-bottom: 1px solid ${colors.darkGrey};
+      .light {
+        color: ${colors.midPurple};
+      }
+    }
   }
-  #map {
-    height: 15em;
-    background-color: ${colors.midGrey}
+  .favorDescription {
+    margin: 1.2em 0;
+    .title {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      .name {
+        font-size: 1.3em;
+        margin-bottom: .2em;
+      }
+      .icon {
+        color: ${colors.purple};
+      }
+    }
+    .description {
+      font-family: "Open Sans";
+      font-size: .9em;
+    }
+  }
+  .mapLocation {
+    .location {
+      width: 90%;
+      margin: 1em auto .5em;
+      color: ${colors.purple};
+      font-family: "Baloo Bhaina";
+      line-height: 1em;
+    }
+    #map {
+      height: 13em;
+      background-color: ${colors.midGrey}
+    }
   }
   .modal {
     color: ${colors.purple};
@@ -101,13 +147,13 @@ class _TicketDetailPage extends Component {
               </Modal>
               <img src={ticket.favorId.picturesUrls[0]} alt={ticket.favorId.name}/>
               <div className="info">
-                <p className="text donor"><span className="bold">Offer by:</span> {ticket.donorId.username}</p>
-                <p className="text receiver"><span className="bold">Request by:</span> {ticket.receiverId.username}</p>
-                <p className="text ticketId">{ticket._id}</p>
-                <p className="date">{formatDate(new Date(ticket.date))}</p>
+                <p className="text donor">Offer by: <span className="light">{ticket.donorId.username}</span></p>
+                <p className="text receiver">Request by: <span className="light">{ticket.receiverId.username}</span></p>
+                <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
+                <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
                 <div className="favorDescription">
-                  <p className="title">{ticket.favorId.name}</p>
-                  <p className="description">{truncate(ticket.favorId.description, {'length': 60})}</p>
+                  <p className="title"><span className="name">{ticket.favorId.name}</span> <Link to={`/favors/${ticket.favorId}`}><span className="icon b-arrow-short"></span></Link></p>
+                  <p className="description">{truncate(ticket.favorId.description, {'length': 95})}</p>
                 </div>
               </div>
               <div className="validation">

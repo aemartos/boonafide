@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { formatDate } from '../lib/common/helpers';
-
+import truncate from 'lodash/truncate';
 
 const StyledThumb = styled.div`
   position: relative;
@@ -24,9 +24,9 @@ const StyledThumb = styled.div`
     background-color: rgba(0,0,0,.5);
     .finish {
       position: absolute;
-      right: .5em;
-      top: .5em;
-      padding: .7em 1em .5em;
+      right: .7em;
+      top: .7em;
+      padding: .6em 1em .4em;
       background-color: ${colors.white};
       border-radius: .5em;
       font-family: "Baloo Bhaina";
@@ -54,15 +54,9 @@ const StyledThumb = styled.div`
         font-size: .8em;
         opacity: .5;
         margin-right: .5em;
-      }
-    }
-  }
-  a {
-    span {
-      color: ${colors.purple};
-      font-size: 1.7em;
-      &:before {
-        margin-top: .3em;
+        &.b-philosophy {
+          font-size: .8em;
+        }
       }
     }
   }
@@ -103,6 +97,7 @@ export default class TicketThumb extends Component {
 
   render(){
     const {img, name, date, ticketId, validated} = this.props;
+    const {locationName} = this.state;
     return (
       <Link to={`/tickets/${ticketId}`}>
         <StyledThumb>
@@ -112,12 +107,12 @@ export default class TicketThumb extends Component {
           <img src={img} alt={name}/>
           <div className="info">
             <p className="title">{name}</p>
-            {this.state.locationName ?
-              <p className="location"> <span className="icon b-location"></span>{this.state.locationName}</p>
+            {locationName ?
+              <p className="location"> <span className="icon b-location"></span>{truncate(locationName, {'length': 45})}</p>
               :
               <p className="location">Loading location name</p>
             }
-            <p className="date"> <span className="icon b-arrow-short"></span> {formatDate(new Date(date))}</p>
+            <p className="date"><span className="icon b-philosophy"></span>{formatDate(new Date(date))}</p>
           </div>
         </StyledThumb>
       </Link>

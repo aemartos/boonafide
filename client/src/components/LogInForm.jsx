@@ -39,8 +39,8 @@ class _LogInForm extends React.Component {
     return (
       <React.Fragment>
         <div className="form">
-          <FormField type="text" placeholder="write your username" onChange={e => this.setState({username: e.target.value})} value={username}/>
-          <FormField type="password" placeholder="write your password" onChange={e => this.setState({password: e.target.value})} value={password}/>
+          <FormField type="text" placeholder="write your username" onChange={e => this.setState({username: e.target.value})} value={username} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleLogin()}}}/>
+          <FormField type="password" placeholder="write your password" onChange={e => this.setState({password: e.target.value})} value={password} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleLogin()}}}/>
           <Button className="btn" onClick={() => this.handleLogin()}>login</Button>
         </div>
       </React.Fragment>

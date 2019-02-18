@@ -6,7 +6,8 @@ import FlipNumbers from 'react-flip-numbers';
 
 const Container = styled.div`
   width: 90%;
-  margin: 2em auto 6em;
+  margin: 0 auto;
+  padding: 2em 0 5em;
   color: ${colors.purple};
   font-family: "Baloo Bhaina";
   line-height: 1em;

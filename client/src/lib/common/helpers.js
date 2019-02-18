@@ -45,7 +45,13 @@ export const getScript = (source, id, callback) => {
   prior.parentNode.insertBefore(script, prior);
 }
 
-export const formatDate = (date) => {
+export const getTime = (date) => {
+  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();;
+  const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  return hour + ':' + mins;
+}
+
+export const getCompleteDate = (date) => {
   const monthNames = [
     "January", "February", "March",
     "April", "May", "June", "July",
@@ -55,7 +61,11 @@ export const formatDate = (date) => {
   const day = date.getDate();
   const monthIndex = date.getMonth();
   const year = date.getFullYear();
-  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();;
-  const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-  return day + ' ' + monthNames[monthIndex] + ' ' + year + ', ' + hour + ':' + mins;
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+
+export const formatDate = (date) => {
+  const completeDate = getCompleteDate(date);
+  const time = getTime(date);
+  return completeDate + ', ' + time;
 }
