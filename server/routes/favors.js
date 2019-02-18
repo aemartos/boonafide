@@ -86,8 +86,30 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
     .catch(err => next(err))
 });
 
-
-
+router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
+    let userId = req.user._id;
+    let favorId = req.params.favorId;
+    Favor.findById(favorId).then(favor => {
+      if (favor.whoseFavId.indexOf(userId) !== -1) {
+        favor.whoseFavId.pull(userId);
+      } else {
+        favor.whoseFavId.push(userId);
+      }
+      favor.save().then(fav=>{
+        User.findById(userId).then(user => {
+          if (user.favFavs.indexOf(favorId) !== -1) {
+            user.favFavs.pull(favorId);
+          } else {
+            user.favFavs.push(favorId);
+          }
+          user.save().then(u=>{
+            res.json(favor.whoseFavId);
+          })
+        });
+      });
+    });
+  }
+);
 
 
 module.exports = router;

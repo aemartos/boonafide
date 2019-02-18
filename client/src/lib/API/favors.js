@@ -29,4 +29,10 @@ export class FavorsAPI {
       .then((res) => res.data.favors)
       .catch((e)=> FavorsAPI.errorHandler(e))
   }
+
+  static favFavor(id){
+    return axiosInstance.post(`/api/favors/${id}/favorite`)
+      .then((res) => res.data)
+      .catch((e)=> FavorsAPI.errorHandler(e))
+  }
 }
