@@ -14,7 +14,7 @@ import { MessagesPage } from './pages/messages';
 import FirstStepsPage from './pages/firstSteps';
 import HomePage from './pages/home';
 import PhilosophyPage from './pages/philosophy';
-import NewFavorPage from './pages/newFavor';
+import { NewFavorPage } from './pages/newFavor';
 import FavorPage from './pages/favor';
 import NotificationsPage from './pages/notifications';
 import Page404 from './pages/page404';

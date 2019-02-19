@@ -72,6 +72,7 @@ const StyledForm = styled.div`
     &.line {
       padding: .4em .7em;
       margin: 0;
+      font-weight: 400;
       background: transparent;
       color: ${colors.midPurple};
       border: 1px solid ${colors.midPurple};
@@ -87,16 +88,21 @@ const StyledForm = styled.div`
         -webkit-text-fill-color: ${colors.midPurple};
         border: 1px solid ${colors.midPurple};
       }
+      &.form {
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid ${colors.midPurple};
+      }
     }
   }
 `;
 export default class FormField extends Component {
   render() {
-    const {label, type, placeholder, onChange, onKeyUp, value, clas} = this.props;
+    const {label, type, placeholder, onChange, onKeyUp, value, className} = this.props;
     return (
       <StyledForm>
         <label className="label">{label}</label>
-        <input className={"input " + clas} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value}/>
+        <input className={"input " + className} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value}/>
       </StyledForm>
     );
   }

@@ -33,7 +33,6 @@ class _MessagesPage extends Component {
   render() {
     const {conversations} = this.state;
     const {user} = this.props;
-    console.log(conversations);
     return (
       <div className="contentBox">
         <div className="container">

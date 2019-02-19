@@ -5,12 +5,16 @@
   "dependencies": {
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
+    "antd": "^3.13.4",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
+    "prefix-css": "^0.0.6",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-day-picker": "^7.2.4",
     "react-dom": "^16.7.0",
     "react-flip-numbers": "^2.1.2",
     "react-pose": "^4.0.7",
@@ -31,7 +35,8 @@
     "start": "cat boonafide && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "prefix-css .timePickerComponent $(pwd)/node_modules/antd/dist/antd.min.css > $(pwd)/src/assets/stylesheets/antd.min.css"
   },
   "eslintConfig": {
     "extends": "react-app"

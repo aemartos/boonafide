@@ -30,6 +30,32 @@ const StyledInput = styled.input`
     color: ${colors.lightPurple};
     font-weight: 400 !important;
   }
+  &.line {
+    border-radius: 5em;
+    padding: .5em .7em;
+    margin: 0;
+    font-weight: 400;
+    background: transparent;
+    color: ${colors.midPurple};
+    border: 1px solid ${colors.midPurple};
+    &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
+      -webkit-text-fill-color: ${colors.midPurple};
+      -webkit-box-shadow: 0 0 0px 1000px ${colors.midGrey} inset;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    &::placeholder, &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder {
+      color: ${colors.midPurple} !important;
+    }
+    &:focus, &:active {
+      -webkit-text-fill-color: ${colors.midPurple};
+      border: 1px solid ${colors.midPurple};
+    }
+    &.form {
+      border-radius: 0;
+      border: 0;
+      border-bottom: 1px solid ${colors.midPurple};
+    }
+  }
 `;
 
 export default class InputMapSearch extends React.Component {
@@ -42,6 +68,6 @@ export default class InputMapSearch extends React.Component {
     this.searchBox.addListener('places_changed', this.handleSearch.bind(this));
   }
   render(){
-    return  <StyledInput className="inputSearch" ref={inputSearch => (this.inputSearch = inputSearch)} type="text" placeholder="write a search" />
+    return  <StyledInput className={"inputSearch " + this.props.className} ref={inputSearch => (this.inputSearch = inputSearch)} type="text" placeholder="write a search" />
   }
 }

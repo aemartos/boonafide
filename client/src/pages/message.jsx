@@ -203,7 +203,7 @@ class _Chat extends React.Component {
             }
           </MessagesBox>
           <SendBox>
-            <FormField clas="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({content: e.target.value})} value={this.state.content} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleSend()}}}/>
+            <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({content: e.target.value})} value={this.state.content} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleSend()}}}/>
             <button onClick={()=> this.handleSend()}><span className="icon b-arrow-fill"></span></button>
           </SendBox>
         </div>

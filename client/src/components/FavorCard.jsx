@@ -9,12 +9,24 @@ import { colors } from '../lib/common/colors';
 import truncate from 'lodash/truncate';
 
 const StyledCard = styled.div`
+  position: relative;
   width: ${props => props.slide ? '100%' : '48%'};
   background-color: ${colors.white};
   border: 1px solid ${colors.midGrey};
   border-radius: .5em;
   overflow: hidden;
   margin-bottom: ${props => props.slide ? '0' : '1em'};
+  .typeFav {
+    position: absolute;
+    right: .7em;
+    top: .7em;
+    padding: .6em 1em .4em;
+    background-color: ${colors.white};
+    border-radius: .5em;
+    font-family: "Baloo Bhaina";
+    line-height: 1em;
+    color: ${colors.purple};
+  }
   .text {
     width: 90%;
     margin: ${props => props.withBtns ? '.5em auto' : '.5em auto 1em'};
@@ -120,11 +132,11 @@ class _FavorCard extends Component {
     });
   }
   render() {
-    const {img, username, date, name, description, withBtns, userId, favorId, slide, user} = this.props;
+    const {type, img, username, date, name, description, withBtns, userId, favorId, slide} = this.props;
     const {isFavorite} = this.state;
     return (
       <StyledCard slide={slide} withBtns={withBtns}>
-
+        <span className="typeFav">{type}</span>
         <img src={img} alt={name}></img>
         <div className="text">
           <div className="metadata">
