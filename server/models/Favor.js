@@ -7,16 +7,17 @@ const favorSchema = new Schema({
   description:  {type: String, default: 'There is no description yet'},
   creatorId: {type: Schema.Types.ObjectId, ref:'User'},
   remainingFavNum: Number,
-  date: {type: [Date], required: true},
+  shifts: [{type: Date}],
   type: {type: String, enum: ["Offer", "Need"]},
   categories: [{type: String, enum: CATEGORIES_ENUM}],
-  picturesUrls: {type: Array, default: []},
+  pictureUrls: {type: Array, default: []},
   reviewsId: [{type: Schema.Types.ObjectId, ref:'Review'}],
   whoseFavId: [{type: Schema.Types.ObjectId, ref:'User'}],
   whoNeedsId: [{type: Schema.Types.ObjectId, ref:'User'}],
   tickets: [{type: Schema.Types.ObjectId, ref:'Ticket'}],
   reports: [{type: Schema.Types.ObjectId, ref:'User'}],
-  location: {type: {type: String, default: 'Point'}, coordinates: [Number]}
+  location: {type: {type: String, default: 'Point'}, coordinates: [Number]},
+  locationName: String
 }, {timestamps: true}
 );
 

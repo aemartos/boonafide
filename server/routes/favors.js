@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Favor = require("../models/Favor");
-const {isLoggedIn} = require('../middlewares/isLogged');
+const { uploadFavorPictures } = require('../config/cloudinary.js');
+const { isLoggedIn } = require('../middlewares/isLogged');
 const { CATEGORIES_ENUM } = require('../config/constants');
 
 
@@ -110,6 +111,42 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
     });
   }
 );
+
+router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (req, res, next) => {
+  const pictureUrls = [];
+  if (req.files.length > 0) {
+    for (let i = 0; i < req.files.length; i++) {
+      pictureUrls.push(req.files[i].url);
+    }
+  }
+  console.log(pictureUrls);
+  res.json(pictureUrls);
+});
+
+router.post('/newFavor', isLoggedIn, (req, res, next) => {
+  const newFavor = new User({
+    username,
+    email,
+    password: hashPass
+  });
+
+  newFavor.save()
+  .then(user => loginPromise(req,user))
+  .then(user => {
+    res.json({user})
+  })
+  .catch(err => {
+    res.status(500).send("Something went wrong");
+  })
+  // Favor.findByIdAndUpdate(req.user._id, { pictureUrl: req.file.url })
+  //   .then(() => {
+  //     res.json({
+  //       success: true,
+  //       pictureUrl: req.file.url
+  //     })
+  //   })
+  //   .catch(err => next(err))
+});
 
 
 module.exports = router;

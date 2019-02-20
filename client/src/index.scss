@@ -74,6 +74,34 @@ a {
   }
 }
 
+.newFavor {
+  .pac-container {
+    border: 1px solid #9E99A3;
+    border-radius: .5em;
+    top: 415px !important;
+    &.pac-logo {
+      &.hdpi {
+        background-color:#F0F0EC;
+        .pac-item {
+          color: #4F5373;
+          padding: .4em .8em;
+          &:first-child {
+            border-top: 1px solid #9E99A3;
+            border-top-right-radius: .5em;
+            border-top-left-radius: .5em;
+          }
+          .pac-item-query {
+            color: #4F5373;
+          }
+          &:hover, &:active, &:focus, &:visited, &.pac-item-selected {
+            background-color: #9E99A3;
+          }
+        }
+      }
+    }
+  }
+}
+
 /*---------------------------SWITCH RADIO BUTTON STYLES---------------------------*/
 
 .abg-switch {

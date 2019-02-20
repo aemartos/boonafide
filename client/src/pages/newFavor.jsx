@@ -10,6 +10,7 @@ import FormField from '../components/FormField';
 import Select from '../components/Select';
 import { Button } from '../components/Button';
 import { categories as categoriesArr } from '../lib/common/constants';
+import { addFavorPictures } from '../lib/API/cloudinary';
 import { setMarker } from '../lib/common/helpers';
 import InputMapSearch from '../components/map/InputMapSearch';
 import MapComponent from '../components/map/MapComponent';
@@ -23,7 +24,7 @@ const StyledAddFavorPage = styled.div`
   .categoriesFav {
     margin-bottom: .5em;
     font-size: .9em;
-    color: ${colors.midPurple};
+    color: ${colors.darkGrey};
     span {
       margin-right: .5em;
       .icon {
@@ -34,6 +35,31 @@ const StyledAddFavorPage = styled.div`
   }
   .abg-switch {
     margin-bottom: .3em !important;
+  }
+  .previewImg {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    .imgPrev {
+      width: 30%;
+      height: 5em;
+      overflow: hidden;
+      border-radius: .5em;
+      background-color: ${colors.darkGrey};
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 60%;
+        &.preview {
+          width: 100%;
+          height: 5em;
+          object-fit: cover;
+        }
+      }
+    }
   }
   textarea {
     width: 100%;
@@ -149,42 +175,61 @@ export default class _NewFavorPage extends Component {
       name: '',
       description: '',
       remainingFavNum: '',
-      picturesUrls: [],
+      pictureUrls: [],
+      imagePreviewUrl: [],
       selectedDay: moment(new Date()).format("DD-MM-YYYY"),
       selectedHour: undefined,
-      times: {}
+      shifts: {}
     }
     this.handleSearch = this.handleSearch.bind(this);
   }
-  handleMoreHours() {
+  handleChange(e) {
+    let reader = new FileReader();
+    let img = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        pictureUrls: [...this.state.pictureUrls, img],
+        imagePreviewUrl: [...this.state.imagePreviewUrl, reader.result]
+      });
+    }
+    reader.readAsDataURL(img);
+    //this.setState({pictureUrls: [...this.state.pictureUrls, img]});
+    console.log(this.state);
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+  }
+  handleAddHours() {
     if (this.state.selectedHour !== undefined) {
-      this.setState({times: {...this.state.times, [this.state.selectedDay]: [...(this.state.times[this.state.selectedDay] || []), this.state.selectedHour ]}, selectedHour: undefined})
+      this.setState({shifts: {...this.state.shifts, [this.state.selectedDay]: [...(this.state.shifts[this.state.selectedDay] || []), moment(this.state.selectedHour).format("HH:mm")]}, selectedHour: undefined})
     }
   }
   onChangeHour(selectedHour){
+    //let selectedHour = moment(hour).format("HH:mm");
     this.setState({ selectedHour });
   }
   handleDeleteHour(idx) {
-    this.setState({times: {...this.state.times, [this.state.selectedDay]:
-      [...this.state.times[this.state.selectedDay].slice(0, idx), ...this.state.times[this.state.selectedDay].slice(idx+1)]
+    this.setState({shifts: {...this.state.shifts, [this.state.selectedDay]:
+      [...this.state.shifts[this.state.selectedDay].slice(0, idx), ...this.state.shifts[this.state.selectedDay].slice(idx+1)]
     }});
   }
-  handleAddCategorie(option) {
+  handleAddCategory(option) {
     if (this.state.categories.indexOf(option) === -1) {
       this.setState({categories: [...this.state.categories, option]});
     }
   }
-  handleDeleteCategorie(idx) {
+  handleDeleteCategory(idx) {
     this.setState({categories: [...this.state.categories.slice(0, idx), ...this.state.categories.slice(idx+1)]})
   }
   onSelectDay(day, isSelected){
     let selectedDay = moment(day).format("DD-MM-YYYY");
-    let times = {...this.state.times};
+    let shifts = {...this.state.shifts};
     if (isSelected){
-      times = {...this.state.times};
-      delete times[selectedDay];
+      shifts = {...this.state.shifts};
+      delete shifts[selectedDay];
+      selectedDay = undefined;
     }
-    this.setState({selectedDay, times});
+    this.setState({selectedDay, shifts});
   }
   handleSwitch(type) {
     this.setState({type});
@@ -203,55 +248,75 @@ export default class _NewFavorPage extends Component {
     this.mapObject.fitBounds(this.bounds);
   }
   handleAddFavor() {
-    const location = {
-      type: "Point",
-      coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
-    };
-    let service = new window.google.maps.places.PlacesService(this.mapObject);
-    service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
-      let locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
-      const {categories, type, name, description, remainingFavNum, picturesUrls} = this.state;
-      let favor = {
-        location,
-        locationName,
-        categories,
-        type,
-        name,
-        description,
-        remainingFavNum,
-        picturesUrls,
-        creatorId: this.props.user._id
+    addFavorPictures(this.state.pictureUrls).then(pictureUrls => {
+      console.log(pictureUrls, "BUTTONADD");
+      const location = {
+        type: "Point",
+        coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
       };
-      console.log('ADD', favor);
-      // UsersAPI.updateUser(data).then(()=>{
-      //     AuthAPI.currentUser()
-      //     .then(user => {
-      //       this.props.dispatch(updateUser(user));
-      //       //this.props.history.push('/');
-      //     })
-      //     .catch(e => this.props.dispatch(setBusy(false)))
-      // })
-      // .catch(e=>alert(e));
+      let service = new window.google.maps.places.PlacesService(this.mapObject);
+      service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
+        let locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
+        const {categories, type, name, description, remainingFavNum, shifts} = this.state;
+        let favor = {
+          location,
+          locationName,
+          categories,
+          type,
+          name,
+          description,
+          remainingFavNum,
+          pictureUrls,
+          shifts,
+          creatorId: this.props.user._id
+        };
+        console.log('ADD', favor);
+        // UsersAPI.updateUser(data).then(()=>{
+        //     AuthAPI.currentUser()
+        //     .then(user => {
+        //       this.props.dispatch(updateUser(user));
+        //       //this.props.history.push('/');
+        //     })
+        //     .catch(e => this.props.dispatch(setBusy(false)))
+        // })
+        // .catch(e=>alert(e));
+      });
     });
   }
+  componentDidMount() {
+    document.body.classList.add("newFavor");
+  }
+  componentWillUnmount() {
+    document.body.classList.remove("newFavor");
+  }
   render() {
-    let {times, selectedDay, selectedHour, categories} = this.state;
-    let availableTimesForSelectedDay = times[selectedDay] || [];
+    let {shifts, selectedDay, selectedHour, categories, imagePreviewUrl} = this.state;
+    let availableTimesForSelectedDay = shifts[selectedDay] || [];
     return (
       <div className="contentBox">
         <div className="container">
           <StyledAddFavorPage>
 
             <div className="categoriesFav">
-              {categories.length > 0 ? categories.map((c,i)=> <span key={i}>{c} <span className="icon b-cross" onClick={()=>this.handleDeleteCategorie(i)}></span></span>)
+              {categories.length > 0 ? categories.map((c,i)=> <span key={i}>{c} <span className="icon b-cross" onClick={()=>this.handleDeleteCategory(i)}></span></span>)
               : <p className="categoriesLabel">First of all, select the favor categories, please :)</p>}
             </div>
-            <Select name="categories" options={categoriesArr} onSelectOption={(option)=>this.handleAddCategorie(option)}/>
+            <Select name="categories" options={categoriesArr} onSelectOption={(option)=>this.handleAddCategory(option)}/>
 
             <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
               <State active value='Offer'>Offer</State>
               <State active value='Need'>Need</State>
             </Switch>
+
+            <div className="previewImg">
+              {[...Array(3)].map((u, i) => {
+                return          <div key={i} className="imgPrev">
+                  <img className={imagePreviewUrl[i] ? "preview" : ""} src={imagePreviewUrl[i] ? imagePreviewUrl[i] : "/images/addPic.png"} alt="favor pic"/>
+                </div>
+              })}
+            </div>
+            <input style={{opacity: "0"}} type="file" onChange={(e)=>this.handleChange(e)}/>
+              {/* <button type="submit">Save picture</button> */}
 
             <FormField className="line" type="text" placeholder="write a title" onChange={e => this.setState({name: e.target.value})} value={this.state.name}/>
             <textarea placeholder="write a description" onChange={e => this.setState({description: e.target.value})} value={this.state.description}></textarea>
@@ -261,12 +326,12 @@ export default class _NewFavorPage extends Component {
               <div className="text">Select preferred days and hours</div>
               <div className="dateAndHour">
                 <Calendar onSelectDay={this.onSelectDay.bind(this)} selectedDay={selectedDay}/>
-                <HoursSelect>
+                { selectedDay ? <HoursSelect>
                   <div className="activeDay">{selectedDay}</div>
-                  <div className="availableHours">{availableTimesForSelectedDay.map((time,i)=> <p key={i}>{time.format("HH:mm")} <span className="b-cross" onClick={()=>this.handleDeleteHour(i)}></span></p>)}</div>
+                  <div className="availableHours">{availableTimesForSelectedDay.map((time,i)=> <p key={i}>{time} <span className="b-cross" onClick={()=>this.handleDeleteHour(i)}></span></p>)}</div>
                   <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{width: "8em"}} format={'HH:mm'} value={selectedHour} onChange={this.onChangeHour.bind(this)}/></div>
-                  <button className="more" onClick={()=>this.handleMoreHours()}><span className="b-plus"></span></button>
-                </HoursSelect>
+                  <button className="more" onClick={()=>this.handleAddHours()}><span className="b-plus"></span></button>
+                </HoursSelect> : <p className="noDay">You must select a day</p> }
               </div>
             </div>
             <div className="location">

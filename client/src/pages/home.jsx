@@ -30,6 +30,7 @@ const SearchBox = styled.div`
   }
   span {
     font-size: 1.5em;
+    margin-top: .15em;
   }
 `;
 

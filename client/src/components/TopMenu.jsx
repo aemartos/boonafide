@@ -46,7 +46,8 @@ const TopNav = styled.nav`
       overflow: hidden;
       img {
         width: 100%;
-        height: auto;
+        height: 3em;
+        object-fit: cover;
       }
     }
   }

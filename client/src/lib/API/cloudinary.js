@@ -15,10 +15,23 @@ const errHandler = err => {
   throw err;
 }
 
-export const addPicture = (file) => {
+export const addProfilePicture = (file) => {
   const formData = new FormData();
   formData.append("picture", file);
   return service.post('/api/users/pictures', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export const addFavorPictures = (files) => {
+  console.log(files);
+  const formData = new FormData();
+  files.forEach(f => formData.append("picture", f));
+  return service.post(`/api/favors/pictures`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

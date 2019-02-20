@@ -37,6 +37,9 @@ const StyledCalendar = styled.div`
             .DayPicker-Week {
               .DayPicker-Day {
                 padding: .4em .5em;
+                &:hover {
+                  background-color: transparent;
+                }
                 &.DayPicker-Day--today {
                   color: ${colors.purple};
                 }

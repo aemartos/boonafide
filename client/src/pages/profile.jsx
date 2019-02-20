@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addPicture } from '../lib/API/cloudinary';
+import { addProfilePicture } from '../lib/API/cloudinary';
 import { AuthAPI } from '../lib/API/auth';
 import { updateUser, setBusy } from '../lib/redux/actions';
 import { UsersAPI } from '../lib/API/users';
@@ -37,13 +37,19 @@ const ContentBox = styled.div`
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: flex-start;
-    img {
+    .profPic {
       flex: 1;
       border-radius: .3em;
       border: 1px solid ${colors.darkGrey};
       height: 15em;
-      object-fit: cover;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 15em;
+        object-fit: cover;
+      }
     }
+    
     .actions {
       font-size: 2em;
       margin-left: .5em;
@@ -163,9 +169,6 @@ class _ProfilePage extends Component {
       favNeed: []
     }
   }
-  handleChange(e) {
-    this.setState({file: e.target.files[0]});
-  }
   handleSwitch(switchFav) {
     this.setState({switchFav});
     if (switchFav === "Offer") {
@@ -174,9 +177,12 @@ class _ProfilePage extends Component {
       this.slider.slickGoTo(1);
     }
   }
+  handleChange(e) {
+    this.setState({file: e.target.files[0]});
+  }
   handleSubmit(e) {
     e.preventDefault();
-    addPicture(this.state.file);
+    addProfilePicture(this.state.file);
   }
   componentWillMount(){
     this.props.dispatch(setBusy(true));
@@ -224,7 +230,7 @@ class _ProfilePage extends Component {
               <React.Fragment>
                 <h2 className="username">{user.username}</h2>
                 <div className="mainBox">
-                  <img src={user.pictureUrl} alt="profile pic"/>
+                  <div className="profPic"><img src={user.pictureUrl} alt="profile pic"/></div>
                   <div className="actions">
                   {myUser ?
                     <span className="b-edit"></span>
@@ -267,10 +273,10 @@ class _ProfilePage extends Component {
                 </div>
 
                 <div className="description">{user.description}</div>
-                {/* {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
+                {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
                   <input type="file" onChange={(e)=>this.handleChange(e)} /> <br/>
                   <button type="submit">Save new profile picture</button>
-                </form> : null} */}
+                </form> : null}
 
 
                 <div className="favSwitch">

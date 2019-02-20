@@ -8,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET
 });
 
-var storage = cloudinaryStorage({
+var storageProfilePictures = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'profile-pictures',
   allowedFormats: ['jpg', 'png'],
@@ -17,6 +17,16 @@ var storage = cloudinaryStorage({
   }
 });
 
-const parser = multer({ storage: storage });
+var storageFavorPictures = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'favor-pictures',
+  allowedFormats: ['jpg', 'png'],
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
 
-module.exports = parser;
+const uploadProfilePicture = multer({ storage: storageProfilePictures });
+const uploadFavorPictures = multer({ storage: storageFavorPictures });
+
+module.exports = { uploadProfilePicture, uploadFavorPictures }

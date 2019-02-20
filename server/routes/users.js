@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const parser = require('../config/cloudinary.js');
+const {uploadProfilePicture} = require('../config/cloudinary.js');
 const {isLoggedIn} = require('../middlewares/isLogged');
 
 
-router.post('/pictures', isLoggedIn, parser.single('picture'), (req, res, next) => {
+router.post('/pictures', isLoggedIn, uploadProfilePicture.single('picture'), (req, res, next) => {
+  console.log(req.file);
   User.findByIdAndUpdate(req.user._id, { pictureUrl: req.file.url })
     .then(() => {
       res.json({
