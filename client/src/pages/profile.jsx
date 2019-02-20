@@ -49,7 +49,6 @@ const ContentBox = styled.div`
         object-fit: cover;
       }
     }
-    
     .actions {
       font-size: 2em;
       margin-left: .5em;
@@ -273,11 +272,11 @@ class _ProfilePage extends Component {
                 </div>
 
                 <div className="description">{user.description}</div>
-                {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
+
+                {/* {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
                   <input type="file" onChange={(e)=>this.handleChange(e)} /> <br/>
                   <button type="submit">Save new profile picture</button>
-                </form> : null}
-
+                </form> : null} */}
 
                 <div className="favSwitch">
                   <Switch onValueChange={newValue => this.handleSwitch(newValue)}>

@@ -42,6 +42,7 @@ const StyledAddFavorPage = styled.div`
     justify-content: space-between;
     align-items: center;
     .imgPrev {
+      position: relative;
       width: 30%;
       height: 5em;
       overflow: hidden;
@@ -51,6 +52,16 @@ const StyledAddFavorPage = styled.div`
       flex-flow: row nowrap;
       justify-content: center;
       align-items: center;
+      margin-bottom: 1em;
+      input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* border: 1px solid red; */
+        opacity: 0;
+        height: 7.3em;
+      }
       img {
         width: 60%;
         &.preview {
@@ -175,29 +186,32 @@ export default class _NewFavorPage extends Component {
       name: '',
       description: '',
       remainingFavNum: '',
-      pictureUrls: [],
-      imagePreviewUrl: [],
+      pictureUrls: [undefined, undefined, undefined],
+      imagePreviewUrl: [undefined, undefined, undefined],
       selectedDay: moment(new Date()).format("DD-MM-YYYY"),
       selectedHour: undefined,
       shifts: {}
     }
     this.handleSearch = this.handleSearch.bind(this);
   }
-  handleChange(e) {
+  handleChange(e,i) {
     let reader = new FileReader();
     let img = e.target.files[0];
+    console.log(i);
+
     reader.onloadend = () => {
+      let pictureUrls = [...this.state.pictureUrls];
+      let imagePreviewUrl = [...this.state.imagePreviewUrl];
+      pictureUrls[i] = img;
+      imagePreviewUrl[i] = reader.result;
       this.setState({
-        pictureUrls: [...this.state.pictureUrls, img],
-        imagePreviewUrl: [...this.state.imagePreviewUrl, reader.result]
+        pictureUrls, //: [...this.state.pictureUrls, img],
+        imagePreviewUrl //: [...this.state.imagePreviewUrl, reader.result]
       });
     }
     reader.readAsDataURL(img);
     //this.setState({pictureUrls: [...this.state.pictureUrls, img]});
     console.log(this.state);
-  }
-  handleSubmit(e) {
-    e.preventDefault();
   }
   handleAddHours() {
     if (this.state.selectedHour !== undefined) {
@@ -258,6 +272,7 @@ export default class _NewFavorPage extends Component {
       service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
         let locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
         const {categories, type, name, description, remainingFavNum, shifts} = this.state;
+        
         let favor = {
           location,
           locationName,
@@ -290,8 +305,9 @@ export default class _NewFavorPage extends Component {
     document.body.classList.remove("newFavor");
   }
   render() {
-    let {shifts, selectedDay, selectedHour, categories, imagePreviewUrl} = this.state;
+    let {shifts, selectedDay, selectedHour, categories, imagePreviewUrl, pictureUrls} = this.state;
     let availableTimesForSelectedDay = shifts[selectedDay] || [];
+    console.log(pictureUrls);
     return (
       <div className="contentBox">
         <div className="container">
@@ -310,13 +326,12 @@ export default class _NewFavorPage extends Component {
 
             <div className="previewImg">
               {[...Array(3)].map((u, i) => {
-                return          <div key={i} className="imgPrev">
+                return <div key={i} className="imgPrev">
+                  <input type="file" onChange={(e)=>this.handleChange(e, i)}/>
                   <img className={imagePreviewUrl[i] ? "preview" : ""} src={imagePreviewUrl[i] ? imagePreviewUrl[i] : "/images/addPic.png"} alt="favor pic"/>
                 </div>
               })}
             </div>
-            <input style={{opacity: "0"}} type="file" onChange={(e)=>this.handleChange(e)}/>
-              {/* <button type="submit">Save picture</button> */}
 
             <FormField className="line" type="text" placeholder="write a title" onChange={e => this.setState({name: e.target.value})} value={this.state.name}/>
             <textarea placeholder="write a description" onChange={e => this.setState({description: e.target.value})} value={this.state.description}></textarea>

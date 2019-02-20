@@ -7,7 +7,7 @@ const favorSchema = new Schema({
   description:  {type: String, default: 'There is no description yet'},
   creatorId: {type: Schema.Types.ObjectId, ref:'User'},
   remainingFavNum: Number,
-  shifts: [{type: Date}],
+  shifts: {map: Map, of: [String]},
   type: {type: String, enum: ["Offer", "Need"]},
   categories: [{type: String, enum: CATEGORIES_ENUM}],
   pictureUrls: {type: Array, default: []},
