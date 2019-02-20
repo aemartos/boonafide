@@ -35,4 +35,10 @@ export class FavorsAPI {
       .then((res) => res.data)
       .catch((e)=> FavorsAPI.errorHandler(e))
   }
+
+  static createFavor(favor){
+    return axiosInstance.post(`/api/favors/newFavor`, {favor})
+      .then((res) => res.data)
+      .catch((e)=> FavorsAPI.errorHandler(e))
+  }
 }

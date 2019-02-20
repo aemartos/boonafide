@@ -28,7 +28,6 @@ export const addProfilePicture = (file) => {
 }
 
 export const addFavorPictures = (files) => {
-  console.log(files);
   const formData = new FormData();
   files.forEach(f => formData.append("picture", f));
   return service.post(`/api/favors/pictures`, formData, {

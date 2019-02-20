@@ -110,7 +110,7 @@ export default class HomePage extends Component {
             {search && filterFavors ?
               <div className="favorsBox">
                 <div className="favorsSearch">
-                  {filterFavors.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.picturesUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description}/>)}
+                  {filterFavors.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description}/>)}
                 </div>
               </div>
               :
@@ -118,13 +118,13 @@ export default class HomePage extends Component {
                 <div className="favorsBox favorsOthers">
                   <p className="title">We have found this favors you can offer</p>
                   <Slider {...settings}>
-                    {favorsOthersNeed.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.picturesUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide/>)}
+                    {favorsOthersNeed.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide/>)}
                   </Slider>
                 </div>
                 <div className="favorsBox">
                   <p className="title">Favors near you</p>
                   <div className="favorsNearby">
-                    {favorsNearby.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.picturesUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} withBtns/>)}
+                    {favorsNearby.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} withBtns/>)}
                   </div>
                 </div>
               </React.Fragment>

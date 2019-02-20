@@ -16,6 +16,9 @@ import InputMapSearch from '../components/map/InputMapSearch';
 import MapComponent from '../components/map/MapComponent';
 import Switch, { State } from 'react-switchable';
 import 'react-switchable/dist/main.css';
+import { FavorsAPI } from '../lib/API/favors';
+import { AuthAPI } from '../lib/API/auth';
+import { updateUser, setBusy } from '../lib/redux/actions';
 
 const StyledAddFavorPage = styled.div`
   width: 90%;
@@ -121,6 +124,13 @@ const StyledAddFavorPage = styled.div`
       color: ${colors.midPurple} !important;
     }
   }
+  .error {
+    text-align: center;
+    height: 2em;
+    color: ${colors.orange};
+    font-size: .8em;
+    padding-top: 1em;
+  }
   .btn.btn-primary {
     margin-bottom: .5em;
   }
@@ -197,21 +207,17 @@ export default class _NewFavorPage extends Component {
   handleChange(e,i) {
     let reader = new FileReader();
     let img = e.target.files[0];
-    console.log(i);
-
     reader.onloadend = () => {
       let pictureUrls = [...this.state.pictureUrls];
       let imagePreviewUrl = [...this.state.imagePreviewUrl];
       pictureUrls[i] = img;
       imagePreviewUrl[i] = reader.result;
       this.setState({
-        pictureUrls, //: [...this.state.pictureUrls, img],
-        imagePreviewUrl //: [...this.state.imagePreviewUrl, reader.result]
+        pictureUrls,
+        imagePreviewUrl
       });
     }
     reader.readAsDataURL(img);
-    //this.setState({pictureUrls: [...this.state.pictureUrls, img]});
-    console.log(this.state);
   }
   handleAddHours() {
     if (this.state.selectedHour !== undefined) {
@@ -262,41 +268,51 @@ export default class _NewFavorPage extends Component {
     this.mapObject.fitBounds(this.bounds);
   }
   handleAddFavor() {
-    addFavorPictures(this.state.pictureUrls).then(pictureUrls => {
-      console.log(pictureUrls, "BUTTONADD");
-      const location = {
-        type: "Point",
-        coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
-      };
-      let service = new window.google.maps.places.PlacesService(this.mapObject);
-      service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
-        let locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
-        const {categories, type, name, description, remainingFavNum, shifts} = this.state;
-        
-        let favor = {
-          location,
-          locationName,
-          categories,
-          type,
-          name,
-          description,
-          remainingFavNum,
-          pictureUrls,
-          shifts,
-          creatorId: this.props.user._id
+    
+    const {categories, type, name, description, remainingFavNum, shifts} = this.state;
+    if (categories && categories.length > 0  && type !== undefined && name !== undefined && description !== undefined && remainingFavNum !== undefined && Object.keys(shifts).length > 0) {
+      this.props.dispatch(setBusy("force"));
+      addFavorPictures(this.state.pictureUrls).then(pictureUrls => {
+        const location = {
+          type: "Point",
+          coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
         };
-        console.log('ADD', favor);
-        // UsersAPI.updateUser(data).then(()=>{
-        //     AuthAPI.currentUser()
-        //     .then(user => {
-        //       this.props.dispatch(updateUser(user));
-        //       //this.props.history.push('/');
-        //     })
-        //     .catch(e => this.props.dispatch(setBusy(false)))
-        // })
-        // .catch(e=>alert(e));
+        let service = new window.google.maps.places.PlacesService(this.mapObject);
+        service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
+          let locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
+          let favor = {
+            location,
+            locationName,
+            categories,
+            type,
+            name,
+            description,
+            remainingFavNum,
+            pictureUrls,
+            shifts
+          };
+          console.log('ADD', favor);
+          FavorsAPI.createFavor(favor).then((res)=>{
+            AuthAPI.currentUser()
+              .then(user => {
+                this.props.dispatch(updateUser(user));
+                this.props.history.push('/');
+              })
+              .catch(e => this.props.dispatch(setBusy(false)))
+          })
+          .catch(e=> {
+            console.log(e);
+            this.setState({showError: e.data})
+          });
+        });
       });
-    });
+    } else {
+      this.handleBlankFields();
+    }
+  }
+  handleBlankFields() {
+    this.setState({showError: "You have to fill in all the fields :)"});
+    setTimeout(()=> this.setState({showError: undefined}), 1500);
   }
   componentDidMount() {
     document.body.classList.add("newFavor");
@@ -305,9 +321,8 @@ export default class _NewFavorPage extends Component {
     document.body.classList.remove("newFavor");
   }
   render() {
-    let {shifts, selectedDay, selectedHour, categories, imagePreviewUrl, pictureUrls} = this.state;
+    let {shifts, selectedDay, selectedHour, categories, imagePreviewUrl, showError} = this.state;
     let availableTimesForSelectedDay = shifts[selectedDay] || [];
-    console.log(pictureUrls);
     return (
       <div className="contentBox">
         <div className="container">
@@ -357,6 +372,7 @@ export default class _NewFavorPage extends Component {
                 this.marker = setMarker({lat :40.4169473, lng: -3.7035285}, this.marker, this.mapObject, undefined, true);
               }}/>
             </div>
+            <div className="error">{showError ? showError : null}</div>
             <Button link="" onClick={()=> this.handleAddFavor()} className="btn btn-primary">add favor</Button>
           </StyledAddFavorPage>
         </div>

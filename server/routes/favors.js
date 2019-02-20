@@ -119,33 +119,16 @@ router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (r
       pictureUrls.push(req.files[i].url);
     }
   }
-  console.log(pictureUrls);
   res.json(pictureUrls);
 });
 
 router.post('/newFavor', isLoggedIn, (req, res, next) => {
-  const newFavor = new User({
-    username,
-    email,
-    password: hashPass
-  });
-
+  const favor = {...req.body.favor, creatorId: req.user._id};
+  console.log(favor);
+  const newFavor = new Favor(favor);
   newFavor.save()
-  .then(user => loginPromise(req,user))
-  .then(user => {
-    res.json({user})
-  })
-  .catch(err => {
-    res.status(500).send("Something went wrong");
-  })
-  // Favor.findByIdAndUpdate(req.user._id, { pictureUrl: req.file.url })
-  //   .then(() => {
-  //     res.json({
-  //       success: true,
-  //       pictureUrl: req.file.url
-  //     })
-  //   })
-  //   .catch(err => next(err))
+    .then(favor => res.json(favor))
+    .catch(err => res.status(500).send("Something went wrong"))
 });
 
 
