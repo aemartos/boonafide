@@ -38,8 +38,8 @@ export default class Select extends Component {
     return (
       <StyledSelect>
         <span className="icon b-arrow-short"></span>
-        <select className={className} defaultValue="Select categories" placeholder="Select categories" name={name} onChange={(e)=>this.handleOption(e.target.value)}>
-          {/* <option value="" disabled selected hidden>Select categories</option> */}
+        <select className={className} defaultValue="" placeholder="Select categories" name={name} onChange={(e)=>this.handleOption(e.target.value)}>
+          <option value="" disabled hidden>Select categories</option>
           {options.map(o => <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
         </select>
       </StyledSelect>

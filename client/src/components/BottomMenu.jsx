@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { clearMessages } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
 import styled from '@emotion/styled';
@@ -44,20 +44,45 @@ const BottomNav = styled.nav`
         margin-right: 0;
       }
     }
+    &.favorNav {
+      margin: 1em auto 0;
+      .icon {
+        &.b-mp {
+          font-size: 2em;
+          &:before {
+            margin-top: .15em;
+          }
+        }
+        &.b-call {
+          font-size: 2.2em;
+        }
+      }
+    }
   }
 `;
 
-export const BottomMenu = connect(store => ({user: store.user}))(({user, dispatch, location}) => {
-  return (
-    // <BottomNav style={{backgroundColor: (location.pathname === '/not-found' ? colors.purple : colors.grey), color: (location.pathname === '/not-found' ? colors.grey : colors.purple)}}>
-    <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
-      <div className="nav">
-        <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}><span className="icon b-homem"></span></NavLink>
-        <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
-        <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
-        <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><span className="icon b-messages"></span></NavLink>
-        <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><span className="icon b-notifications"></span></NavLink>
-      </div>
-    </BottomNav>
-  )
-});
+class _BottomMenu extends React.Component {
+  render () {
+    const {favor, dispatch, location} = this.props;
+    return (
+      <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
+        {favor ?
+          <div className="nav favorNav">
+            <Link to={`/messages/${favor.userId}`}><span className="icon b-mp"></span></Link>
+            <Link to=""><span className="icon b-call"></span></Link>
+          </div>
+        :
+          <div className="nav">
+            <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}><span className="icon b-homem"></span></NavLink>
+            <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
+            <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
+            <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><span className="icon b-messages"></span></NavLink>
+            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><span className="icon b-notifications"></span></NavLink>
+          </div>
+        }
+      </BottomNav>
+    )
+  }
+};
+
+export const BottomMenu = connect(store => ({user: store.user, favor: store.favor}))(_BottomMenu);

@@ -109,6 +109,12 @@ const StyledAddFavorPage = styled.div`
       flex-flow: row nowrap;
       justify-content: space-between;
       align-items: flex-start;
+      .noDay {
+        font-size: .9em;
+        text-align: center;
+        color: ${colors.purple};
+        padding: 1em;
+      }
     }
   }
   .location {
@@ -268,7 +274,6 @@ export default class _NewFavorPage extends Component {
     this.mapObject.fitBounds(this.bounds);
   }
   handleAddFavor() {
-    
     const {categories, type, name, description, remainingFavNum, shifts} = this.state;
     if (categories && categories.length > 0  && type !== undefined && name !== undefined && description !== undefined && remainingFavNum !== undefined && Object.keys(shifts).length > 0) {
       this.props.dispatch(setBusy("force"));
@@ -287,21 +292,21 @@ export default class _NewFavorPage extends Component {
             type,
             name,
             description,
-            remainingFavNum,
             pictureUrls,
+            remainingFavNum,
             shifts
           };
-          console.log('ADD', favor);
           FavorsAPI.createFavor(favor).then((res)=>{
+            //console.log('ADD', res);
             AuthAPI.currentUser()
               .then(user => {
                 this.props.dispatch(updateUser(user));
-                this.props.history.push('/');
+                this.props.history.push(`/favors/${res._id}`);
               })
-              .catch(e => this.props.dispatch(setBusy(false)))
           })
           .catch(e=> {
             console.log(e);
+            this.props.dispatch(setBusy(false))
             this.setState({showError: e.data})
           });
         });
@@ -361,7 +366,7 @@ export default class _NewFavorPage extends Component {
                   <div className="availableHours">{availableTimesForSelectedDay.map((time,i)=> <p key={i}>{time} <span className="b-cross" onClick={()=>this.handleDeleteHour(i)}></span></p>)}</div>
                   <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{width: "8em"}} format={'HH:mm'} value={selectedHour} onChange={this.onChangeHour.bind(this)}/></div>
                   <button className="more" onClick={()=>this.handleAddHours()}><span className="b-plus"></span></button>
-                </HoursSelect> : <p className="noDay">You must select a day</p> }
+                </HoursSelect> : <p className="noDay">Please, select a day to set different times</p> }
               </div>
             </div>
             <div className="location">

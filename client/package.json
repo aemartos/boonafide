@@ -36,11 +36,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "prefix-css .timePickerComponent $(pwd)/node_modules/antd/dist/antd.min.css > $(pwd)/src/assets/stylesheets/antd.min.css"
+    "postinstall": "prefix-css .timePickerComponent $(pwd)/node_modules/antd/dist/antd.min.css > $(pwd)/src/assets/stylesheets/antd.min.css",
+    "copy_to_server": "yarn build && cp -r build/* ../server/public"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "homepage": "/",
   "browserslist": [
     ">0.2%",
     "not dead",

@@ -64,40 +64,9 @@ const StyledThumb = styled.div`
 
 
 export default class TicketThumb extends Component {
-  constructor(props) {
-    super(props);
-    this.getLocationName = this.getLocationName.bind(this);
-    this.state = {
-      locationName:false
-    }
-  }
-
-  componentDidMount(){
-    const {location} = this.props;
-    if (window.google) {
-      this.getLocationName(location).then(e => this.setState({locationName:e}));
-    }
-  }
-
-  getLocationName(coordinates) {
-    const latlng = {lat: parseFloat(coordinates[1]), lng: parseFloat(coordinates[0])};
-    this.geocoder = new window.google.maps.Geocoder();
-    return new Promise(resolve=> this.geocoder.geocode({'location': latlng}, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          resolve(results[0].formatted_address);
-        } else {
-          resolve("Unknown");
-        }
-      } else {
-        window.alert('Geocoder failed due to: ' + status);
-      }
-    }));
-  }
 
   render(){
-    const {img, name, date, ticketId, validated} = this.props;
-    const {locationName} = this.state;
+    const {img, name, date, ticketId, validated, location} = this.props;
     return (
       <Link to={`/tickets/${ticketId}`}>
         <StyledThumb>
@@ -107,11 +76,7 @@ export default class TicketThumb extends Component {
           <img src={img} alt={name}/>
           <div className="info">
             <p className="title">{name}</p>
-            {locationName ?
-              <p className="location"> <span className="icon b-location"></span>{truncate(locationName, {'length': 45})}</p>
-              :
-              <p className="location">Loading location name</p>
-            }
+            <p className="location"> <span className="icon b-location"></span>{truncate(location, {'length': 45})}</p>
             <p className="date"><span className="icon b-philosophy"></span>{formatDate(new Date(date))}</p>
           </div>
         </StyledThumb>

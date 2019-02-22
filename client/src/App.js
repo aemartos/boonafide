@@ -15,7 +15,7 @@ import FirstStepsPage from './pages/firstSteps';
 import HomePage from './pages/home';
 import PhilosophyPage from './pages/philosophy';
 import { NewFavorPage } from './pages/newFavor';
-import FavorPage from './pages/favor';
+import { FavorDetailPage } from './pages/favor';
 import NotificationsPage from './pages/notifications';
 import Page404 from './pages/page404';
 
@@ -37,7 +37,7 @@ export default class App extends Component {
               <Route path="/tickets" component={WithUser(TicketsPage)}/>
               <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
               <Route path="/newFavor" component={WithUser(NewFavorPage)}/>
-              <Route path="/favors" component={WithUser(FavorPage)}/>
+              <Route path="/favors/:id" component={WithUser(FavorDetailPage)}/>
               <Route path="/messages/:id" component={WithUser(MessagesDetailPage)}/>
               <Route path="/messages" component={WithUser(MessagesPage)}/>
               <Route path="/notifications" component={WithUser(NotificationsPage)}/>

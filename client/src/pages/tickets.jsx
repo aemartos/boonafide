@@ -31,8 +31,7 @@ class _TicketsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickets: [],
-      switchFav: "Offer"
+      tickets: []
     }
   }
 
@@ -56,7 +55,7 @@ class _TicketsPage extends Component {
             <div className="tickets">
                 <div className="offer">
                   {tickets.length > 0 ?
-                    tickets.map(t => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.picturesUrls[0]} name={t.favorId.name} location={t.favorId.location.coordinates} date={t.favorId.date} validated={t.validated} />)
+                    tickets.map(t => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.pictureUrls[0]} name={t.favorId.name} date={t.date} location={t.favorId.locationName} validated={t.validated} />)
                     : <p className="noTickets">You have no tickets, you need to accept others needs to get a ticket</p>
                   }
                 </div>

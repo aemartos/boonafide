@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AuthAPI } from '../lib/API/auth';
 import { logout, clearMessages, setBusy } from '../lib/redux/actions';
+import { updateUser } from '../lib/redux/actions';
+import { FavorsAPI } from '../lib/API/favors';
 import { colors } from '../lib/common/colors';
 import styled from '@emotion/styled';
 
@@ -51,20 +53,95 @@ const TopNav = styled.nav`
       }
     }
   }
+  .favMenu {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    color: ${colors.grey};
+    margin: 1.5em 2em 0 1em;
+    .b-heart, .b-heart-fill {
+      font-size: 1.6em;
+      margin-right: .6em;
+      &.active {
+        animation-name: rubberBand;
+        animation-duration: 0.5s;
+        -webkit-transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+    .b-sharing {
+      font-size: 1.5em;
+      margin-right: .6em;
+    }
+    .threeDots {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      .dot {
+        width: .25em;
+        height: .25em;
+        border-radius: .2em;
+        margin-left: .5em;
+        margin-bottom: .25em;
+        background-color: ${colors.grey};
+      }
+    }
+  }
+  @keyframes rubberBand {
+    from {transform: scale3d(1, 1, 1);}
+    30% {transform: scale3d(1.25, 0.75, 1);}
+    40% {transform: scale3d(0.75, 1.25, 1);}
+    50% {transform: scale3d(1.15, 0.85, 1);}
+    65% {transform: scale3d(0.95, 1.05, 1);}
+    75% {transform: scale3d(1.05, 0.95, 1);}
+    to {transform: scale3d(1, 1, 1);}
+  }
 `;
 
-export const TopMenu = connect(store => ({user: store.user}))(({user, dispatch, location, history}) => {
-  return (
-    <TopNav>
-      {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') ?
-        <React.Fragment>
-          <span className="icon btn-arrow b-arrow-short" onClick={()=> history.goBack()}></span>
-          {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
-        </React.Fragment>
-      :
-        <a className="btn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
-      }
-      <NavLink className="profile-pic" to="/profile" onClick={()=> dispatch(clearMessages())}> <img src={user.pictureUrl} alt={`${user.name} profile`}/></NavLink>
-    </TopNav>
-  )
-});
+class _TopMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFavorite: this.props.user.favFavs.indexOf(this.props.favorId) !== -1
+    }
+  }
+  handleFav(id) {
+    FavorsAPI.favFavor(id).then(() => {
+      this.setState({isFavorite: !this.state.isFavorite});
+      AuthAPI.currentUser().then(user => {
+        this.props.dispatch(updateUser(user));
+      });
+    });
+  }
+  render () {
+    const {user, favor, dispatch, location, history} = this.props;
+    const {isFavorite} = this.state;
+    return (
+      <TopNav>
+        {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') || location.pathname.startsWith('/favors/') ?
+          <React.Fragment>
+            <span className="icon btn-arrow b-arrow-short" onClick={()=> history.goBack()}></span>
+            {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
+          </React.Fragment>
+        :
+          <a className="btn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
+        }
+        {favor ?
+          <div className="favMenu">
+            <span className={isFavorite ? "icon b-heart-fill active" : "icon b-heart"} onClick={()=>this.handleFav(favor._id)}></span>
+            <span className="icon b-sharing"></span>
+            <div className="threeDots">
+              <span className="dot"></span>
+              <span className="dot"></span>
+              <span className="dot"></span>
+            </div>
+          </div>
+          : <NavLink className="profile-pic" to="/profile" onClick={()=> dispatch(clearMessages())}> <img src={user.pictureUrl} alt={`${user.name} profile`}/></NavLink>}
+      </TopNav>
+    )
+  }
+};
+
+export const TopMenu = connect(store => ({user: store.user, favor: store.favor}))(_TopMenu);

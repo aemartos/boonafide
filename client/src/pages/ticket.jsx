@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { setBusy } from '../lib/redux/actions';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { setMarker, formatDate } from '../lib/common/helpers';
@@ -8,13 +9,12 @@ import { TicketsAPI } from '../lib/API/tickets';
 import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
+import ValidationComponent from '../components/ValidationComponent';
 import MapComponent from '../components/map/MapComponent';
 import { Link } from 'react-router-dom';
 
 
 const StyledTicket = styled.div`
-  /* width: 90%; */
-  /* margin: 2em auto 6em; */
   img {
     width: 100%;
     height: 10em;
@@ -39,6 +39,8 @@ const StyledTicket = styled.div`
   }
   .favorDescription {
     margin: 1.2em 0;
+    padding-bottom: ${({user,ticket}) => user._id === ticket.donorId._id ? "1em" : "0"};
+    border-bottom: ${({user,ticket}) => user._id === ticket.donorId._id ? `1px solid ${colors.darkGrey}` : "0"};
     .title {
       display: flex;
       flex-flow: row nowrap;
@@ -64,9 +66,12 @@ const StyledTicket = styled.div`
       color: ${colors.purple};
       font-family: "Baloo Bhaina";
       line-height: 1em;
+      .light {
+        color: ${colors.midPurple};
+      }
     }
     #map {
-      height: 13em;
+      height: ${props => props.user._id === props.ticket.donorId._id ? "16.7em" : "13em"};
       background-color: ${colors.midGrey}
     }
   }
@@ -104,7 +109,8 @@ class _TicketDetailPage extends Component {
     super(props);
     this.state = {
       ticket: null,
-      isVisible: false
+      isVisible: false,
+      validating: false
     }
   }
 
@@ -113,7 +119,7 @@ class _TicketDetailPage extends Component {
   }
 
   handleValidate() {
-    this.setState({isVisible: !this.state.isVisible});
+    this.setState({isVisible: !this.state.isVisible, validating: true});
   }
 
   componentWillMount(){
@@ -125,16 +131,18 @@ class _TicketDetailPage extends Component {
     TicketsAPI.getTicket(id).then(ticket => {
       this.props.dispatch(setBusy(false));
       this.setState({ticket});
-      }).catch(e => this.props.history.push('/not-found'));
+    }).catch(e => this.props.history.push('/not-found'));
   }
 
   render() {
-    const {ticket} = this.state;
+    const {ticket, validating} = this.state;
+    const {user} = this.props;
     return (
       <div className="contentBox">
         <div className="container">
           {ticket ?
-            <StyledTicket>
+            <StyledTicket user={user} ticket={ticket}>
+              <ValidationComponent validating={validating}/>
               <Modal isVisible={this.state.isVisible}>
                 {/* <span className="icon b-cross" onClick={()=> this.handleModal()}></span> */}
                 <p className="question">Are you sure you want to validate your ticket?</p>
@@ -145,10 +153,10 @@ class _TicketDetailPage extends Component {
                   <Button link="" onClick={()=> this.handleValidate()} className="btn btn-confirm">Continue</Button>
                 </div>
               </Modal>
-              <img src={ticket.favorId.picturesUrls[0]} alt={ticket.favorId.name}/>
+              <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name}/>
               <div className="info">
-                <p className="text donor">Offer by: <span className="light">{ticket.donorId.username}</span></p>
-                <p className="text receiver">Request by: <span className="light">{ticket.receiverId.username}</span></p>
+                <p className="text donor">Donor: <span className="light">{ticket.donorId.username}</span></p>
+                <p className="text receiver">Receiver: <span className="light">{ticket.receiverId.username}</span></p>
                 <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
                 <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
                 <div className="favorDescription">
@@ -157,10 +165,12 @@ class _TicketDetailPage extends Component {
                 </div>
               </div>
               <div className="validation">
-                <Button link="" onClick={()=> this.handleModal()} className="btn btn-primary">Validate ticket</Button>
+                {user._id !== ticket.donorId._id ?
+                  <Button link="" onClick={()=> this.handleModal()} className="btn btn-primary">Validate ticket</Button>
+                : null}
               </div>
               <div className="mapLocation">
-                <p className="location">Location</p>
+                <p className="location">Location: <span className="light">{ticket.favorId.locationName}</span></p>
                 { (window.google) ?
                   <MapComponent center={{lat: ticket.favorId.location.coordinates[1], lng: ticket.favorId.location.coordinates[0]}} setMap={(map)=>{
                     this.mapObject = map;
@@ -178,4 +188,4 @@ class _TicketDetailPage extends Component {
   }
 }
 
-export const TicketDetailPage = withRouter(_TicketDetailPage);
+export const TicketDetailPage = connect(store => ({user: store.user}))(withRouter(_TicketDetailPage));

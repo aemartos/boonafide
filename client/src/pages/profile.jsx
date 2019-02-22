@@ -291,13 +291,13 @@ class _ProfilePage extends Component {
                     <Slider ref={slider => (this.slider = slider)} {...settings}>
                       <div className="offer">
                         {favOffer.length > 0 ?
-                          favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)
+                          favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
                           : <p className="noFavors">You have no favor offering, please consider adding some</p>
                         }
                       </div>
                       <div className="need">
                         {favNeed.length > 0 ?
-                          favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)
+                          favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
                           : <p className="noFavors">It seems you don't need anything, that's ok, but you may consider adding something</p>
                         }
                       </div>

@@ -60,7 +60,6 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
 });
 
 router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
-  //console.log(req.body.data);
   User.findById(req.user._id)
     .then((user) => {
       Favor.find({
@@ -85,6 +84,13 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
       })
     })
     .catch(err => next(err))
+});
+
+router.get('/:favorId', isLoggedIn, (req, res, next) => {
+  Favor.findById(req.params.favorId)
+    .populate('creatorId')
+      .then(favor => res.json(favor))
+      .catch(err => next(err));
 });
 
 router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
@@ -123,13 +129,31 @@ router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (r
 });
 
 router.post('/newFavor', isLoggedIn, (req, res, next) => {
-  const favor = {...req.body.favor, creatorId: req.user._id};
-  console.log(favor);
+  const creatorId = req.user._id;
+  const favor = {...req.body.favor, creatorId};
   const newFavor = new Favor(favor);
+  const favorType = favor.type === "Offer" ? "favOffer" : "favNeed";
   newFavor.save()
-    .then(favor => res.json(favor))
-    .catch(err => res.status(500).send("Something went wrong"))
+    .then(fav => {
+      User.findByIdAndUpdate(creatorId, {$push: {[favorType]: fav._id}})
+      .then(user => {})
+        .then(() => res.json(fav)) ;
+    })
+      .catch(err => res.status(500).send("Something went wrong"))
 });
+
+// router.post('/:favorId/postComment', isLoggedIn("/auth/login"), (req, res, next) => {
+//   const {content} = req.body;
+//   const authorId = req.user._id;
+//   Favor.findById(req.params.favorId).then(favor => {
+//     Review.create({content, authorId}).then(review => {
+//       favor.reviewsId.push(review);
+//       favor.save()
+//         .then(()=>{})
+//         .catch(err => res.status(500).send("Something went wrong"));
+//     });
+//   });
+// });
 
 
 module.exports = router;

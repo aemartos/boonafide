@@ -38,3 +38,10 @@ export const setBusy = (status) => {
     status
   }
 }
+
+export const setFavor = (favor) => {
+  return {
+    type: "SET_FAVOR",
+    favor
+  }
+}

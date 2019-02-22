@@ -16,7 +16,6 @@ export const WithUser = (Component, redirectTo = "/") => connect(state => ({user
       return <Redirect to={{pathname: redirectTo}}/>
     }
     return  <Component {...props}/>;
-    
   } else if (user === undefined && isBusy) {
     return <Spinner/>;
   }  else {

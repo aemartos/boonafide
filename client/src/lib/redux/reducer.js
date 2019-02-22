@@ -28,6 +28,10 @@ export const rootReducer = (store = initialStore, action) => {
 			store = {...store, isBusy: action.status}
 			break;
 
+		case "SET_FAVOR":
+			store = {...store, isBusy: false, favor: action.favor}
+			break;
+
 		default: return store
 	}
 	return store

@@ -29,6 +29,7 @@ const StyledCard = styled.div`
   }
   .text {
     width: 90%;
+    height: ${props => props.withBtns ? "8.2em" : "5em"};
     margin: ${props => props.withBtns ? '.5em auto' : '.5em auto 1em'};
     .metadata {
       display: flex;
