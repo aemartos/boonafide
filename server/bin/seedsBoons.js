@@ -1,8 +1,8 @@
 const Boon = require("../models/Boon");
 
-const createBoons = (ownerId, num) => {
+const createBoons = (num) => {
   Boon.collection.drop();
-  return (num ? Boon.create(Array(num).fill({ownerId}))
+  return (num ? Boon.create(Array(num).fill({}))
     : new Promise((resolve, reject) => resolve([])))
     .then(boons => boons)
 }

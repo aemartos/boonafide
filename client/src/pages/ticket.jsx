@@ -114,12 +114,12 @@ class _TicketDetailPage extends Component {
     }
   }
 
-  handleModal() {
-    this.setState({isVisible: !this.state.isVisible});
+  handleModal(boolean) {
+    this.setState({isVisible: boolean});
   }
 
-  handleValidate() {
-    this.setState({isVisible: !this.state.isVisible, validating: true});
+  handleValidate(boolean) {
+    this.setState({isVisible: false, validating: boolean});
   }
 
   componentWillMount(){
@@ -142,15 +142,14 @@ class _TicketDetailPage extends Component {
         <div className="container">
           {ticket ?
             <StyledTicket user={user} ticket={ticket}>
-              <ValidationComponent validating={validating}/>
+              <ValidationComponent validating={validating} closeValidation={(bool)=>this.handleValidate(bool)}/>
               <Modal isVisible={this.state.isVisible}>
-                {/* <span className="icon b-cross" onClick={()=> this.handleModal()}></span> */}
                 <p className="question">Are you sure you want to validate your ticket?</p>
                 <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
                 <p className="instructions">Once a ticket is validated it can not be used again.</p>
                 <div className="actions">
-                  <Button link="" onClick={()=> this.handleModal()} className="btn btn-cancel">Cancel</Button>
-                  <Button link="" onClick={()=> this.handleValidate()} className="btn btn-confirm">Continue</Button>
+                  <Button link="" onClick={()=> this.handleModal(false)} className="btn btn-cancel">Cancel</Button>
+                  <Button link="" onClick={()=> this.handleValidate(true)} className="btn btn-confirm">Continue</Button>
                 </div>
               </Modal>
               <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name}/>
@@ -166,7 +165,7 @@ class _TicketDetailPage extends Component {
               </div>
               <div className="validation">
                 {user._id !== ticket.donorId._id ?
-                  <Button link="" onClick={()=> this.handleModal()} className="btn btn-primary">Validate ticket</Button>
+                  <Button link="" onClick={()=> this.handleModal(true)} className="btn btn-primary">Validate ticket</Button>
                 : null}
               </div>
               <div className="mapLocation">

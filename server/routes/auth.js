@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User');
+const Boon = require('../models/Boon');
 const {isLoggedOut, isLoggedIn} = require('../middlewares/isLogged');
 
 const path = require('path');
@@ -53,20 +54,26 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
         const salt = bcrypt.genSaltSync(bcryptSalt);
         const hashPass = bcrypt.hashSync(password, salt);
 
-        const newUser = new User({
-          username,
-          email,
-          password: hashPass
+        User.findOne({role: "Bank"}, (err, ibo) => {
+          const boons = ibo.boons.splice(0, 3).map(b => b._id);
+          ibo.save()
+            .then(()=> {
+              const newUser = new User({
+                username,
+                email,
+                password: hashPass,
+                boons
+              });
+              newUser.save()
+                .then(user => loginPromise(req,user))
+                .then(user => {
+                  res.json({user})
+                })
+                .catch(err => {
+                  res.status(500).send("Something went wrong");
+                })
+            });
         });
-
-        newUser.save()
-        .then(user => loginPromise(req,user))
-        .then(user => {
-          res.json({user})
-        })
-        .catch(err => {
-          res.status(500).send("Something went wrong");
-        })
       });
     }
   });

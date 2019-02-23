@@ -7,7 +7,8 @@ export const timeOutMessages = (dispatch, msg, time = 3000) => {
 }
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.NODE_ENV === "production" ? "" : "http://localhost:3001",
+  // baseURL: "http://localhost:3001",
   timeout: 1000,
   withCredentials: true,
   crossDomain: true

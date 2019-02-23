@@ -9,7 +9,7 @@ const {CATEGORIES_ENUM, selectRandomFromArray} = require("../config/constants");
 
 const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config({path: path.join(__dirname, '../.private.env')});
+dotenv.config({path: path.join(__dirname, '../../.private.env')});
 
 mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
   .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)})
@@ -39,7 +39,7 @@ createUsers()
       let whoNeedsId = selectRandomFromArray(otherUsers,2);
       let whoseFavId = selectRandomFromArray(otherUsers,2);
       let numBoons = calcNumBoons(u.role);
-      createBoons(u._id.toString(), numBoons).then(boons => {
+      createBoons(numBoons).then(boons => {
         let fields = {boons, offerCategories, needCategories};
         if (u.role === "User") {
           createFavors(u._id.toString(), whoNeedsId, whoseFavId).then((favors) => {

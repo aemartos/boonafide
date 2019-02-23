@@ -1,8 +1,8 @@
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
-dotenv.config({path: path.join(__dirname, '.private.env')});
-dotenv.config({path: path.join(__dirname, '.public.env')});
+dotenv.config({path: path.join(__dirname, '../.private.env')});
+dotenv.config({path: path.join(__dirname, '../.public.env')});
 const http = require('http');
 
 const bodyParser = require('body-parser');
@@ -21,7 +21,7 @@ mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
   .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)})
   .catch(err => {console.error('Error connecting to mongo', err)});
 
-const app_name = require('./package.json').name;
+const app_name = require('../package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
 const app = express();
@@ -91,8 +91,8 @@ let server = http.createServer(app);
 var io = require('socket.io')(server);
 global.io = io;
 
-const index = require('./routes/index');
-app.use('/', index);
+// const index = require('./routes/index');
+// app.use('/', index);
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
@@ -112,5 +112,8 @@ app.use('/api/tickets', ticketRoutes);
 const msgRoutes = require('./routes/messages');
 app.use('/api/messages', msgRoutes);
 
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname,'public/index.html'));
+});
 
 module.exports = {app:app,server:server};
