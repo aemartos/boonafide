@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setBusy, setFavor } from '../lib/redux/actions';
+import { updateUser, setBusy, setFavor } from '../lib/redux/actions';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
@@ -9,6 +9,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { setMarker, getCompleteDate } from '../lib/common/helpers';
 import { FavorsAPI } from '../lib/API/favors';
+import { TicketsAPI } from '../lib/API/tickets';
+import { AuthAPI } from '../lib/API/auth';
 import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
@@ -190,7 +192,29 @@ class _FavorDetailPage extends Component {
   }
 
   handleFavorRequest() {
+    const {favor, selectedDay, selectedHour} = this.state;
+    const {user} = this.props;
     this.setState({isVisible: !this.state.isVisible});
+    const ticket = {
+      date: new Date(selectedDay[6]+selectedDay[7]+selectedDay[8]+selectedDay[9]+selectedDay[2]+selectedDay[3]+selectedDay[4]+selectedDay[5]+selectedDay[0]+selectedDay[1] + ", " + selectedHour),
+      donorId: favor.type === "Offer" ? favor.creatorId._id : user._id,
+      receiverId: favor.type === "Offer" ? user._id : favor.creatorId._id,
+      favorId: favor._id
+    }
+    console.log(ticket);
+    TicketsAPI.newTicket(ticket).then((res)=>{
+      console.log('TICKET', res);
+      AuthAPI.currentUser()
+        .then(user => {
+          this.props.dispatch(updateUser(user));
+          this.props.history.push(`/tickets/${res._id}`);
+        })
+    })
+    .catch(e=> {
+      console.log(e);
+      this.props.dispatch(setBusy(false))
+      this.setState({showError: e.data})
+    });
   }
   componentWillMount(){
     this.props.dispatch(setBusy(true));
@@ -251,7 +275,7 @@ class _FavorDetailPage extends Component {
               </div>
             </Modal>
             <div className="sliderImg">
-              <p className="remFavs">88</p>
+              <p className="remFavs">{favor.remainingFavNum}</p>
               <Slider {...settingsImg}>
                 {favor.pictureUrls.map((img, i) => <img key={i} src={img} alt={favor.name}/>)}
               </Slider>
@@ -300,4 +324,4 @@ class _FavorDetailPage extends Component {
   }
 }
 
-export const FavorDetailPage = withRouter(_FavorDetailPage);
+export const FavorDetailPage = connect(store => ({user: store.user}))(withRouter(_FavorDetailPage));

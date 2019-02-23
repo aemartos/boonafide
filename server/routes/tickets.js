@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Favor = require("../models/Favor");
 const Ticket = require("../models/Ticket");
 const {isLoggedIn} = require('../middlewares/isLogged');
 
@@ -28,6 +29,29 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
     .populate('favorId')
     .then(ticket => res.json(ticket))
     .catch(err => next(err))
+});
+
+
+router.post('/newTicket', isLoggedIn, (req, res, next) => {
+  const ticket = req.body.data;
+  const newTicket = new Ticket(ticket);
+  console.log(ticket);
+    newTicket.save()
+      .then(tick => {
+        Favor.findByIdAndUpdate(tick.favorId, {$inc: {remainingFavNum: -1}})
+          .then(favor => {
+            User.findById(tick.receiverId).then(user => {
+              const boon = user.boons.pop();
+              user.save().then(()=> {
+                User.findOne({role: "Bank"}, (err, ibo) => {
+                  ibo.boons.push(boon._id);
+                  ibo.save().then(()=> res.json(tick));
+                })
+              });
+            })
+          })
+      })
+      .catch(err => res.status(500).send("Something went wrong"))
 });
 
 

@@ -34,6 +34,9 @@ const StyledTicket = styled.div`
       border-bottom: 1px solid ${colors.darkGrey};
       .light {
         color: ${colors.midPurple};
+        &.capitalize {
+          text-transform: capitalize;
+        }
       }
     }
   }
@@ -154,12 +157,12 @@ class _TicketDetailPage extends Component {
               </Modal>
               <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name}/>
               <div className="info">
-                <p className="text donor">Donor: <span className="light">{ticket.donorId.username}</span></p>
-                <p className="text receiver">Receiver: <span className="light">{ticket.receiverId.username}</span></p>
+                <p className="text donor">Donor: <span className="light capitalize">{ticket.donorId.username}</span></p>
+                <p className="text receiver">Receiver: <span className="light capitalize">{ticket.receiverId.username}</span></p>
                 <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
                 <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
                 <div className="favorDescription">
-                  <p className="title"><span className="name">{ticket.favorId.name}</span> <Link to={`/favors/${ticket.favorId}`}><span className="icon b-arrow-short"></span></Link></p>
+                  <p className="title"><span className="name">{ticket.favorId.name}</span> <Link to={`/favors/${ticket.favorId._id}`}><span className="icon b-arrow-short"></span></Link></p>
                   <p className="description">{truncate(ticket.favorId.description, {'length': 95})}</p>
                 </div>
               </div>
