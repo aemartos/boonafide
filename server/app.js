@@ -27,7 +27,7 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 const app = express();
 
 // Middleware Setup
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', "https://boonafide.herokuapp.com"];
 const corsOptions = {
   origin: function (origin, callback) {
     console.log(origin);
