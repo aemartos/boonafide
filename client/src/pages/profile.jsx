@@ -221,7 +221,6 @@ class _ProfilePage extends Component {
       swipe: false,
       speed: 300
     };
-    console.log(user);
     return (
       <div className="contentBox">
         <div className="container">

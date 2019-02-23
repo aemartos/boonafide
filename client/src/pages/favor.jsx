@@ -182,6 +182,9 @@ class _FavorDetailPage extends Component {
     super(props);
     this.state = {
       favor: null,
+      boonsReceiver: undefined,
+      donorId: null,
+      receiverId: null,
       isVisible: false,
       selectedDay: null,
       selectedHour: null
@@ -192,18 +195,16 @@ class _FavorDetailPage extends Component {
   }
 
   handleFavorRequest() {
-    const {favor, selectedDay, selectedHour} = this.state;
-    const {user} = this.props;
+    const {favor, donorId, receiverId, selectedDay, selectedHour} = this.state;
     this.setState({isVisible: !this.state.isVisible});
     const ticket = {
       date: new Date(selectedDay[6]+selectedDay[7]+selectedDay[8]+selectedDay[9]+selectedDay[2]+selectedDay[3]+selectedDay[4]+selectedDay[5]+selectedDay[0]+selectedDay[1] + ", " + selectedHour),
-      donorId: favor.type === "Offer" ? favor.creatorId._id : user._id,
-      receiverId: favor.type === "Offer" ? user._id : favor.creatorId._id,
+      donorId,
+      receiverId,
       favorId: favor._id
     }
     console.log(ticket);
     TicketsAPI.newTicket(ticket).then((res)=>{
-      console.log('TICKET', res);
       AuthAPI.currentUser()
         .then(user => {
           this.props.dispatch(updateUser(user));
@@ -221,17 +222,21 @@ class _FavorDetailPage extends Component {
   }
   componentDidMount() {
     let id = this.props.match.params.id;
+    const {user} = this.props;
     FavorsAPI.getFavor(id).then(favor => {
+      const donorId = favor.type === "Offer" ? favor.creatorId._id : user._id;
+      const receiverId = favor.type === "Offer" ? user._id : favor.creatorId._id;
+      const boonsReceiver = favor.type === "Offer" ? user.boons.length : favor.creatorId.boons.length;
       let selectedDay = Object.keys(favor.shifts)[0];
       this.props.dispatch(setFavor(favor));
-      this.setState({favor, selectedDay, selectedHour: favor.shifts[selectedDay][0]});
+      this.setState({favor, boonsReceiver, donorId, receiverId, selectedDay, selectedHour: favor.shifts[selectedDay][0]});
     }).catch(e => this.props.history.push('/not-found'));
   }
   componentWillUnmount() {
     this.props.dispatch(setFavor(undefined));
   }
   render() {
-    const {favor, selectedDay} = this.state;
+    const {favor, selectedDay, boonsReceiver} = this.state;
     const {user} = this.props;
     const settingsImg = {
       dots: true,
@@ -313,7 +318,7 @@ class _FavorDetailPage extends Component {
             </div>
             <div className="request">
               {user._id !== favor.creatorId._id ?
-                <Button link="" onClick={()=> this.handleModal()} className="btn btn-primary">{favor.type === "Offer" ? "Request " : "Offer"} favor</Button>
+                <Button link="" onClick={()=> this.handleModal()} className={(boonsReceiver <= 0 ? "disable " : "") + "btn btn-primary"}>{favor.type === "Offer" ? "Request " : "Offer"} favor</Button>
               : null}
             </div>
           </StyledFavor>

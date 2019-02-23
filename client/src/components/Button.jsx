@@ -45,6 +45,10 @@ const StyledLink = styled.span`
       background-color: ${colors.orange};
       color: ${colors.grey};
     }
+    &.disable {
+      opacity: .4;
+      pointer-events: none;
+    }
   }
 `;
 
