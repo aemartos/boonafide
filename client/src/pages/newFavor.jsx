@@ -156,7 +156,7 @@ const HoursSelect = styled.div`
   .availableHours {
     text-align: center;
     font-size: .8em;
-    height: 9.2em;
+    height: 9.8em;
     overflow-y: auto;
     p {
       border-bottom: 1px solid ${colors.darkGrey};
@@ -173,7 +173,11 @@ const HoursSelect = styled.div`
   }
   .more {
     width: 100%;
+    display: block;
+    text-align: center;
     color: ${colors.darkGrey};
+    padding: .5em 0 .2em;
+    font-size: .8em;
   }
   .timePickerComponent {
     .ant-time-picker {
@@ -337,7 +341,7 @@ export default class _NewFavorPage extends Component {
               {categories.length > 0 ? categories.map((c,i)=> <span key={i}>{c} <span className="icon b-cross" onClick={()=>this.handleDeleteCategory(i)}></span></span>)
               : <p className="categoriesLabel">First of all, select the favor categories, please :)</p>}
             </div>
-            <Select name="categories" options={categoriesArr} onSelectOption={(option)=>this.handleAddCategory(option)}/>
+            <Select className="catSelect" name="categories" options={categoriesArr} onSelectOption={(option)=>this.handleAddCategory(option)}/>
 
             <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
               <State active value='Offer'>Offer</State>
@@ -365,7 +369,7 @@ export default class _NewFavorPage extends Component {
                   <div className="activeDay">{selectedDay}</div>
                   <div className="availableHours">{availableTimesForSelectedDay.map((time,i)=> <p key={i}>{time} <span className="b-cross" onClick={()=>this.handleDeleteHour(i)}></span></p>)}</div>
                   <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{width: "8em"}} format={'HH:mm'} value={selectedHour} onChange={this.onChangeHour.bind(this)}/></div>
-                  <button className="more" onClick={()=>this.handleAddHours()}><span className="b-plus"></span></button>
+                  <span className="more b-plus" onClick={()=>this.handleAddHours()}></span>
                 </HoursSelect> : <p className="noDay">Please, select a day to set different times</p> }
               </div>
             </div>

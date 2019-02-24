@@ -6,7 +6,7 @@ import { SignUpForm } from '../components/SignUpForm';
 import { Messages } from '../components/Messages';
 
 const StyledSignUp = styled.div`
-  height: 100%;
+  height: 100% !important;
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -54,7 +54,7 @@ const StyledSignUp = styled.div`
 export const SignUpPage = () => {
   return (
     <StyledSignUp>
-    <div className="box-container">
+    <div className="box-container signup">
       <div className="title-box">
         <h2>join boonafide</h2>
         <p>and be part of the favor chain that is changing the world!</p>

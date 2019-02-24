@@ -34,9 +34,9 @@ const SendBox = styled.div`
   }
   .icon {
     position: absolute;
-    top: 0;
+    top: -.1em;
     right: 0;
-    font-size: 2.8em;
+    font-size: 2em;
     color: ${colors.purple};
     &:before {
       /* margin-top: .25em; */
@@ -204,7 +204,7 @@ class _Chat extends React.Component {
           </MessagesBox>
           <SendBox>
             <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({content: e.target.value})} value={this.state.content} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleSend()}}}/>
-            <button onClick={()=> this.handleSend()}><span className="icon b-arrow-fill"></span></button>
+            <span className="icon b-arrow-fill" onClick={()=> this.handleSend()}></span>
           </SendBox>
         </div>
       </div>

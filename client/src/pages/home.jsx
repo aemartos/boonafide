@@ -7,7 +7,7 @@ import { colors } from '../lib/common/colors';
 import Slider from "react-slick";
 
 const SearchBox = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
   padding: .5em 1em;
   display: flex;

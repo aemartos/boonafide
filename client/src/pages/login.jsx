@@ -7,7 +7,7 @@ import { LogInForm } from '../components/LogInForm';
 import { Messages } from '../components/Messages';
 
 const StyledLogIn = styled.div`
-  height: 100%;
+  height: 100% !important;
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -58,7 +58,7 @@ const StyledLogIn = styled.div`
 export const LogInPage = () => {
   return (
     <StyledLogIn>
-      <div className="box-container">
+      <div className="box-container login">
         <div className="title-box">
           <h2>welcome back ;)</h2>
           <p>login your account to start changing the world!</p>

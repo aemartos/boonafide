@@ -7,6 +7,7 @@ import { BottomMenu } from './BottomMenu';
 import { colors } from '../lib/common/colors';
 
 const StyledContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -20,6 +21,14 @@ const StyledContainer = styled.div`
   }
   h1, h2, h3, h4, p {
     margin-top: 0;
+  }
+  .iphoneMask {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    pointer-events: none;
   }
   .contentBox {
     /* height: calc(100% - 9.5em); */
@@ -43,7 +52,7 @@ const StyledContainer = styled.div`
 const _Container = (props) => {
   const {className, children, user, location, history} = props;
   return (
-    <StyledContainer className={className}>
+    <StyledContainer className={`_container ${className}`}>
       <img className="iphoneMask" src="/images/iphoneMask_black.png" alt=""></img>
       {(user && !user.newUser) ? <TopMenu location={location} history={history}/> : null}
       {children}

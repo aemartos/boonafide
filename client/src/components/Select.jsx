@@ -36,9 +36,9 @@ export default class Select extends Component {
   render() {
     const {className, name, options} = this.props;
     return (
-      <StyledSelect>
-        <span className="icon b-arrow-short"></span>
-        <select className={className} defaultValue="" placeholder="Select categories" name={name} onChange={(e)=>this.handleOption(e.target.value)}>
+      <StyledSelect className={className}>
+        <span className="icon b-arrow-short arrowMob"></span>
+        <select defaultValue="" placeholder="Select categories" name={name} onChange={(e)=>this.handleOption(e.target.value)}>
           <option value="" disabled hidden>Select categories</option>
           {options.map(o => <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
         </select>
