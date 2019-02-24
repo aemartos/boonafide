@@ -28,6 +28,9 @@ html, body, #root {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+._container {
+  background-color: yellow;
+}
 
 .app {
   width: 100%;
@@ -153,6 +156,9 @@ a {
     justify-content: center;
     align-items: center;
     #root {
+      ._container {
+        background-color: blue;
+      }
       position: relative;
       height: 812px;
       width: 375px;
