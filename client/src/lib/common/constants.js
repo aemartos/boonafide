@@ -94,4 +94,4 @@ export const mapStyle = [{
 ]
 
 console.log(process.env.NODE_ENV);
-export const URL_SERVER = process.env.NODE_ENV === "production" ? "" : "http://localhost:3001";
+export const URL_SERVER = process.env.NODE_ENV == "production" ? "" : "http://localhost:3001";
