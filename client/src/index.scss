@@ -28,9 +28,6 @@ html, body, #root {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-._container {
-  background-color: yellow;
-}
 
 .app {
   width: 100%;
@@ -144,7 +141,7 @@ a {
 
 /*---------------------------IPHONE SIZE FORCE---------------------------*/
 
-@media (min-height: "896px") and (min-width: "415px") {
+@media (min-height: "860px") and (min-width: "415px") {
   body {
     //background-image: radial-gradient(circle, #4b4b4b 0%, #000000 100%);
     //background-image: radial-gradient(circle, #4b4b4b 0%, #4F5373 100%);
@@ -156,16 +153,13 @@ a {
     justify-content: center;
     align-items: center;
     #root {
-      ._container {
-        background-color: blue;
-      }
       position: relative;
-      height: 812px;
-      width: 375px;
+      height: 736px;
+      width: 340px;
       &:before {
         position: absolute;
-        left: -1.7em;
-        top: -4.3em;
+        left: -1.6em;
+        top: -3.8em;
         content: '';
         display: block;
         background: url("/images/iPhone-X-Mockup.png");
