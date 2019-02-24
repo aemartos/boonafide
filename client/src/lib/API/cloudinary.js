@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { URL_SERVER } from '../lib/common/constants';
 
 const service = axios.create({
-  //baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api',
-  baseURL: 'http://localhost:3001',
+  baseURL: URL_SERVER,
   withCredentials: true
 })
 
