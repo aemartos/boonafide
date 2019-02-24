@@ -8,15 +8,17 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 const Item = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
+  /* display: flex !important; */
+  /* flex-flow: column nowrap; */
+  /* justify-content: flex-end; */
+  /* align-items: flex-end; */
+  /* min-height: 35em; */
   h3 {
     width: 90%;
     margin: 6em auto .5em;
     color: ${colors.darkGrey};
     font-family: "Baloo Bhaina";
+    font-size: 16px;
     line-height: 1.2em;
     text-align: center;
   }
@@ -28,6 +30,7 @@ const Item = styled.div`
       margin: 0 auto 1em;
     }
     &.illus {
+      align-self: flex-end;
     }
   }
 `;
