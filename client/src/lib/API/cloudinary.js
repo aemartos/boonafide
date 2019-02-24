@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URL_SERVER } from '../lib/common/constants';
+import { URL_SERVER } from '../common/constants';
 
 const service = axios.create({
   baseURL: URL_SERVER,
