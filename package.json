@@ -6,7 +6,7 @@
     "start": "node ./server/bin/www",
     "dev": "cat ./server/boonafide && DEBUG=server:* nodemon ./server/bin/www",
     "dev-windows": "nodemon ./server/bin/www",
-    "heroku-postbuild": "./build.sh"
+    "heroku-prebuild": "./build.sh"
   },
   "engines": {
     "node": "10.6.0"
