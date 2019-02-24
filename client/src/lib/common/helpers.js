@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { errorMessageAction, clearMessages } from '../redux/actions';
+import { URL_SERVER } from './constants';
 
 export const timeOutMessages = (dispatch, msg, time = 3000) => {
   dispatch(errorMessageAction(msg));
@@ -7,7 +8,7 @@ export const timeOutMessages = (dispatch, msg, time = 3000) => {
 }
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === "production" ? "" : "http://localhost:3001",
+  baseURL: URL_SERVER,
   //baseURL: "http://localhost:3001",
   timeout: 1000,
   withCredentials: true,

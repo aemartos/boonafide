@@ -7,6 +7,7 @@ import { MessagesAPI }  from '../lib/API/messages';
 import FormField from '../components/FormField';
 import { colors } from '../lib/common/colors';
 import { getTime } from '../lib/common/helpers';
+import { URL_SERVER } from '../lib/common/constants';
 
 const Receiver = styled.p`
   position: absolute;
@@ -161,7 +162,7 @@ class _Chat extends React.Component {
     let receiverId = this.props.match.params.id;
     MessagesAPI.getMessages(receiverId).then(res => {
       this.setState({receiver: [res.receiver]})
-      this.socket = io('http://localhost:3001/');
+      this.socket = io(`${URL_SERVER}/`);
       this.socket.on('connect', (data) => {});
       this.socket.on('sms_received', (data) => {
         this.setState({messages: [...this.state.messages, data]})

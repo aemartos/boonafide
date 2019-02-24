@@ -5,6 +5,7 @@ import {colors} from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { LogInForm } from '../components/LogInForm';
 import { Messages } from '../components/Messages';
+import { URL_SERVER } from '../lib/common/constants';
 
 const StyledLogIn = styled.div`
   height: 100% !important;
@@ -65,8 +66,8 @@ export const LogInPage = () => {
         </div>
         <p className="basic-text">continue with</p>
         <div className="social-login">
-          <Button link="http://localhost:3001/api/auth/facebook" className="btn btn-fcbk" redirect={true}>facebook</Button>
-          <Button link="http://localhost:3001/api/auth/google" className="btn btn-ggl" redirect={true}>google</Button>
+          <Button link={`${URL_SERVER}/api/auth/facebook`} className="btn btn-fcbk" redirect={true}>facebook</Button>
+          <Button link={`${URL_SERVER}/api/auth/google`} className="btn btn-ggl" redirect={true}>google</Button>
         </div>
         <p className="basic-text m-bottom">or your username</p>
         <LogInForm/>
