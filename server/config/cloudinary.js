@@ -12,7 +12,6 @@ var storageProfilePictures = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'profile-pictures',
   allowedFormats: ['jpg', 'png'],
-  secure: true,
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
@@ -22,7 +21,6 @@ var storageFavorPictures = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'favor-pictures',
   allowedFormats: ['jpg', 'png'],
-  secure: true,
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
