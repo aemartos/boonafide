@@ -197,13 +197,14 @@ class _FavorDetailPage extends Component {
   handleFavorRequest() {
     const {favor, donorId, receiverId, selectedDay, selectedHour} = this.state;
     this.setState({isVisible: !this.state.isVisible});
+    const formatDate = selectedDay.slice(6) + "-" + selectedDay.slice(3, -5) + "-" + selectedDay.slice(0, 2) + ", " + selectedHour;
     const ticket = {
-      date: new Date(selectedDay[6]+selectedDay[7]+selectedDay[8]+selectedDay[9]+selectedDay[2]+selectedDay[3]+selectedDay[4]+selectedDay[5]+selectedDay[0]+selectedDay[1] + ", " + selectedHour),
+      date: new Date(formatDate),
       donorId,
       receiverId,
       favorId: favor._id
     }
-    console.log(ticket);
+    //console.log(ticket);
     TicketsAPI.newTicket(ticket).then((res)=>{
       AuthAPI.currentUser()
         .then(user => {
