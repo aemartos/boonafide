@@ -71,6 +71,7 @@ const ContentBox = styled.div`
     }
   }
   .currentHelped {
+    position: relative;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -80,6 +81,15 @@ const ContentBox = styled.div`
     border-bottom: 1px solid ${colors.darkGrey};
     img {
       width: 30%;
+      height: 6.5em;
+      border-radius: 50%;
+      object-fit: cover;
+      opacity: ${props => props.user.currentHelped.length === 3 ? ".3" : "1"};
+    }
+    .redeemBtn {
+      position: absolute;
+      width: 100%;
+      margin-top: 0;
     }
   }
   .stats {
@@ -183,6 +193,9 @@ class _ProfilePage extends Component {
     e.preventDefault();
     addProfilePicture(this.state.file);
   }
+  handleRedeemBoon() {
+    console.log("Redeem boon!");
+  }
   componentWillMount(){
     this.props.dispatch(setBusy(true));
   }
@@ -224,7 +237,7 @@ class _ProfilePage extends Component {
     return (
       <div className="contentBox">
         <div className="container">
-          <ContentBox>
+          <ContentBox user={user}>
             {user && !isBusy ?
               <React.Fragment>
                 <h2 className="username">{user.username}</h2>
@@ -248,6 +261,9 @@ class _ProfilePage extends Component {
                   {/* <img src={user.currentHelped[0] ? user.currentHelped[0].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
                   <img src={user.currentHelped[1] ? user.currentHelped[1].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
                   <img src={user.currentHelped[2] ? user.currentHelped[2].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/> */}
+                  {user.currentHelped.length === 3 ?
+                    <Button className="btn btn-primary redeemBtn" onClick={()=> this.handleRedeemBoon()} >Redeem boon!</Button>
+                  : null}
                 </div>
 
                 <div className="stats">

@@ -52,7 +52,7 @@ const StyledContainer = styled.div`
 const _Container = (props) => {
   const {className, children, user, location, history} = props;
   return (
-    <StyledContainer className={`_container ${className}`}>
+    <StyledContainer className={`_container`}>
       {/* <img className="iphoneMask" src="/images/iphoneMask_black.png" alt=""></img> */}
       {(user && !user.newUser) ? <TopMenu location={location} history={history}/> : null}
       {children}

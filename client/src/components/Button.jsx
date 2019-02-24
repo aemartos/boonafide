@@ -20,10 +20,11 @@ const StyledLink = styled.span`
     color: ${colors.purple};
     font-family: "Baloo Bhaina";
     font-size: 1.1em;
+    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
     &:hover, &:active {
-      opacity: .5;
+      /* opacity: .7; */
       /* transform: scale(1.1,1.1); */
-      transition: (all 250ms cubic-bezier(0.4, 0, 0.2, 1));
+      transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     &.btn-primary {
       background-color: ${colors.purple};
