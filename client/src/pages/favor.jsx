@@ -18,7 +18,18 @@ import MapComponent from '../components/map/MapComponent';
 import moment from 'moment';
 
 const StyledFavor = styled.div`
+  position: relative;
   padding-bottom: ${props => props.user._id === props.favor.creatorId._id ? "0" : "4.5em"};
+  .shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: ${colors.black};
+    opacity: .6;
+    z-index: 3;
+  }
   img {
     width: 100%;
     height: 20em;
@@ -197,7 +208,7 @@ class _FavorDetailPage extends Component {
   handleFavorRequest() {
     const {favor, donorId, receiverId, selectedDay, selectedHour} = this.state;
     this.setState({isVisible: !this.state.isVisible});
-    const formatDate = selectedDay.slice(6) + "-" + selectedDay.slice(3, -5) + "-" + selectedDay.slice(0, 2) + ", " + selectedHour;
+    const formatDate = selectedDay.slice(6) + "-" + selectedDay.slice(3, 5) + "-" + selectedDay.slice(0, 2) + ", " + selectedHour;
     const ticket = {
       date: new Date(formatDate),
       donorId,
@@ -271,6 +282,7 @@ class _FavorDetailPage extends Component {
         <div className="container">
         {favor ?
           <StyledFavor user={user} favor={favor}>
+            {favor.remainingFavNum < 1 ? <div className="shadow"></div> : null}
             <Modal isVisible={this.state.isVisible}>
               <p className="question">Are you sure you want to {favor.type === "Need" ? "offer" : "request"} the favor?</p>
               <p className="description">Remember if you {favor.type === "Need" ? "offer the favor, no boon will be removed from the user" : "request the favor, a boon will be removed from your account when the ticket will be validated."}</p>
@@ -318,7 +330,7 @@ class _FavorDetailPage extends Component {
               }
             </div>
             <div className="request">
-              {user._id !== favor.creatorId._id ?
+              {user._id !== favor.creatorId._id || favor.remainingFavNum < 1 ?
                 <Button link="" onClick={()=> this.handleModal()} className={(boonsReceiver <= 0 ? "disable " : "") + "btn btn-primary"}>{favor.type === "Offer" ? "Request " : "Offer"} favor</Button>
               : null}
             </div>

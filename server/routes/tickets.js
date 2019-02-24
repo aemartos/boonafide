@@ -34,24 +34,31 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
 
 router.post('/newTicket', isLoggedIn, (req, res, next) => {
   const ticket = req.body.data;
-  const newTicket = new Ticket(ticket);
-  console.log(ticket);
-    newTicket.save()
-      .then(tick => {
-        Favor.findByIdAndUpdate(tick.favorId, {$inc: {remainingFavNum: -1}})
-          .then(favor => {
-            User.findById(tick.receiverId).then(user => {
-              const boon = user.boons.pop();
-              user.save().then(()=> {
-                User.findOne({role: "Bank"}, (err, ibo) => {
-                  ibo.boons.push(boon._id);
-                  ibo.save().then(()=> res.json(tick));
-                })
-              });
+  if (ticket.donorId.toString() === req.user._id.toString() || ticket.receiverId.toString() === req.user._id.toString() ) {
+    const newTicket = new Ticket(ticket);
+    console.log(ticket);
+      newTicket.save()
+        .then(tick => {
+          Favor.findById(tick.favorId)
+            .then(favor => {
+              if (favor.remainingFavNum > 0) {
+                favor.remainingFavNum--;
+                favor.save().then(()=> {
+                  User.findById(tick.receiverId).then(user => {
+                    const boon = user.boons.pop();
+                    user.save().then(()=> {
+                      User.findOne({role: "Bank"}, (err, ibo) => {
+                        ibo.boons.push(boon._id);
+                        ibo.save().then(()=> res.json(tick));
+                      })
+                    });
+                  })
+                });
+              }
             })
-          })
-      })
-      .catch(err => res.status(500).send("Something went wrong"))
+        })
+        .catch(err => res.status(500).send("Something went wrong"))
+  }
 });
 
 
