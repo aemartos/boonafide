@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Favor = require("../models/Favor");
+const Review = require("../models/Review");
 const { uploadFavorPictures } = require('../config/cloudinary.js');
 const { isLoggedIn } = require('../middlewares/isLogged');
 const { CATEGORIES_ENUM } = require('../config/constants');
@@ -89,9 +90,22 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
 router.get('/:favorId', isLoggedIn, (req, res, next) => {
   Favor.findById(req.params.favorId)
     .populate('creatorId')
+    .populate({ path: "reviewsId", populate: { path: "authorId" } })
       .then(favor => res.json(favor))
       .catch(err => next(err));
 });
+
+router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
+  const review = req.body.data;
+  const authorId = req.user._id;
+  Review.create({...review, authorId}).then(rev => {
+    //console.log(rev);
+    Favor.findByIdAndUpdate(req.params.favorId, {$push: {reviewsId: rev._id}}, {new: true})
+      .populate({ path: "reviewsId", populate: { path: "authorId" } })
+      .then(favor => res.json(favor))
+      .catch(err => res.status(500).send("Something went wrong"));
+    });
+  });
 
 router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
     let userId = req.user._id;
@@ -141,19 +155,6 @@ router.post('/newFavor', isLoggedIn, (req, res, next) => {
     })
       .catch(err => res.status(500).send("Something went wrong"))
 });
-
-// router.post('/:favorId/postComment', isLoggedIn("/auth/login"), (req, res, next) => {
-//   const {content} = req.body;
-//   const authorId = req.user._id;
-//   Favor.findById(req.params.favorId).then(favor => {
-//     Review.create({content, authorId}).then(review => {
-//       favor.reviewsId.push(review);
-//       favor.save()
-//         .then(()=>{})
-//         .catch(err => res.status(500).send("Something went wrong"));
-//     });
-//   });
-// });
 
 
 module.exports = router;

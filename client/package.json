@@ -15,6 +15,7 @@
     "prefix-css": "^0.0.6",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-collapsible": "^2.6.0",
     "react-day-picker": "^7.2.4",
     "react-dom": "^16.7.0",
     "react-flip-numbers": "^2.1.2",

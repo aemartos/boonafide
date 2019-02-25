@@ -24,7 +24,6 @@ router.get('/conversations', isLoggedIn, (req, res, next) => {
 });
 
 const getPreviousMessages = (req, res) => {
-  console.log(req.params)
   //retrieve previous messages
   let authorId = req.user._id.toString();
   let receiverId = req.params.receiverId;

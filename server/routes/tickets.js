@@ -37,9 +37,8 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
   const donorId = ticket.donorId._id;
   const receiverId = ticket.receiverId._id;
   const favorId = ticket.favorId._id;
-  console.log(donorId, receiverId, favorId);
+  //console.log(donorId, receiverId, favorId);
   if (donorId.toString() === req.user._id.toString() || receiverId.toString() === req.user._id.toString() ) {
-    console.log(2);
     Ticket.findByIdAndUpdate(req.params.ticketId, {validated: true})
       .then(ticket => {
         User.findByIdAndUpdate(donorId, {$push: {currentHelped: receiverId, favDone: favorId}})

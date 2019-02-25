@@ -47,4 +47,10 @@ export class FavorsAPI {
       .then((res) => res.data)
       .catch((e)=> FavorsAPI.errorHandler(e))
   }
+
+  static addComment(id, data){
+    return axiosInstance.post(`/api/favors/${id}/addComment`, {data})
+      .then((res) => res.data)
+      .catch((e)=> FavorsAPI.errorHandler(e))
+  }
 }

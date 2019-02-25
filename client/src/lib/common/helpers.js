@@ -66,8 +66,26 @@ export const getCompleteDate = (date) => {
   return day + ' ' + monthNames[monthIndex] + ' ' + year;
 }
 
+export const getCompleteDateMin = (date) => {
+  const monthNames = [
+    "Jan", "Feb", "Mar",
+    "Apr", "May", "Jun", "Jul",
+    "Aug", "Sep", "Oct",
+    "Nov", "Dec"
+  ];
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  return day + ' ' + monthNames[monthIndex];
+}
+
 export const formatDate = (date) => {
   const completeDate = getCompleteDate(date);
+  const time = getTime(date);
+  return completeDate + ', ' + time;
+}
+
+export const formatDateMin = (date) => {
+  const completeDate = getCompleteDateMin(date);
   const time = getTime(date);
   return completeDate + ', ' + time;
 }

@@ -6,7 +6,6 @@ const {isLoggedIn} = require('../middlewares/isLogged');
 
 
 router.post('/pictures', isLoggedIn, uploadProfilePicture.single('picture'), (req, res, next) => {
-  console.log(req.file);
   User.findByIdAndUpdate(req.user._id, { pictureUrl: req.file.secure_url })
     .then(() => {
       res.json({

@@ -16,6 +16,8 @@ import { Button } from '../components/Button';
 import Modal from '../components/Modal';
 import MapComponent from '../components/map/MapComponent';
 import moment from 'moment';
+import { CommentDetail } from '../components/CommentDetail';
+import Collapsible from 'react-collapsible';
 
 const StyledFavor = styled.div`
   position: relative;
@@ -50,6 +52,106 @@ const StyledFavor = styled.div`
         color: ${colors.midPurple};
         &.capitalize {
           text-transform: capitalize;
+        }
+      }
+    }
+  }
+  .commentsBox {
+    width: 90%;
+    margin: 1em auto;
+    .boxContent {
+      .text {
+        color: ${colors.purple};
+        font-family: "Baloo Bhaina";
+        font-size: 1.2em;
+        line-height: 1em;
+      }
+      .noComments {
+        font-size: .9em;
+        color: ${colors.midPurple};
+      }
+      .showComments {
+        max-height: 20em;
+        overflow-y: auto;
+        border: 1px solid ${colors.midGrey};
+        border-radius: .3em;
+        padding-bottom: .5em;
+        margin-top: .5em;
+        background-color: ${colors.lightGrey};
+      }
+      .Collapsible__trigger {
+        .collapTitle {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          span {
+            &.text {
+              color: ${colors.purple};
+              font-family: "Baloo Bhaina";
+              font-size: 1.2em;
+              line-height: 1em;
+            }
+            &.trigger {
+              color: ${colors.purple};
+              font-size: 1.2em;
+              -webkit-transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+              transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+          }
+        }
+        &.is-closed {
+          .collapTitle {
+            span.trigger {
+              transform: rotate(90deg);
+            }
+          }
+        }
+        &.is-open {
+          .collapTitle {
+            span.trigger {
+              transform: rotate(-90deg);
+            }
+          }
+        }
+      }
+      .sendCommentBox {
+        .post {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          .sendCommentBtn {
+            color: ${colors.purple};
+            font-size: 1.5em;
+            margin-top: -.5em;
+          }
+          textarea {
+            width: 90%;
+            min-height: 5em;
+            padding: .4em .7em;
+            margin-bottom: .7em;
+            box-shadow: none;
+            outline: 0;
+            font-size: .9em;
+            font-weight: 400;
+            background: transparent;
+            color: ${colors.midPurple};
+            border: 1px solid ${colors.midPurple};
+            border-radius: .5em;
+            &::-webkit-input-placeholder, &:-moz-placeholder, &::-moz-placeholder, &:-ms-input-placeholder {
+              color: ${colors.midPurple};
+            }
+          }
+          textarea::placeholder {
+            color: ${colors.midPurple};
+          }
+        }
+        .error {
+          text-align: center;
+          height: 2em;
+          color: ${colors.orange};
+          font-size: .8em;
         }
       }
     }
@@ -198,13 +300,28 @@ class _FavorDetailPage extends Component {
       receiverId: null,
       isVisible: false,
       selectedDay: null,
-      selectedHour: null
+      selectedHour: null,
+      comments: null,
+      commentContent: ""
     }
+  }
+  handlePostComment() {
+    const {commentContent, favor} = this.state;
+    const review = {
+      content: commentContent,
+      favId: favor._id
+    }
+    if(commentContent === "") return;
+    this.setState({commentContent: ""});
+    FavorsAPI.addComment(favor._id, review).then(fav => this.setState({comments: fav.reviewsId}))
+      .catch(e => {
+        console.log(e);
+        this.setState({showError: e.data});
+      });
   }
   handleModal() {
     this.setState({isVisible: !this.state.isVisible});
   }
-
   handleFavorRequest() {
     const {favor, donorId, receiverId, selectedDay, selectedHour} = this.state;
     this.setState({isVisible: !this.state.isVisible});
@@ -239,16 +356,17 @@ class _FavorDetailPage extends Component {
       const donorId = favor.type === "Offer" ? favor.creatorId._id : user._id;
       const receiverId = favor.type === "Offer" ? user._id : favor.creatorId._id;
       const boonsReceiver = favor.type === "Offer" ? user.boons.length : favor.creatorId.boons.length;
+      const comments = favor.reviewsId;
       let selectedDay = Object.keys(favor.shifts)[0];
       this.props.dispatch(setFavor(favor));
-      this.setState({favor, boonsReceiver, donorId, receiverId, selectedDay, selectedHour: favor.shifts[selectedDay][0]});
+      this.setState({favor, boonsReceiver, donorId, receiverId, selectedDay, selectedHour: favor.shifts[selectedDay][0], comments});
     }).catch(e => this.props.history.push('/not-found'));
   }
   componentWillUnmount() {
     this.props.dispatch(setFavor(undefined));
   }
   render() {
-    const {favor, selectedDay, boonsReceiver} = this.state;
+    const {favor, selectedDay, boonsReceiver, comments, showError, commentContent} = this.state;
     const {user} = this.props;
     const settingsImg = {
       dots: true,
@@ -306,6 +424,30 @@ class _FavorDetailPage extends Component {
                 <p className="description">{truncate(favor.description, {'length': 193})}</p>
               </div>
             </div>
+
+            <div className="commentsBox">
+              <div className="boxContent">
+                {comments.length > 0 ?
+                  <Collapsible transitionTime={200} trigger={<div className="collapTitle"> <span className="text">Comments</span> <span className="trigger b-arrow"/></div>}>
+                    <div className="showComments">
+                      {comments.map((c, i) => <CommentDetail key={i} content={c.content} author={c.authorId} date={c.createdAt}/>)}
+                    </div>
+                  </Collapsible>
+                : <React.Fragment>
+                    <p className="text">Comments</p>
+                    <p className="noComments">There are no comments for this favor :)</p>
+                  </React.Fragment>
+                }
+                <div className="sendCommentBox">
+                  <div className="error">{showError ? showError : null}</div>
+                  <div className="post">
+                    <textarea placeholder="write a comment" onChange={e => this.setState({commentContent: e.target.value})} value={commentContent} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handlePostComment()}}}></textarea>
+                    <span className="sendCommentBtn b-newfavor" onClick={()=> this.handlePostComment()}></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="dateHourBox">
               <p className="text dateHour">Select day and hour</p>
               <Slider {...settingsDays} className="days">
