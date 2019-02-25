@@ -177,7 +177,7 @@ export default class PhilosophyPage extends Component {
           </div>
 
           <div className="box copyright">
-            <h2 className="title">boonafide© by <a href="https://www.linkedin.com/in/aemartos/" target="_blank" rel="noopener noreferrer">anæstrada</a></h2>
+            <h2 className="title">boonafide© by <a href="https://github.com/aemartos/boonafide" target="_blank" rel="noopener noreferrer">anæstrada</a></h2>
           </div>
         </Container>
       </div>
