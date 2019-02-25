@@ -35,6 +35,7 @@ const corsOptions = {
   },
   credentials: true
 };
+app.enable("trust proxy");
 app.use(cors(corsOptions));
 
 app.use(logger('dev'));
