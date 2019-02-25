@@ -9,12 +9,22 @@ import { TicketsAPI } from '../lib/API/tickets';
 import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
-import ValidationComponent from '../components/ValidationComponent';
+import { ValidationComponent } from '../components/ValidationComponent';
 import MapComponent from '../components/map/MapComponent';
 import { Link } from 'react-router-dom';
 
 
 const StyledTicket = styled.div`
+  .shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: ${colors.black};
+    opacity: .6;
+    z-index: 1;
+  }
   img {
     width: 100%;
     height: 10em;
@@ -145,7 +155,8 @@ class _TicketDetailPage extends Component {
         <div className="container">
           {ticket ?
             <StyledTicket user={user} ticket={ticket}>
-              <ValidationComponent validating={validating} closeValidation={(bool)=>this.handleValidate(bool)}/>
+              {ticket.validated ? <div className="shadow"></div> : null}
+              <ValidationComponent ticket={ticket} validating={validating} closeValidation={(bool)=>this.handleValidate(bool)}/>
               <Modal isVisible={this.state.isVisible}>
                 <p className="question">Are you sure you want to validate your ticket?</p>
                 <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
@@ -168,7 +179,7 @@ class _TicketDetailPage extends Component {
               </div>
               <div className="validation">
                 {user._id !== ticket.donorId._id ?
-                  <Button link="" onClick={()=> this.handleModal(true)} className="btn btn-primary">Validate ticket</Button>
+                  <Button link="" onClick={()=> this.handleModal(true)} className={(ticket.validated ? "disable " : "") + "btn btn-primary"}>Validate ticket</Button>
                 : null}
               </div>
               <div className="mapLocation">

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addProfilePicture } from '../lib/API/cloudinary';
 import { AuthAPI } from '../lib/API/auth';
+import { BoonsAPI } from '../lib/API/boons';
 import { updateUser, setBusy } from '../lib/redux/actions';
 import { UsersAPI } from '../lib/API/users';
 import styled from '@emotion/styled';
@@ -84,7 +85,7 @@ const ContentBox = styled.div`
       height: 6em;
       border-radius: 50%;
       object-fit: cover;
-      opacity: ${props => props.user.currentHelped.length === 3 ? ".3" : "1"};
+      opacity: ${props => props.user.currentHelped.length >= 3 && props.myUser ? ".3" : "1"};
     }
     .redeemBtn {
       position: absolute;
@@ -175,7 +176,8 @@ class _ProfilePage extends Component {
       file: null,
       switchFav: "Offer",
       favOffer: [],
-      favNeed: []
+      favNeed: [],
+      currentHelped: []
     }
   }
   handleSwitch(switchFav) {
@@ -194,7 +196,13 @@ class _ProfilePage extends Component {
     addProfilePicture(this.state.file);
   }
   handleRedeemBoon() {
-    console.log("Redeem boon!");
+    BoonsAPI.redeemBoon().then(() => {
+      AuthAPI.currentUser().then(user => {
+        this.props.dispatch(updateUser(user));
+        this.setState({currentHelped: user.currentHelped})
+      }).catch(e => this.props.dispatch(setBusy(false)));
+    }).catch(e => this.props.history.push('/not-found'));
+
   }
   componentWillMount(){
     this.props.dispatch(setBusy(true));
@@ -202,12 +210,12 @@ class _ProfilePage extends Component {
   componentDidMount(){
     if (this.props.match.params.id) {
       let id = this.props.match.params.id;
-      UsersAPI.getUser(id).then(user => this.setState({user, favOffer: user.favOffer, favNeed: user.favNeed}))
+      UsersAPI.getUser(id).then(user => this.setState({user, favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped}))
         .catch(e => this.props.history.push('/not-found'));
     } else {
       AuthAPI.currentUser().then(user => {
         this.props.dispatch(updateUser(user));
-        this.setState({favOffer: user.favOffer, favNeed: user.favNeed})
+        this.setState({favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped})
       }).catch(e => this.props.dispatch(setBusy(false)));
     }
   }
@@ -220,10 +228,7 @@ class _ProfilePage extends Component {
     const myUser = !this.state.user;
     const {user} = myUser ? this.props : this.state;
     const {isBusy} = this.props;
-    const {favOffer, favNeed} = this.state;
-    //console.log(favOffer.length, favNeed.length);
-    // const {switchFav} = this.state;
-    //const favorsOption = `fav${switchFav}`;
+    const {favOffer, favNeed, currentHelped} = this.state;
     const settings = {
       dots: false,
       arrows: false,
@@ -237,7 +242,7 @@ class _ProfilePage extends Component {
     return (
       <div className="contentBox">
         <div className="container">
-          <ContentBox user={user}>
+          <ContentBox user={user} myUser={myUser}>
             {user && !isBusy ?
               <React.Fragment>
                 <h2 className="username">{user.username}</h2>
@@ -256,12 +261,8 @@ class _ProfilePage extends Component {
                 </div>
 
                 <div className="currentHelped">
-                  {/* {user.currentHelped.map(u => <img src={u ? u.pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)} */}
-                  {[...Array(3)].map((u, i) => <img key={i} src={user.currentHelped[i] ? user.currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)}
-                  {/* <img src={user.currentHelped[0] ? user.currentHelped[0].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
-                  <img src={user.currentHelped[1] ? user.currentHelped[1].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>
-                  <img src={user.currentHelped[2] ? user.currentHelped[2].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/> */}
-                  {user.currentHelped.length === 3 ?
+                  {[...Array(3)].map((u, i) => <img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/>)}
+                  {currentHelped.length >= 3 && myUser ?
                     <Button className="btn btn-primary redeemBtn" onClick={()=> this.handleRedeemBoon()} >Redeem boon!</Button>
                   : null}
                 </div>
@@ -300,9 +301,6 @@ class _ProfilePage extends Component {
                     <State active value='Need'>Need</State>
                   </Switch>
 
-                  {/* <div className="favors" pose={true ? 'on' : 'off'}>
-                    {user[favorsOption].map(f => <FavorThumb key={f._id} favorId={f._id} img={f.picturesUrls[0]} name={f.name} description={f.description} />)}
-                  </div> */}
                   <div className="favors">
                     <Slider ref={slider => (this.slider = slider)} {...settings}>
                       <div className="offer">

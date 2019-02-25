@@ -30,7 +30,7 @@ router.get('/search', isLoggedIn, (req, res, next) => {
     //.skip(parseInt(req.query.offset || 0))
     //.limit(30)
     .then(favorsUnfiltered => {
-      let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
+      let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
       let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
       res.json({favors});
     })
@@ -51,7 +51,7 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
       //.skip(parseInt(req.query.offset || 0))
       //.limit(10)
       .then(favorsUnfiltered => {
-        let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
+        let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
         let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
         res.json({favors});
       })
@@ -78,7 +78,7 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
       //.skip(parseInt(req.query.offset || 0))
       //.limit(20)
       .then(favorsUnfiltered => {
-        let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username);
+        let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
         let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
         res.json({favors});
       })

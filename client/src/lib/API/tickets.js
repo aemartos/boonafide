@@ -19,7 +19,14 @@ export class TicketsAPI {
   }
 
   static newTicket(data){
+    console.log(data);
     return axiosInstance.post('/api/tickets/newTicket', {data})
+      .then((res) => res.data)
+      .catch((e)=> TicketsAPI.errorHandler(e))
+  }
+
+  static validateTicket(id, data){
+    return axiosInstance.post(`/api/tickets/${id}/validate`, {data})
       .then((res) => res.data)
       .catch((e)=> TicketsAPI.errorHandler(e))
   }

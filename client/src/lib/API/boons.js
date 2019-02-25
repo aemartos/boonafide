@@ -7,7 +7,13 @@ export class BoonsAPI {
   }
 
   static getTotalBoons(){
-    return axiosInstance.get(`/api/boons/totalBoons`)
+    return axiosInstance.get('/api/boons/totalBoons')
+      .then((res) => res.data)
+      .catch((e)=> BoonsAPI.errorHandler(e))
+  }
+
+  static redeemBoon(){
+    return axiosInstance.post('/api/boons/redeemBoon')
       .then((res) => res.data)
       .catch((e)=> BoonsAPI.errorHandler(e))
   }

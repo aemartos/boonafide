@@ -281,7 +281,7 @@ class _FavorDetailPage extends Component {
       <div className="contentBox">
         <div className="container">
         {favor ?
-          <StyledFavor user={user} favor={favor}>
+          <StyledFavor id="scroll" user={user} favor={favor}>
             {favor.remainingFavNum < 1 ? <div className="shadow"></div> : null}
             <Modal isVisible={this.state.isVisible}>
               <p className="question">Are you sure you want to {favor.type === "Need" ? "offer" : "request"} the favor?</p>

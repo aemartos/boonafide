@@ -37,11 +37,8 @@ export default class Modal extends React.Component {
     }
     const modalStyle = {
       position: "absolute",
-      //top: "50%",
-      //left: "50%",
-      //transform: "translate(-50%, -50%) !important",
       left: "5%",
-      top: "20%",
+      bottom: "30%",
       width: "90%",
       padding: "2em",
       height: "auto",
@@ -54,7 +51,7 @@ export default class Modal extends React.Component {
         {isVisible && [
           // If animating more than one child, each needs a `key`
           <Shade style={shadowStyle} key="shade" className="shade" />,
-          <ModalContent style={modalStyle} key="modal" className="modal">
+          <ModalContent style={modalStyle} key="modal" id="modalBox" className="modal">
             {children}
           </ModalContent>
         ]}

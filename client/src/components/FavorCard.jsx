@@ -18,14 +18,21 @@ const StyledCard = styled.div`
   margin-bottom: ${props => props.slide ? '0' : '1em'};
   .typeFav {
     position: absolute;
+    /* right: .6em; */
+    /* top: .6em; */
+    /* padding: 0.5em .6em .2em; */
     right: .7em;
     top: .7em;
-    padding: .6em 1em .4em;
-    background-color: ${colors.white};
-    border-radius: .5em;
+    height: 3em;
+    width: 3em;
+    padding: 1.2em .35em;
+    background-color: ${props => props.type === "Offer" ? colors.purple : colors.orange};
+    border-radius: 50%;
     font-family: "Baloo Bhaina";
     line-height: 1em;
-    color: ${colors.purple};
+    color: ${colors.white};
+    text-transform: lowercase;
+    font-size: .9em;
   }
   .text {
     width: 90%;
@@ -141,7 +148,7 @@ class _FavorCard extends Component {
     const {type, img, username, date, name, description, withBtns, userId, favorId, slide} = this.props;
     const {isFavorite} = this.state;
     return (
-      <StyledCard slide={slide} withBtns={withBtns}>
+      <StyledCard slide={slide} withBtns={withBtns} type={type}>
         <span className="typeFav">{type}</span>
         <img src={img} alt={name}></img>
         <div className="text">
@@ -152,7 +159,7 @@ class _FavorCard extends Component {
           <Link to={`/favors/${favorId}`}>
             <div className="info">
               <p className="name">{slide ? truncate(name, {'length': 22}) : truncate(name, {'length': 18})}</p>
-              <p className="description">{slide ? truncate(description, {'length': 63}) : truncate(description, {'length': 45})}</p>
+              <p className="description">{slide ? truncate(description, {'length': 100}) : truncate(description, {'length': 45})}</p>
             </div>
           </Link>
           {withBtns ?

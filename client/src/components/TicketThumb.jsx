@@ -78,7 +78,7 @@ export default class TicketThumb extends Component {
       <Link to={`/tickets/${ticketId}`}>
         <StyledThumb>
           <div className="dark" style={{display: validated ? "block" : "none"}}>
-            <span className="finish">FINISH</span>
+            <span className="finish">FINISHED</span>
           </div>
           <img src={img} alt={name}/>
           <div className="info">

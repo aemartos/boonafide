@@ -31,12 +31,31 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
     .catch(err => next(err))
 });
 
+router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
+  const ticket = req.body.data;
+  //console.log(ticket);
+  const donorId = ticket.donorId._id;
+  const receiverId = ticket.receiverId._id;
+  const favorId = ticket.favorId._id;
+  console.log(donorId, receiverId, favorId);
+  if (donorId.toString() === req.user._id.toString() || receiverId.toString() === req.user._id.toString() ) {
+    console.log(2);
+    Ticket.findByIdAndUpdate(req.params.ticketId, {validated: true})
+      .then(ticket => {
+        User.findByIdAndUpdate(donorId, {$push: {currentHelped: receiverId, favDone: favorId}})
+          .then(() => {
+            User.findByIdAndUpdate(receiverId, {$push: {favReceived: favorId}})
+              .then(() => res.json(ticket))
+          })
+      })
+      .catch(err => next(err))
+  }
+});
 
 router.post('/newTicket', isLoggedIn, (req, res, next) => {
   const ticket = req.body.data;
   if (ticket.donorId.toString() === req.user._id.toString() || ticket.receiverId.toString() === req.user._id.toString() ) {
     const newTicket = new Ticket(ticket);
-    console.log(ticket);
       newTicket.save()
         .then(tick => {
           Favor.findById(tick.favorId)
