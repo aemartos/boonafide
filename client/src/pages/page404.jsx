@@ -46,7 +46,7 @@ class Page404 extends Component {
         var Power4 = window.Power4;
         MorphSVGPlugin.convertToPath("ellipse", "circle");
         new TimelineMax().to('#milk-spill--large', 60, {scale: 1.25, transformOrigin: "right", ease: Power1.easeInOut});
-        new TimelineMax({yoyo: true, repeat: -1}).to('#milk-face', 10, {yPercent: -15, ease: Power1.easeInOut});
+        //new TimelineMax({yoyo: true, repeat: -1}).to('#milk-face', 10, {yPercent: -15, ease: Power1.easeInOut});
         var tl = new TimelineMax({repeatDelay: 5, repeat: -1, yoyo: true});
           tl.to(["#eye-left-open", "#eye-right-open"], 0.10, {transformOrigin:"center", scaleY: 0, ease: Power4.easeNone, repeat: 1, yoyo: true}, 0);
         new TimelineMax({repeatDelay: 8, repeat: -1, yoyo: true});

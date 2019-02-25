@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
-import { Button } from '../components/Button';
 import { validateStart, validateStop } from '../lib/common/validation.helpers';
 
 const StyledValidation = styled.div`
@@ -33,7 +32,7 @@ const StyledValidation = styled.div`
     }
     .subtitle {
       font-weight: 100;
-      font-size: 1.2em;
+      font-size: 1em;
     }
   }
   svg {
@@ -97,7 +96,7 @@ export default class ValidationComponent extends React.Component {
           <span className="icon b-arrow-short" onClick={()=>this.handleClose()}></span>
           <div className="text">
             <h2 className="title">Validate your ticket</h2>
-            <p className="subtitle">Trace the “B” to validate the ticket, be sure when you do that, you can only validated once.</p>
+            <p className="subtitle">Trace the “B” to validate the ticket, you must be sure, the ticket can only be validated once.</p>
           </div>
           <div className="animation">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 108.1 108.1">

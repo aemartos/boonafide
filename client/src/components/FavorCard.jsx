@@ -29,7 +29,7 @@ const StyledCard = styled.div`
   }
   .text {
     width: 90%;
-    height: ${props => props.withBtns ? "8.2em" : "5em"};
+    height: ${props => props.withBtns ? "7.5em" : "4.7em"};
     margin: ${props => props.withBtns ? '.5em auto' : '.5em auto 1em'};
     .metadata {
       display: flex;
@@ -49,19 +49,24 @@ const StyledCard = styled.div`
       .name {
         margin-top: .6em;
         font-family: "Baloo Bhaina";
+        font-size: .9em;
         line-height: 1em;
       }
       .description {
-        font-size: .8em;
+        font-size: .7em;
         font-weight: 100;
       }
     }
     .actions {
+      position: absolute;
+      bottom: .3em;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
       align-items: center;
-      width: 90%;
+      width: 80%;
       margin: .5em auto 0;
       font-size: 1.8em;
       .b-mp {

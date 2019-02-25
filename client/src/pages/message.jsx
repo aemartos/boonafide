@@ -31,7 +31,7 @@ const SendBox = styled.div`
   /* justify-content: space-between; */
   /* align-items: center; */
   input {
-    width: 90% !important;
+    width: 88% !important;
   }
   .icon {
     position: absolute;
@@ -47,7 +47,7 @@ const SendBox = styled.div`
 
 const MessagesBox = styled.div`
   width: 95%;
-  height: 84%;
+  height: 82%;
   margin: 0 auto;
   padding: 0 .5em;
   overflow-Y: auto;

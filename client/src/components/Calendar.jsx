@@ -8,7 +8,7 @@ import moment from 'moment';
 const StyledCalendar = styled.div`
   .DayPicker {
     color: ${colors.darkGrey};
-    font-size: .7em;
+    font-size: .65em;
     .DayPicker-wrapper {
       border: 1px solid ${colors.darkGrey};
       border-radius: .5em;
@@ -20,8 +20,8 @@ const StyledCalendar = styled.div`
       .DayPicker-Months {
         .DayPicker-Month {
           border-collapse: unset;
-          border-spacing: .3em;
-          margin: 1em .6em 0;
+          border-spacing: .2em;
+          margin: 1em .5em 0;
           .DayPicker-Caption {
             color: ${colors.orange};
           }

@@ -48,7 +48,7 @@ const StyledThumb = styled.div`
     }
     .location, .date {
       font-weight: 100;
-      font-size: .8em;
+      font-size: .75em;
       margin-bottom: 0;
       .icon {
         font-size: .8em;
@@ -60,6 +60,13 @@ const StyledThumb = styled.div`
       }
     }
   }
+  /* @media (max-width: "341px") {
+    .info {
+      .location, .date {
+        font-size: .6em;
+      }
+    }
+  } */
 `;
 
 

@@ -23,6 +23,7 @@ const StyledThumb = styled.div`
     border-radius: 50%;
     border: 1px solid ${colors.darkGrey};
     object-fit: cover;
+    margin-right: .7em;
   }
   .info {
     width: 70%;

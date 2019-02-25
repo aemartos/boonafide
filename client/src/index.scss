@@ -141,7 +141,7 @@ a {
 
 /*---------------------------IPHONE SIZE FORCE---------------------------*/
 
-@media (min-height: "860px") and (min-width: "415px") {
+@media (min-height: "700px") and (min-width: "415px") {
   body {
     //background-image: radial-gradient(circle, #4b4b4b 0%, #000000 100%);
     //background-image: radial-gradient(circle, #4b4b4b 0%, #4F5373 100%);
@@ -156,6 +156,8 @@ a {
       position: relative;
       height: 736px;
       width: 340px;
+      //height: 812px;
+      //width: 375px;
       &:before {
         position: absolute;
         left: -1.6em;

@@ -25,8 +25,8 @@ const StyledAddFavorPage = styled.div`
   margin: 0 auto;
   padding: 2em 0 5em;
   .categoriesFav {
-    margin-bottom: .5em;
-    font-size: .9em;
+    margin-bottom: .6em;
+    font-size: .85em;
     color: ${colors.darkGrey};
     span {
       margin-right: .5em;
@@ -156,7 +156,7 @@ const HoursSelect = styled.div`
   .availableHours {
     text-align: center;
     font-size: .8em;
-    height: 9.8em;
+    height: 7.7em;
     overflow-y: auto;
     p {
       border-bottom: 1px solid ${colors.darkGrey};
@@ -368,7 +368,7 @@ export default class _NewFavorPage extends Component {
                 { selectedDay ? <HoursSelect>
                   <div className="activeDay">{selectedDay}</div>
                   <div className="availableHours">{availableTimesForSelectedDay.map((time,i)=> <p key={i}>{time} <span className="b-cross" onClick={()=>this.handleDeleteHour(i)}></span></p>)}</div>
-                  <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{width: "8em"}} format={'HH:mm'} value={selectedHour} onChange={this.onChangeHour.bind(this)}/></div>
+                  <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{width: "7em"}} format={'HH:mm'} value={selectedHour} onChange={this.onChangeHour.bind(this)}/></div>
                   <span className="more b-plus" onClick={()=>this.handleAddHours()}></span>
                 </HoursSelect> : <p className="noDay">Please, select a day to set different times</p> }
               </div>

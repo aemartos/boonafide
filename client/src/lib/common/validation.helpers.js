@@ -49,7 +49,7 @@ export function validateStart(callback) {
           return p.point;
         }
 
-        var draggable = new Draggable(drag, {
+        new Draggable(drag, {
           liveSnap: {
             points: pointModifier
           }

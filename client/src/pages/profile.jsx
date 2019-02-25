@@ -80,8 +80,8 @@ const ContentBox = styled.div`
     padding-bottom: 1.3em;
     border-bottom: 1px solid ${colors.darkGrey};
     img {
-      width: 30%;
-      height: 6.5em;
+      width: 6em;
+      height: 6em;
       border-radius: 50%;
       object-fit: cover;
       opacity: ${props => props.user.currentHelped.length === 3 ? ".3" : "1"};
