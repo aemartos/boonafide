@@ -25,7 +25,7 @@ const Shade = posed.div({
 
 export default class Modal extends React.Component {
   render() {
-    const { isVisible, children } = this.props;
+    const { isVisible, children, bottom } = this.props;
     const shadowStyle = {
       position: "absolute",
       background: "rgba(0, 0, 0, 0.8)",
@@ -38,7 +38,7 @@ export default class Modal extends React.Component {
     const modalStyle = {
       position: "absolute",
       left: "5%",
-      bottom: "30%",
+      bottom,
       width: "90%",
       padding: "2em",
       height: "auto",

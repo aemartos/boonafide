@@ -18,9 +18,6 @@ const StyledCard = styled.div`
   margin-bottom: ${props => props.slide ? '0' : '1em'};
   .typeFav {
     position: absolute;
-    /* right: .6em; */
-    /* top: .6em; */
-    /* padding: 0.5em .6em .2em; */
     right: .7em;
     top: .7em;
     height: 3em;
@@ -60,13 +57,13 @@ const StyledCard = styled.div`
         line-height: 1em;
       }
       .description {
-        font-size: .7em;
+        font-size: .8em;
         font-weight: 100;
       }
     }
     .actions {
       position: absolute;
-      bottom: .3em;
+      bottom: .15em;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -126,6 +123,18 @@ const StyledCard = styled.div`
     40%,60%,80% {transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);}
     to {transform: scale3d(1, 1, 1);}
   }
+  @media (min-height: 700px) and (min-width: 415px) {
+    .text {
+      .info {
+        .description {
+          font-size: .7em;
+        }
+      }
+      .actions {
+        bottom: .3em;
+      }
+    }
+  }
 `;
 
 
@@ -159,7 +168,7 @@ class _FavorCard extends Component {
           <Link to={`/favors/${favorId}`}>
             <div className="info">
               <p className="name">{slide ? truncate(name, {'length': 22}) : truncate(name, {'length': 18})}</p>
-              <p className="description">{slide ? truncate(description, {'length': 100}) : truncate(description, {'length': 45})}</p>
+              <p className="description">{slide ? truncate(description, {'length': 68}) : truncate(description, {'length': 45})}</p>
             </div>
           </Link>
           {withBtns ?

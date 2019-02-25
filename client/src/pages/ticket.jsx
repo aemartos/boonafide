@@ -115,6 +115,14 @@ const StyledTicket = styled.div`
         width: 48%;
       }
     }
+    @media (min-height: 700px) and (min-width: 415px) {
+      .question {
+        font-size: 1.4em;
+      }
+      .description , .instructions {
+        font-size: .9em;
+      }
+    }
   }
 `;
 class _TicketDetailPage extends Component {
@@ -157,7 +165,7 @@ class _TicketDetailPage extends Component {
             <StyledTicket user={user} ticket={ticket}>
               {ticket.validated ? <div className="shadow"></div> : null}
               <ValidationComponent ticket={ticket} validating={validating} closeValidation={(bool)=>this.handleValidate(bool)}/>
-              <Modal isVisible={this.state.isVisible}>
+              <Modal isVisible={this.state.isVisible} bottom="35%">
                 <p className="question">Are you sure you want to validate your ticket?</p>
                 <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
                 <p className="instructions">Once a ticket is validated it can not be used again.</p>

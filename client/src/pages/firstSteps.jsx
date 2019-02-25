@@ -121,6 +121,7 @@ const Item = styled.div`
         opacity: .7;
         &.icon {
           font-size: 4em;
+          /* font-size: 3em; */
           &.b-home {
             font-size: 4.2em;
             line-height: 1.1em;
@@ -158,6 +159,18 @@ const Item = styled.div`
     }
     &.location {
       width: 80%;
+    }
+  }
+  @media (min-height: 700px) and (min-width: 415px) {
+    h3 {
+      width: 100%;
+      font-size: 1.1em;
+    }
+    .cats {
+      margin-top: .8em;
+      button {
+        font-size: .65em;
+      }
     }
   }
 `;

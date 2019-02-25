@@ -267,6 +267,14 @@ const StyledFavor = styled.div`
         width: 48%;
       }
     }
+    @media (min-height: 700px) and (min-width: 415px) {
+      .question {
+        font-size: 1.4em;
+      }
+      .description , .instructions {
+        font-size: .9em;
+      }
+    }
   }
   .sliderImg {
     position: relative;
@@ -401,7 +409,7 @@ class _FavorDetailPage extends Component {
         {favor ?
           <StyledFavor id="scroll" user={user} favor={favor}>
             {favor.remainingFavNum < 1 ? <div className="shadow"></div> : null}
-            <Modal isVisible={this.state.isVisible}>
+            <Modal isVisible={this.state.isVisible} bottom="20%">
               <p className="question">Are you sure you want to {favor.type === "Need" ? "offer" : "request"} the favor?</p>
               <p className="description">Remember if you {favor.type === "Need" ? "offer the favor, no boon will be removed from the user" : "request the favor, a boon will be removed from your account when the ticket will be validated."}</p>
               <p className="instructions">Once a favor is set it can not be removed.</p>
