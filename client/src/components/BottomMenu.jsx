@@ -81,7 +81,7 @@ class _BottomMenu extends React.Component {
   render () {
     const {user, favor, dispatch, location} = this.props;
     const numNot = user.notificationsId.filter(n => n.seen === false).length;
-    console.log(numNot);
+    //console.log(numNot);
     return (
       <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
         {favor ?

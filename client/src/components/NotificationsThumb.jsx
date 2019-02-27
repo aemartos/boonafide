@@ -85,16 +85,16 @@ export default class NotificationsThumb extends React.Component {
             <img src={personId.pictureUrl} alt=""/>
             <div className="info">
             {favorId.type === "Offer" ?
-              (receiverId._id === favorId.donorId ?
+              (receiverId._id.toString() === ticketId.donorId.toString() ?
                 <p className="content"> <span className="capitalize bold">{personId.username}</span> has asked you for the favor: <span className="bold italic">"{favorId.name}"</span>. The ticket generated is available in your profile.</p>
               :
-                <p className="content">BIEEEEEN You have requested <span className="capitalize bold">{personId.username}</span> for <span className="bold italic">"{favorId.name}"</span>. The ticket generated is available in your profile.</p>
+                <p className="content">You have requested <span className="capitalize bold">{personId.username}</span> for <span className="bold italic">"{favorId.name}"</span>. The ticket generated is available in your profile.</p>
               )
             :
-              (receiverId._id === favorId.donorId ?
+              (receiverId._id.toString() === ticketId.donorId.toString() ?
+                <p className="content">You have offered <span className="bold italic">"{favorId.name}"</span> to <span className="capitalize bold">{personId.username}</span>. The ticket generated is available in your profile.</p>
+              :
                 <p className="content"> <span className="capitalize bold">{personId.username}</span> has offered <span className="bold italic">"{favorId.name}"</span> to you. The ticket generated is available in your profile.</p>
-                :
-                <p className="content">BIEEEN You have offered <span className="bold italic">"{favorId.name}"</span> to <span className="capitalize bold">{personId.username}</span>. The ticket generated is available in your profile.</p>
               )
             }
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
