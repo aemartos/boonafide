@@ -14,11 +14,15 @@ router.get('/totalBoons', isLoggedIn, (req, res, next) => {
 router.post('/redeemBoon', isLoggedIn, (req, res, next) => {
   const userId = req.user._id;
   Boon.create({}).then(boon => {
-    User.findByIdAndUpdate(userId, {
-      $push: {boons: boon._id},
-      $set: {currentHelped: []}
+    // User.findByIdAndUpdate(userId, {
+    //   $push: {boons: boon._id},
+    //   $set: {currentHelped: []}
+    // })
+    User.findById(userId).then(user => {
+      user.boons.push(boon._id);
+      user.currentHelped.splice(0,3);
+      user.save().then(()=> res.json(user));
     })
-      .then(user => res.json(user))
       .catch(err => next(err));
   });
 });
