@@ -2,7 +2,7 @@ import { axiosInstance } from '../common/helpers';
 
 export class FavorsAPI {
   static errorHandler(e) {
-    console.error(e.response);
+    //console.error(e.response);
     throw e.response;
   }
 

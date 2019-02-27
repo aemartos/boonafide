@@ -112,6 +112,9 @@ app.use('/api/tickets', ticketRoutes);
 const msgRoutes = require('./routes/messages');
 app.use('/api/messages', msgRoutes);
 
+const notificationsRoutes = require('./routes/notifications');
+app.use('/api/notifications', notificationsRoutes);
+
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname,'public/index.html'));
 });

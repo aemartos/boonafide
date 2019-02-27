@@ -323,7 +323,7 @@ class _FavorDetailPage extends Component {
     this.setState({commentContent: ""});
     FavorsAPI.addComment(favor._id, review).then(fav => this.setState({comments: fav.reviewsId}))
       .catch(e => {
-        console.log(e);
+        //console.log(e);
         this.setState({showError: e.data});
       });
   }
@@ -349,7 +349,7 @@ class _FavorDetailPage extends Component {
         })
     })
     .catch(e=> {
-      console.log(e);
+      //console.log(e);
       this.props.dispatch(setBusy(false))
       this.setState({showError: e.data})
     });

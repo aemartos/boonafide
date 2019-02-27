@@ -45,7 +45,10 @@ export function validateStart(callback) {
           lastLength = p.length;
           let prog = lastLength / pathLength;
           drawTween.progress(prog);
-          if (prog > 0.994) callback();
+          if (prog > 0.994 && callback) {
+            callback();
+            callback = null;
+          }
           return p.point;
         }
 

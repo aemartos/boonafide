@@ -15,7 +15,7 @@ passport.use(new GoogleStrategy({
       } else {
         const u = new User({username:profile.displayName, googleID:profile.id})
         u.save().then(user => {
-          console.log("READY USER");
+          //console.log("READY USER");
           done(null, user);
         });
       }

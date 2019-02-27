@@ -84,8 +84,8 @@ export default class HomePage extends Component {
     this.setState({search: e.target.value || ''});
   }
   componentDidMount() {
-    FavorsAPI.offerFavors().then(favorsOthersNeed => this.setState({favorsOthersNeed}));
-    FavorsAPI.nearbyFavors().then(favorsNearby => this.setState({favorsNearby}));
+    FavorsAPI.offerFavors().then(favorsOthersNeed => this.setState({favorsOthersNeed})).catch(()=>{});
+    FavorsAPI.nearbyFavors().then(favorsNearby => this.setState({favorsNearby})).catch(()=>{});
   }
   render() {
     const {search, filterFavors, favorsOthersNeed, favorsNearby} = this.state;

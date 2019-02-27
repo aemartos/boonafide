@@ -3,8 +3,8 @@ const router = express.Router();
 const User = require("../models/User");
 const Favor = require("../models/Favor");
 const Ticket = require("../models/Ticket");
+const Notification = require("../models/Notification");
 const {isLoggedIn} = require('../middlewares/isLogged');
-
 
 
 router.get('/allTickets', isLoggedIn, (req, res, next) => {
@@ -33,18 +33,26 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
 
 router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
   const ticket = req.body.data;
-  //console.log(ticket);
   const donorId = ticket.donorId._id;
   const receiverId = ticket.receiverId._id;
   const favorId = ticket.favorId._id;
-  //console.log(donorId, receiverId, favorId);
-  if (donorId.toString() === req.user._id.toString() || receiverId.toString() === req.user._id.toString() ) {
+  if (receiverId.toString() === req.user._id.toString() ) {
     Ticket.findByIdAndUpdate(req.params.ticketId, {validated: true})
       .then(ticket => {
         User.findByIdAndUpdate(donorId, {$push: {currentHelped: receiverId, favDone: favorId}})
           .then(() => {
             User.findByIdAndUpdate(receiverId, {$push: {favReceived: favorId}})
-              .then(() => res.json(ticket))
+              .then(() => {
+                Notification.create({
+                  type: "ticketValidated",
+                  receiverId: donorId,
+                  personId: req.user._id,
+                  favorId,
+                  ticketId: ticket._id
+                }).then((not) => {
+                  User.findByIdAndUpdate(favor.donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(ticket))
+                })
+              })
           })
       })
       .catch(err => next(err))
@@ -67,7 +75,28 @@ router.post('/newTicket', isLoggedIn, (req, res, next) => {
                     user.save().then(()=> {
                       User.findOne({role: "Bank"}, (err, ibo) => {
                         ibo.boons.push(boon._id);
-                        ibo.save().then(()=> res.json(tick));
+                        ibo.save().then(()=> {
+                          Notification.create({
+                            type: "newTicket",
+                            receiverId: ticket.receiverId,
+                            personId: ticket.donorId,
+                            favorId: favor._id,
+                            ticketId: tick._id
+                          }).then(not1 => {
+                            User.findByIdAndUpdate(ticket.receiverId, {$push: {notificationsId: not1._id}}, {new: true}).then(() => {
+                              Notification.create({
+                                type: "newTicket",
+                                receiverId: ticket.donorId,
+                                personId: ticket.receiverId,
+                                favorId: favor._id,
+                                ticketId: tick._id
+                              }).then(not2 => {
+                                User.findByIdAndUpdate(ticket.donorId, {$push: {notificationsId: not2._id}}, {new: true})
+                                  .then(()=> res.json(tick))
+                              });
+                            })
+                          });
+                        });
                       })
                     });
                   })

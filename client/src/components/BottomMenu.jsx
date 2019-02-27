@@ -36,6 +36,22 @@ const BottomNav = styled.nav`
         &.b-messages {
           font-size: 1.9em;
         }
+        &.b-notifications {
+          position: relative;
+          .notCircle {
+            position: absolute;
+            top: -.1em;
+            right: -.2em;
+            width: 1.3em;
+            height: 1.3em;
+            border-radius: 50%;
+            color: #fff;
+            background-color: ${colors.orange};
+            font-size: .4em;
+            line-height: 1em;
+            padding: .2em .35em;
+          }
+        }
       }
       &.active {
         color: ${colors.orange};
@@ -63,7 +79,9 @@ const BottomNav = styled.nav`
 
 class _BottomMenu extends React.Component {
   render () {
-    const {favor, dispatch, location} = this.props;
+    const {user, favor, dispatch, location} = this.props;
+    const numNot = user.notificationsId.filter(n => n.seen === false).length;
+    console.log(numNot);
     return (
       <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
         {favor ?
@@ -77,7 +95,7 @@ class _BottomMenu extends React.Component {
             <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
             <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
             <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><span className="icon b-messages"></span></NavLink>
-            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><span className="icon b-notifications"></span></NavLink>
+            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><span className="icon b-notifications">{numNot > 0 ? <span className="notCircle">{numNot}</span> : null} </span></NavLink>
           </div>
         }
       </BottomNav>

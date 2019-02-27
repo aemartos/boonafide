@@ -83,9 +83,10 @@ router.get("/currentuser", (req, res) => {
   const {user} = req;
   if(user){
     res.json({success: "OK", user});
-  }else{
-    res.status(401).send("NO USER LOGGED IN");
   }
+  // else{
+  //   res.status(401).send("NO USER LOGGED IN");
+  // }
 });
 
 router.get("/facebook", isLoggedOut, passport.authenticate("facebook"));

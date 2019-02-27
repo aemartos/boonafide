@@ -110,17 +110,14 @@ class _ValidationComponent extends React.Component {
     }
   }
   handleValidationCheck(ticket) {
-    if(this.state.validated && !this.state.check) {
-      //console.log(ticket);
-      this.setState({check: true});
-      setTimeout(()=>this.handleClose(), 1000);
-    }
+    this.setState({check: true});
+    setTimeout(()=>this.handleClose(), 1000);
   }
   handleValidate() {
     let ticket = this.props.ticket;
     TicketsAPI.validateTicket(ticket._id, ticket).then(ticket => {
-      this.handleValidationCheck(ticket);
       this.setState({validated: true});
+      this.handleValidationCheck(ticket);
     }).catch(e => this.props.history.push('/not-found'));
   }
   componentDidMount() {

@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {NEW_FAVOR_RECEIVED, NEW_FAVOR_DONE, NEW_MESSAGE, NEW_BOON, NEW_FAVORITE} = require('../config/constants');
+const { NOTIFICATIONS_ENUM } = require('../config/constants');
 
 const notificationSchema = Schema({
-  message: String,
-  type: {type: String, enum: [NEW_FAVOR_RECEIVED, NEW_FAVOR_DONE, NEW_MESSAGE, NEW_BOON, NEW_FAVORITE]},
+  type: {type: String, enum: Object.keys(NOTIFICATIONS_ENUM)},
   receiverId: {type: Schema.Types.ObjectId, ref:'User'},
-  seen: false
+  personId: {type: Schema.Types.ObjectId, ref:'User'},
+  favorId: {type: Schema.Types.ObjectId, ref:'Favor'},
+  ticketId: {type: Schema.Types.ObjectId, ref:'Ticket'},
+  seen: {type: Boolean, default: false}
 }, {timestamps: true}
 );
 

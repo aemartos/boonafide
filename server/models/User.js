@@ -24,6 +24,7 @@ const userSchema = new Schema({
   currentHelped: [{type: Schema.Types.ObjectId, ref:'User'}],
   favDone: [{ type: Schema.Types.ObjectId, ref:'Favor' }],
   favReceived: [{ type: Schema.Types.ObjectId, ref:'Favor' }],
+  notificationsId: [{type: Schema.Types.ObjectId, ref:'Notification'}],
   favFavs: [{ type: Schema.Types.ObjectId, ref:'Favor' }],
   newUser: {type: Boolean, default: true},
 }, {timestamps: true}

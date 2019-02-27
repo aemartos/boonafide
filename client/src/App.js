@@ -17,7 +17,7 @@ import HomePage from './pages/home';
 import PhilosophyPage from './pages/philosophy';
 import { NewFavorPage } from './pages/newFavor';
 import { FavorDetailPage } from './pages/favor';
-import NotificationsPage from './pages/notifications';
+import { NotificationsPage } from './pages/notifications';
 import Page404 from './pages/page404';
 
 export default class App extends Component {

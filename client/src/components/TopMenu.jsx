@@ -126,7 +126,12 @@ class _TopMenu extends React.Component {
             {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
           </React.Fragment>
         :
-          <a className="btn" href="#0" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))}><span className="icon b-logout"></span></a>
+          <a className="btn" href="#0" onClick={() => {
+            dispatch(setBusy("force"));
+            AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))
+            }}>
+            <span className="icon b-logout"></span>
+          </a>
         }
         {favor ?
           <div className="favMenu">

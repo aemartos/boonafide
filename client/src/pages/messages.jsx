@@ -11,11 +11,15 @@ const StyledBox = styled.div`
   padding: 1em 0 6em;
   .noConversations {
     font-family: "Baloo Bhaina";
-    font-size: 1.5em;
+    font-size: 1.4em;
     line-height: 1.2em;
     color: ${colors.midPurple};
     padding: 2em .8em;
     text-align: center;
+    @media (min-height: 700px) and (min-width: 415px) {
+      font-size: 1.2em;
+      padding: 1em 0;
+    }
   }
 `;
 class _MessagesPage extends Component {

@@ -3,6 +3,7 @@ const router = express.Router();
 const {isLoggedIn} = require('../middlewares/isLogged');
 const Message = require("../models/Message");
 const Conversation = require("../models/Conversation");
+const Notification = require("../models/Notification");
 const User = require("../models/User");
 
 
@@ -36,7 +37,9 @@ const getPreviousMessages = (req, res) => {
       .skip(parseInt(req.query.offset || 0))
       .limit(30)
       .then(messages => res.json({receiver, messages:messages.reverse()}))
-      .catch(err => console.error(err))
+      .catch(err => {
+        //console.error(err)
+      })
     });
 }
 
@@ -76,8 +79,29 @@ router.get('/:receiverId', isLoggedIn, (req, res, next) => {
                     conversation.messages = [...conversation.messages, newSms];
                     conversation.lastSmsId = newSms;
                   }
-                  conversation.save().then(e=>console.log(e));
-                }).catch(err => console.log(err));
+                  conversation.save().then(e=>{
+                    //console.log(e)
+                    Notification.find({
+                      "type": "newMessage",
+                      "receiverId": receiverId,
+                      "personId": authorId,
+                      "seen": false
+                    }).then(nots => {
+                      if (!nots || nots.length === 0) {
+                        Notification.create({
+                          type: "newMessage",
+                          receiverId,
+                          personId: authorId
+                        }).then(not => {
+                          User.findByIdAndUpdate(receiverId, {$push: {notificationsId: not._id}}, {new: true})
+                            .then(()=> {})
+                        });
+                      }
+                    })
+                  });
+                }).catch(err => {
+                  //console.log(err)
+                });
             })
             // .catch(err => {
             //   res.status(500).send("Something went wrong");

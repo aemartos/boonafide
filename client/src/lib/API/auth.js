@@ -3,7 +3,7 @@ import { axiosInstance } from '../common/helpers';
 export class AuthAPI {
   static errorHandler(e) {
     //console.error("AUTH API ERROR");
-    console.error(e.response.data);
+    //console.error(e.response.data);
     throw e.response.data;
   }
 

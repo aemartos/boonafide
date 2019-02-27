@@ -309,7 +309,7 @@ export default class _NewFavorPage extends Component {
               })
           })
           .catch(e=> {
-            console.log(e);
+            //console.log(e);
             this.props.dispatch(setBusy(false))
             this.setState({showError: e.data})
           });

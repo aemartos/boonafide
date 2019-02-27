@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Favor = require("../models/Favor");
 const Review = require("../models/Review");
+const Notification = require("../models/Notification");
 const { uploadFavorPictures } = require('../config/cloudinary.js');
 const { isLoggedIn } = require('../middlewares/isLogged');
 const { CATEGORIES_ENUM } = require('../config/constants');
@@ -102,7 +103,16 @@ router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
     //console.log(rev);
     Favor.findByIdAndUpdate(req.params.favorId, {$push: {reviewsId: rev._id}}, {new: true})
       .populate({ path: "reviewsId", populate: { path: "authorId" } })
-      .then(favor => res.json(favor))
+      .then(favor => {
+        Notification.create({
+          type: "favoriteFavor",
+          receiverId: favor.creatorId,
+          personId: req.user._id,
+          favorId: favor._id,
+        }).then((not) => {
+          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(favor))
+        })
+      })
       .catch(err => res.status(500).send("Something went wrong"));
     });
   });
@@ -115,6 +125,14 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
         favor.whoseFavId.pull(userId);
       } else {
         favor.whoseFavId.push(userId);
+        Notification.create({
+          type: "favoriteFavor",
+          receiverId: favor.creatorId,
+          personId: req.user._id,
+          favorId: favor._id,
+        }).then((not) => {
+          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {})
+        })
       }
       favor.save().then(fav=>{
         User.findById(userId).then(user => {

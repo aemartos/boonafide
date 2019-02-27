@@ -2,7 +2,7 @@ import { axiosInstance } from '../common/helpers';
 
 export class MessagesAPI {
   static errorHandler(e) {
-    console.error(e.response.data);
+    //console.error(e.response.data);
     throw e.response.data;
   }
   static disconnect() {
