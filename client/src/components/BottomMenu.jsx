@@ -42,14 +42,15 @@ const BottomNav = styled.nav`
             position: absolute;
             top: -.1em;
             right: -.2em;
-            width: 1.3em;
-            height: 1.3em;
+            width: 1.5em;
+            height: 1.5em;
             border-radius: 50%;
             color: #fff;
             background-color: ${colors.orange};
-            font-size: .4em;
+            font-size: .3em;
             line-height: 1em;
-            padding: .2em .35em;
+            padding: .2em 0;
+            text-align: center;
           }
         }
       }
@@ -95,7 +96,7 @@ class _BottomMenu extends React.Component {
             <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
             <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
             <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><span className="icon b-messages"></span></NavLink>
-            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><span className="icon b-notifications">{numNot > 0 ? <span className="notCircle">{numNot}</span> : null} </span></NavLink>
+            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><div className="icon b-notifications">{numNot > 0 ? <div className="notCircle">{numNot}</div> : null} </div></NavLink>
           </div>
         }
       </BottomNav>

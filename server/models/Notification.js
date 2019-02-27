@@ -8,6 +8,7 @@ const notificationSchema = Schema({
   personId: {type: Schema.Types.ObjectId, ref:'User'},
   favorId: {type: Schema.Types.ObjectId, ref:'Favor'},
   ticketId: {type: Schema.Types.ObjectId, ref:'Ticket'},
+  helpedUsers: Number,
   seen: {type: Boolean, default: false}
 }, {timestamps: true}
 );

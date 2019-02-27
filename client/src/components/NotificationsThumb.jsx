@@ -15,6 +15,7 @@ const StyledNotification = styled.div`
     padding-bottom: 0;
   }
   a {
+    position: relative;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -55,6 +56,9 @@ const StyledNotification = styled.div`
         margin-bottom: 0;
       }
       .time {
+        position: absolute;
+        bottom: -1em;
+        right: .5em;
         font-weight: 100;
         font-size: .7em;
         opacity: .5;
@@ -76,8 +80,9 @@ export default class NotificationsThumb extends React.Component {
     NotificationsAPI.notificationSeen(id).then(()=>{}).catch(()=>{});
   }
   createContent(notification) {
-    const {_id, type, createdAt, favorId, personId, receiverId, ticketId} = notification;
+    const {_id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers} = notification;
     const {seen} = this.state;
+    //console.log(helpedUsers);
     switch(type) {
       case 'newTicket':
         return (
@@ -137,7 +142,7 @@ export default class NotificationsThumb extends React.Component {
             <img src={personId.pictureUrl} alt=""/>
             <div className="info">
             {receiverId.currentHelped.length < 3 ?
-              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. You only have to help {3 - receiverId.currentHelped.length} more people to get a boon.</p>
+              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. You only have to help {3 - helpedUsers} more people to get a boon.</p>
               :
               <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. Good job! You have helped 3 people, you can now redeem a boon!!!</p>
             }

@@ -40,17 +40,19 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
     Ticket.findByIdAndUpdate(req.params.ticketId, {validated: true})
       .then(ticket => {
         User.findByIdAndUpdate(donorId, {$push: {currentHelped: receiverId, favDone: favorId}})
-          .then(() => {
+          .then((donor) => {
             User.findByIdAndUpdate(receiverId, {$push: {favReceived: favorId}})
               .then(() => {
+                console.log(donor);
                 Notification.create({
                   type: "ticketValidated",
-                  receiverId: donorId,
+                  receiverId: donor._id,
                   personId: req.user._id,
                   favorId,
+                  helpedUsers: donor.currentHelped.length,
                   ticketId: ticket._id
                 }).then((not) => {
-                  User.findByIdAndUpdate(favor.donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(ticket))
+                  User.findByIdAndUpdate(donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(ticket))
                 })
               })
           })
