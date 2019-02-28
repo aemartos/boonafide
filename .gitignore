@@ -11,6 +11,7 @@ client/build
 
 # misc
 .DS_Store
+.vscode
 .env
 .private.env
 .pass.env

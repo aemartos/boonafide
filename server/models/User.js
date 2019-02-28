@@ -27,6 +27,7 @@ const userSchema = new Schema({
   notificationsId: [{type: Schema.Types.ObjectId, ref:'Notification'}],
   favFavs: [{ type: Schema.Types.ObjectId, ref:'Favor' }],
   newUser: {type: Boolean, default: true},
+  token: {type: String, unique: true}
 }, {timestamps: true}
 );
 

@@ -82,8 +82,22 @@ export default class NotificationsThumb extends React.Component {
   createContent(notification) {
     const {_id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers} = notification;
     const {seen} = this.state;
-    //console.log(helpedUsers);
+    //console.log(helpedUsers % 3);
     switch(type) {
+      case 'ticketValidated':
+      return (
+        <Link to="/profile" className={(seen ? "" : "noSeen ") + "notification"} onClick={()=>this.handleClick(_id)}>
+          <img src={personId.pictureUrl} alt=""/>
+          <div className="info">
+          {helpedUsers < 3 ?
+            <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. You only have to help {3 - helpedUsers} more people to get a boon.</p>
+            :
+            <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. Good job! You have helped 3 people, you can now redeem a boon!!!</p>
+          }
+            <p className="time">{formatDateMin(new Date(createdAt))}</p>
+          </div>
+        </Link>
+      )
       case 'newTicket':
         return (
           <Link to={`/tickets/${ticketId._id}`} className={(seen ? "" : "noSeen ") + "notification"} onClick={()=>this.handleClick(_id)}>
@@ -132,20 +146,6 @@ export default class NotificationsThumb extends React.Component {
             <img src={personId.pictureUrl} alt=""/>
             <div className="info">
               <p className="content"><span className="capitalize bold">{personId.username}</span> commented on your favor: <span className="bold italic">"{favorId.name}".</span></p>
-              <p className="time">{formatDateMin(new Date(createdAt))}</p>
-            </div>
-          </Link>
-        )
-      case 'ticketValidated':
-        return (
-          <Link to="/profile" className={(seen ? "" : "noSeen ") + "notification"} onClick={()=>this.handleClick(_id)}>
-            <img src={personId.pictureUrl} alt=""/>
-            <div className="info">
-            {receiverId.currentHelped.length < 3 ?
-              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. You only have to help {3 - helpedUsers} more people to get a boon.</p>
-              :
-              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. Good job! You have helped 3 people, you can now redeem a boon!!!</p>
-            }
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>

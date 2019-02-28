@@ -5,6 +5,8 @@ const User = require('../models/User');
 const Boon = require('../models/Boon');
 const {isLoggedOut, isLoggedIn} = require('../middlewares/isLogged');
 
+const generateHash = require('random-hash');
+
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({path: path.join(__dirname, '../../.private.env')});
@@ -62,7 +64,8 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
                 username,
                 email,
                 password: hashPass,
-                boons
+                boons,
+                token: generateHash({ length: 32 })
               });
               newUser.save()
                 .then(user => loginPromise(req,user))

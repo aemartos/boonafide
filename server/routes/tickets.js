@@ -43,13 +43,13 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
           .then((donor) => {
             User.findByIdAndUpdate(receiverId, {$push: {favReceived: favorId}})
               .then(() => {
-                console.log(donor);
+                //console.log(donor.currentHelped);
                 Notification.create({
                   type: "ticketValidated",
                   receiverId: donor._id,
                   personId: req.user._id,
                   favorId,
-                  helpedUsers: donor.currentHelped.length,
+                  helpedUsers: donor.currentHelped.length + 1,
                   ticketId: ticket._id
                 }).then((not) => {
                   User.findByIdAndUpdate(donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(ticket))
