@@ -147,7 +147,7 @@ class _Chat extends React.Component {
     const {content} = this.state;
     this.setState({content: ""});
     if(content === "") return;
-    this.socket.emit('sms_sent', {room: this.room, authorIdMsg: this.props.user._id, receiverIdMsg: this.props.match.params.id, content});
+    this.socket.emit('sms_sent', {authorId: this.props.user._id, receiverId: this.props.match.params.id, content});
   }
   bottomScroll() {
     const msgBox = document.getElementById('messagesBox');
@@ -160,16 +160,18 @@ class _Chat extends React.Component {
   }
   componentDidMount(){
     let receiverId = this.props.match.params.id;
+    let {user} = this.props;
     MessagesAPI.getMessages(receiverId).then(res => {
       this.setState({receiver: [res.receiver]})
       this.socket = io(`${URL_SERVER}/`);
-      this.socket.on('connect', (data) => {});
+      this.socket.on('connect', (data) => {
+        this.socket.emit('register', {author: user._id.toString(), token: user.token});
+      });
       this.socket.on('sms_received', (data) => {
         this.setState({messages: [...this.state.messages, data]})
-        if(data.receiverId !== this.props.user._id) this.bottomScroll();
+        if(data.receiverId !== user._id) this.bottomScroll();
       });
       this.socket.on('disconnect', function(data){});
-      this.socket.emit('subscribe', {room: this.room})
       this.setState(res);
     })
   }
@@ -180,9 +182,7 @@ class _Chat extends React.Component {
   }
   componentWillUnmount() {
     this.socket.disconnect();
-    MessagesAPI.disconnect();
   }
-
   render() {
     const {user} = this.props;
     const {messages, receiver, moreSms} = this.state;

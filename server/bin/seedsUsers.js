@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const generateHash = require('random-hash').generateHash;
 
 const bcryptSalt = 10;
 
@@ -19,7 +20,8 @@ let users = [
     newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549800115/profile-pictures/gillian.jpg",
     status: "Active",
-    role: "User"
+    role: "User",
+    token: generateHash({ length: 32 })
   },
   {
     username: "julianne",
@@ -34,7 +36,8 @@ let users = [
     newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549800116/profile-pictures/julianne.jpg",
     status: "Active",
-    role: "User"
+    role: "User",
+    token: generateHash({ length: 32 })
   },
   {
     username: "ana",
@@ -50,6 +53,7 @@ let users = [
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799760/profile-pictures/ana.jpg",
     status: "Active",
     role: "Admin",
+    token: generateHash({ length: 32 })
   },
   {
     username: "boonafide",
@@ -64,7 +68,8 @@ let users = [
     newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799496/profile-pictures/boonafide.png",
     status: "Active",
-    role: "Admin"
+    role: "Admin",
+    token: generateHash({ length: 32 })
   },
   {
     username: "IBO",
@@ -77,7 +82,8 @@ let users = [
     newUser: false,
     pictureUrl: "https://res.cloudinary.com/boonafide/image/upload/v1549799696/profile-pictures/favicon.png",
     status: "Active",
-    role: 'Bank'
+    role: 'Bank',
+    token: generateHash({ length: 32 })
   }
 ]
 

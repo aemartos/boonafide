@@ -17,6 +17,8 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const flash = require("connect-flash");
 
+const chat = require('./middlewares/chat').chat;
+
 mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
   .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)})
   .catch(err => {console.error('Error connecting to mongo', err)});
@@ -90,6 +92,8 @@ app.use((req, res, next) => {
 let server = http.createServer(app);
 var io = require('socket.io')(server);
 global.io = io;
+global.io.on('connection', chat);
+
 
 // const index = require('./routes/index');
 // app.use('/', index);
