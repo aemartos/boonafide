@@ -45,3 +45,24 @@ export const setFavor = (favor) => {
     favor
   }
 }
+
+export const newChat = (chat) => {
+  return {
+    type: "NEW_CHAT",
+    chat
+  }
+}
+
+export const newNotification = (notification) => {
+  return {
+    type: "NEW_NOTIFICATION",
+    notification
+  }
+}
+
+export const readChat = (person) => {
+  return {
+    type: "READ_CHAT",
+    person
+  }
+}

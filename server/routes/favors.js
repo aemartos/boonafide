@@ -105,12 +105,19 @@ router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
       .populate({ path: "reviewsId", populate: { path: "authorId" } })
       .then(favor => {
         Notification.create({
-          type: "favoriteFavor",
+          type: "commentInFavor",
           receiverId: favor.creatorId,
           personId: req.user._id,
           favorId: favor._id,
-        }).then((not) => {
-          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(favor))
+        })
+        .then((not) => {
+          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {
+            if (global.sockets[favor.creatorId]){
+              console.log(not)
+              global.io.to(global.sockets[favor.creatorId]).emit('notification',{notification: not});
+            }
+            res.json(favor);
+          })
         })
       })
       .catch(err => res.status(500).send("Something went wrong"));
@@ -131,7 +138,11 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
           personId: req.user._id,
           favorId: favor._id,
         }).then((not) => {
-          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {})
+          User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {
+            if (global.sockets[favor.creatorId]){
+              global.io.to(global.sockets[favor.creatorId]).emit('notification',{notification: not});
+            }
+          })
         })
       }
       favor.save().then(fav=>{

@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import io from 'socket.io-client';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MessagesAPI }  from '../lib/API/messages';
 import FormField from '../components/FormField';
 import { colors } from '../lib/common/colors';
 import { getTime } from '../lib/common/helpers';
-import { URL_SERVER } from '../lib/common/constants';
+import { readChat } from '../lib/redux/actions';
 
 const Receiver = styled.p`
   position: absolute;
@@ -141,13 +140,14 @@ class _Chat extends React.Component {
     let authorId = this.props.user._id;
     let receiverId = this.props.match.params.id;
     this.room = authorId < receiverId ? authorId + '_' + receiverId : receiverId + '_' + authorId;
+    this.handleReceiveMsg = this.handleReceiveMsg.bind(this);
   }
 
   handleSend() {
     const {content} = this.state;
     this.setState({content: ""});
     if(content === "") return;
-    this.socket.emit('sms_sent', {authorId: this.props.user._id, receiverId: this.props.match.params.id, content});
+    window.socket.emit('sms_sent', {authorId: this.props.user._id, receiverId: this.props.match.params.id, content});
   }
   bottomScroll() {
     const msgBox = document.getElementById('messagesBox');
@@ -158,20 +158,18 @@ class _Chat extends React.Component {
       this.setState({moreSms: res.messages.length === 30, messages:[...res.messages,...this.state.messages]});
     });
   }
+  handleReceiveMsg(data) {
+      let {user} = this.props;
+      this.setState({messages: [...this.state.messages, data]})
+      if(data.receiverId !== user._id) this.bottomScroll();
+  }
+
   componentDidMount(){
     let receiverId = this.props.match.params.id;
-    let {user} = this.props;
     MessagesAPI.getMessages(receiverId).then(res => {
-      this.setState({receiver: [res.receiver]})
-      this.socket = io(`${URL_SERVER}/`);
-      this.socket.on('connect', (data) => {
-        this.socket.emit('register', {author: user._id.toString(), token: user.token});
-      });
-      this.socket.on('sms_received', (data) => {
-        this.setState({messages: [...this.state.messages, data]})
-        if(data.receiverId !== user._id) this.bottomScroll();
-      });
-      this.socket.on('disconnect', function(data){});
+      this.props.dispatch(readChat(receiverId));
+      this.setState({receiver: [res.receiver]});
+      window.socket.on('sms_received', this.handleReceiveMsg);
       this.setState(res);
     })
   }
@@ -180,9 +178,11 @@ class _Chat extends React.Component {
       this.bottomScroll();
     }
   }
-  componentWillUnmount() {
-    this.socket.disconnect();
+
+  componentWillUnmount(){
+    window.socket.removeListener('sms_received', this.handleReceiveMsg);
   }
+
   render() {
     const {user} = this.props;
     const {messages, receiver, moreSms} = this.state;

@@ -27,9 +27,12 @@ router.post('/updateUser', isLoggedIn, (req, res, next) => {
 
 router.get('/:userId', isLoggedIn, (req, res, next) => {
   User.findById(req.params.userId).populate('favOffer').populate('favNeed').populate('currentHelped').populate('favDone').populate('favReceived')
-  .populate({ path: "notificationsId", populate: { path: "favorId" }, populate: { path: "personId" }, populate: { path: "receiverId" }, populate: { path: "ticketId" } })
-    .then(user => res.json(user))
-    .catch(err => next(err))
+    .populate({ path: "notificationsId", populate: { path: "favorId" }})
+    .populate({ path: "notificationsId", populate: { path: "personId" }})
+    .populate({ path: "notificationsId", populate: { path: "receiverId" }})
+    .populate({ path: "notificationsId", populate: { path: "ticketId" }})
+      .then(user => res.json(user))
+      .catch(err => next(err))
 });
 
 

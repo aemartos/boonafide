@@ -43,7 +43,6 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
           .then((donor) => {
             User.findByIdAndUpdate(receiverId, {$push: {favReceived: favorId}})
               .then(() => {
-                //console.log(donor.currentHelped);
                 Notification.create({
                   type: "ticketValidated",
                   receiverId: donor._id,
@@ -52,7 +51,12 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
                   helpedUsers: donor.currentHelped.length + 1,
                   ticketId: ticket._id
                 }).then((not) => {
-                  User.findByIdAndUpdate(donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => res.json(ticket))
+                  User.findByIdAndUpdate(donorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {
+                    res.json(ticket);
+                    if (global.sockets[donor._id]){
+                      global.io.to(global.sockets[donor._id]).emit('notification',{notification: not});
+                    }
+                  });
                 })
               })
           })
@@ -85,6 +89,9 @@ router.post('/newTicket', isLoggedIn, (req, res, next) => {
                             favorId: favor._id,
                             ticketId: tick._id
                           }).then(not1 => {
+                            if (global.sockets[ticket.receiverId]){
+                              global.io.to(global.sockets[ticket.receiverId]).emit('notification',{notification: not1});
+                            }
                             User.findByIdAndUpdate(ticket.receiverId, {$push: {notificationsId: not1._id}}, {new: true}).then(() => {
                               Notification.create({
                                 type: "newTicket",
@@ -94,7 +101,12 @@ router.post('/newTicket', isLoggedIn, (req, res, next) => {
                                 ticketId: tick._id
                               }).then(not2 => {
                                 User.findByIdAndUpdate(ticket.donorId, {$push: {notificationsId: not2._id}}, {new: true})
-                                  .then(()=> res.json(tick))
+                                  .then(()=> {
+                                    if (global.sockets[ticket.donorId]){
+                                      global.io.to(global.sockets[ticket.donorId]).emit('notification',{notification: not2});
+                                    }
+                                    res.json(tick);
+                                  })
                               });
                             })
                           });

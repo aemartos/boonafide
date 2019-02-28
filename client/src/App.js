@@ -19,6 +19,7 @@ import { NewFavorPage } from './pages/newFavor';
 import { FavorDetailPage } from './pages/favor';
 import { NotificationsPage } from './pages/notifications';
 import Page404 from './pages/page404';
+import { Sockets } from './components/Sockets';
 
 export default class App extends Component {
   render() {
@@ -46,6 +47,7 @@ export default class App extends Component {
               <Route component={()=> <Redirect to="/not-found"/>}/>
             </Switch>
           </Container>
+          <Sockets/>
         </div>
       )}/>
     );

@@ -1,7 +1,8 @@
 const initialStore = {
 	user: undefined,
 	isBusy: true,
-  messages:[]
+	messages:[],
+	chat: []
 }
 
 export const rootReducer = (store = initialStore, action) => {
@@ -30,6 +31,18 @@ export const rootReducer = (store = initialStore, action) => {
 
 		case "SET_FAVOR":
 			store = {...store, isBusy: false, favor: action.favor}
+			break;
+
+		case 'NEW_CHAT':
+			store = {...store, chat: [...store.chat, action.chat]}
+			break;
+
+		case 'NEW_NOTIFICATION':
+			store = {...store, user: {...store.user, notificationsId: [...store.user.notificationsId, action.notification]}}
+			break;
+
+		case "READ_CHAT":
+			store = {...store, chat: store.chat.filter(c => c.authorId !== action.person)};
 			break;
 
 		default: return store

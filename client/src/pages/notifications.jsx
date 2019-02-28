@@ -33,7 +33,9 @@ class _NotificationsPage extends Component {
     NotificationsAPI.getNotifications().then(notifications => this.setState({notifications})).catch(()=>{});
   }
   render() {
-    const {notifications} = this.state;
+    const notifications = this.state.notifications;
+    //const notifications = [...this.props.user.notificationsId].reverse();
+    console.log(notifications)
     return (
       <div className="contentBox">
         <div className="container">

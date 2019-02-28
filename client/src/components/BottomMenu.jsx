@@ -36,7 +36,7 @@ const BottomNav = styled.nav`
         &.b-messages {
           font-size: 1.9em;
         }
-        &.b-notifications {
+        &.b-notifications, &.b-messages {
           position: relative;
           .notCircle {
             position: absolute;
@@ -80,7 +80,8 @@ const BottomNav = styled.nav`
 
 class _BottomMenu extends React.Component {
   render () {
-    const {user, favor, dispatch, location} = this.props;
+    const {user, favor, dispatch, location, chat} = this.props;
+    const numChat = chat.length;
     const numNot = user.notificationsId.filter(n => n.seen === false).length;
     //console.log(numNot);
     return (
@@ -95,7 +96,7 @@ class _BottomMenu extends React.Component {
             <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}><span className="icon b-homem"></span></NavLink>
             <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
             <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
-            <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><span className="icon b-messages"></span></NavLink>
+            <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><div className="icon b-messages">{numChat > 0 ? <div className="notCircle">{numChat}</div> : null} </div></NavLink>
             <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><div className="icon b-notifications">{numNot > 0 ? <div className="notCircle">{numNot}</div> : null} </div></NavLink>
           </div>
         }
@@ -104,4 +105,4 @@ class _BottomMenu extends React.Component {
   }
 };
 
-export const BottomMenu = connect(store => ({user: store.user, favor: store.favor}))(_BottomMenu);
+export const BottomMenu = connect(store => ({user: store.user, favor: store.favor, chat: store.chat}))(_BottomMenu);
