@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AuthAPI } from '../lib/API/auth';
-import { logout, clearMessages, setBusy } from '../lib/redux/actions';
+import { logout, clearMessages, /*setBusy*/ } from '../lib/redux/actions';
 import { updateUser } from '../lib/redux/actions';
 import { FavorsAPI } from '../lib/API/favors';
 import { colors } from '../lib/common/colors';
@@ -27,7 +27,7 @@ const TopNav = styled.nav`
     margin-top: 1.3em;
     text-transform: capitalize;
   }
-  a, .icon {
+  a, .icon, .logout {
     color: ${colors.grey};
     &.btn {
       font-size: 1.6em;
@@ -126,12 +126,9 @@ class _TopMenu extends React.Component {
             {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
           </React.Fragment>
         :
-          <a className="btn" href="#0" onClick={() => {
-            dispatch(setBusy("force"));
-            AuthAPI.logout().then(() => dispatch(logout())).catch(() => dispatch(setBusy(false)))
-            }}>
+          <span className="logout btn" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => {/*dispatch(setBusy(false))*/})}>
             <span className="icon b-logout"></span>
-          </a>
+          </span>
         }
         {favor ?
           <div className="favMenu">

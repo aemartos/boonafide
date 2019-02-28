@@ -113,7 +113,7 @@ router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
         .then((not) => {
           User.findByIdAndUpdate(favor.creatorId, {$push: {notificationsId: not._id}}, {new: true}).then(() => {
             if (global.sockets[favor.creatorId]){
-              console.log(not)
+              //console.log(not)
               global.io.to(global.sockets[favor.creatorId]).emit('notification',{notification: not});
             }
             res.json(favor);

@@ -115,12 +115,14 @@ export default class HomePage extends Component {
               </div>
               :
               <React.Fragment>
-                <div className="favorsBox favorsOthers">
-                  <p className="title">We have found this favors you can offer</p>
-                  <Slider {...settings}>
-                    {favorsOthersNeed.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide/>)}
-                  </Slider>
-                </div>
+                {favorsOthersNeed.length > 0 ?
+                  <div className="favorsBox favorsOthers">
+                    <p className="title">We have found this favors you can offer</p>
+                    <Slider {...settings}>
+                      {favorsOthersNeed.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide/>)}
+                    </Slider>
+                  </div>
+                : null}
                 <div className="favorsBox">
                   <p className="title">Favors near you</p>
                   <div className="favorsNearby">

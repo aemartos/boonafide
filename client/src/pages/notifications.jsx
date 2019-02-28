@@ -35,7 +35,7 @@ class _NotificationsPage extends Component {
   render() {
     const notifications = this.state.notifications;
     //const notifications = [...this.props.user.notificationsId].reverse();
-    console.log(notifications)
+    //console.log(notifications)
     return (
       <div className="contentBox">
         <div className="container">
