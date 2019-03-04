@@ -71,18 +71,16 @@ const StyledNotification = styled.div`
 export default class NotificationsThumb extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      seen: this.props.notification.seen
-    }
     this.createContent = this.createContent.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   handleClick(id) {
-    NotificationsAPI.notificationSeen(id).then(()=>{}).catch(()=>{});
+    NotificationsAPI.notificationSeen(id).then(()=>{
+      this.props.readNotification(id);
+    }).catch(()=>{});
   }
   createContent(notification) {
-    const {_id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers} = notification;
-    const {seen} = this.state;
-    //console.log(helpedUsers % 3);
+    const {_id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers, seen} = notification;
     switch(type) {
       case 'ticketValidated':
       return (

@@ -4,6 +4,7 @@ import { NotificationsAPI }  from '../lib/API/notifications';
 import NotificationsThumb from '../components/NotificationsThumb';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
+import { readNotification } from '../lib/redux/actions';
 
 const NotificationsContainer = styled.div`
   width: 90%;
@@ -41,7 +42,7 @@ class _NotificationsPage extends Component {
         <div className="container">
         <NotificationsContainer>
           {notifications.length > 0 ?
-            notifications.map(n => <NotificationsThumb key={n._id} notification={n}/>)
+            notifications.map(n => <NotificationsThumb key={n._id} readNotification={id=>this.props.dispatch(readNotification(id))} notification={n}/>)
           : <p className="noNotifications">You have no notifications yet :)</p>}
         </NotificationsContainer>
         </div>

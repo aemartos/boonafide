@@ -45,6 +45,10 @@ export const rootReducer = (store = initialStore, action) => {
 			store = {...store, chat: store.chat.filter(c => c.authorId !== action.person)};
 			break;
 
+		case 'READ_NOTIFICATION':
+			store = {...store, user: {...store.user, notificationsId: store.user.notificationsId.map(not => not._id === action.id ? {...not, seen: true} : not)}};
+			break;
+
 		default: return store
 	}
 	return store

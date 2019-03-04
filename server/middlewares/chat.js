@@ -57,7 +57,7 @@ const chat = (socket) => {
           })
     }).catch(err => {});
   });
-
+  socket.on('ping', (x) => global.io.to(socket.id).emit('pong'));
   socket.on('disconnect', obj=> {delete global.sockets[socket.id]});
 }
 

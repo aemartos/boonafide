@@ -43,8 +43,8 @@ export default class App extends Component {
               <Route path="/messages/:id" component={WithUser(MessagesDetailPage)}/>
               <Route path="/messages" component={WithUser(MessagesPage)}/>
               <Route path="/notifications" component={WithUser(NotificationsPage)}/>
-              <Route path="/not-found" component={Page404}/>
-              <Route component={()=> <Redirect to="/not-found"/>}/>
+              <Route exact strict path="/not-found" component={Page404}/>
+              <Route component={()=> {return <Redirect to="/not-found"/>}}/>
             </Switch>
           </Container>
           <Sockets/>

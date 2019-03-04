@@ -16,6 +16,7 @@ class _Sockets extends React.Component {
 
   componentWillUnmount() {
     window.socket.disconnect();
+    clearInterval(this.ping);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -26,6 +27,8 @@ class _Sockets extends React.Component {
       window.socket.on('connect', (data) => {
         window.socket.emit('register', {author: user._id.toString(), token: user.token});
       });
+      this.ping = setInterval(()=> window.socket.emit('ping'), 2000);
+      window.socket.on('pong', () => {});
       window.socket.on('sms_received', (data) => {
         if (data.authorId.toString() !==  user._id.toString()) {
           if (!window.location.href.match(/\/messages\/.+/)){

@@ -66,3 +66,10 @@ export const readChat = (person) => {
     person
   }
 }
+
+export const readNotification = id => {
+  return {
+    type: "READ_NOTIFICATION",
+    id
+  }
+}
