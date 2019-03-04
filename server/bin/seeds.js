@@ -19,7 +19,7 @@ mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
 const calcNumBoons = (role) => {
   switch(role) {
     case 'Bank':
-      return 100;
+      return 1000;
     case 'Admin':
       return 0;
     case 'User':

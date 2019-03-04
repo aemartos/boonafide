@@ -5,7 +5,7 @@ const User = require('../models/User');
 const Boon = require('../models/Boon');
 const {isLoggedOut, isLoggedIn} = require('../middlewares/isLogged');
 
-const generateHash = require('random-hash');
+const generateHash = require('random-hash').generateHash;
 
 const path = require('path');
 const dotenv = require('dotenv');

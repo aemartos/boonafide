@@ -66,11 +66,17 @@ const StyledFirstSteps = styled.div`
     width: 100%;
     background-color: ${colors.darkGrey};
     z-index: 0;
+    @media (min-height: 700px) and (min-width: 415px) {
+      height: 35em;
+    }
   }
   input {
     position: absolute;
     bottom: 44.3em;
     z-index: 1;
+    @media (min-height: 700px) and (min-width: 415px) {
+      bottom: 38.9em;
+    }
   }
   .slick-slider {
     height: calc(100% - 10em);
