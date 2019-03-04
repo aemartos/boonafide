@@ -436,7 +436,7 @@ class _FavorDetailPage extends Component {
             <div className="commentsBox">
               <div className="boxContent">
                 {comments.length > 0 ?
-                  <Collapsible transitionTime={200} trigger={<div className="collapTitle"> <span className="text">Comments</span> <span className="trigger b-arrow"/></div>}>
+                  <Collapsible open={true} transitionTime={200} trigger={<div className="collapTitle"> <span className="text">Comments</span> <span className="trigger b-arrow"/></div>}>
                     <div className="showComments">
                       {comments.map((c, i) => <CommentDetail key={i} content={c.content} author={c.authorId} date={c.createdAt}/>)}
                     </div>

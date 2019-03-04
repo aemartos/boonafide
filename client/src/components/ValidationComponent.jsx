@@ -7,7 +7,7 @@ import { TicketsAPI } from '../lib/API/tickets';
 
 const StyledValidation = styled.div`
   position: absolute;
-  top: ${props => props.validating ? "0px" : "51em"};
+  top: ${props => props.validating ? "0px" : "55em"};
   bottom: 0;
   width: 100%;
   padding: 2.4em 2em;
