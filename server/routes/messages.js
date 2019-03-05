@@ -20,7 +20,7 @@ router.get('/conversations', isLoggedIn, (req, res, next) => {
   //.skip(req.params.offset || 0)
   //.limit(30)
   .then(conversations => res.json(conversations))
-  .catch(err => next(err))
+  .catch(err => next(err));
 
 });
 
@@ -37,9 +37,9 @@ const getPreviousMessages = (req, res) => {
       .skip(parseInt(req.query.offset || 0))
       .limit(30)
       .then(messages => res.json({receiver, messages:messages.reverse()}))
-      .catch(() => {/*console.error(err)*/})
+      .catch(() => {/*console.error(err)*/});
     });
-}
+};
 
 //this route is called when a user enters a conversation
 router.get('/:receiverId', isLoggedIn, getPreviousMessages);

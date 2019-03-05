@@ -33,10 +33,10 @@ router.get('/search', isLoggedIn, (req, res, next) => {
     //.limit(30)
     .then(favorsUnfiltered => {
       let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
-      let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
+      let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`};});
       res.json({favors});
     })
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.get('/offerFavors', isLoggedIn, (req, res, next) => {
@@ -45,7 +45,7 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
       const categories = user.offerCategories.length === 0 ? CATEGORIES_ENUM : user.offerCategories;
       Favor.find({
         type: "Need",
-        $or: categories.map(c => {return {categories: c}})
+        $or: categories.map(c => {return {categories: c};})
         //creatorId: {$ne: req.user._id}
       })
       .populate('creatorId')
@@ -54,11 +54,11 @@ router.get('/offerFavors', isLoggedIn, (req, res, next) => {
       //.limit(10)
       .then(favorsUnfiltered => {
         let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
-        let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
+        let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`};});
         res.json({favors});
-      })
+      });
     })
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
@@ -81,11 +81,11 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
       //.limit(20)
       .then(favorsUnfiltered => {
         let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
-        let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`}});
+        let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`};});
         res.json({favors});
-      })
+      });
     })
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.get('/:favorId', isLoggedIn, (req, res, next) => {
@@ -117,8 +117,8 @@ router.post('/:favorId/addComment', isLoggedIn, (req, res) => {
               global.io.to(global.sockets[favor.creatorId]).emit('notification',{notification: not});
             }
             res.json(favor);
-          })
-        })
+          });
+        });
       })
       .catch(() => res.status(500).send("Something went wrong"));
     });
@@ -142,8 +142,8 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
             if (global.sockets[favor.creatorId]){
               global.io.to(global.sockets[favor.creatorId]).emit('notification',{notification: not});
             }
-          })
-        })
+          });
+        });
       }
       favor.save().then(() => {
         User.findById(userId).then(user => {
@@ -154,7 +154,7 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
           }
           user.save().then(() => {
             res.json(favor.whoseFavId);
-          })
+          });
         });
       });
     });
@@ -182,7 +182,7 @@ router.post('/newFavor', isLoggedIn, (req, res) => {
       .then(() => {})
         .then(() => res.json(fav)) ;
     })
-      .catch(() => res.status(500).send("Something went wrong"))
+      .catch(() => res.status(500).send("Something went wrong"));
 });
 
 

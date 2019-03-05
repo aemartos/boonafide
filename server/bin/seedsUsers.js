@@ -140,11 +140,11 @@ let users = [
     role: 'Bank',
     token: generateHash({ length: 32 })
   }
-]
+];
 
 const createUser = () => {
   User.collection.drop();
   return User.create(users);
-}
+};
 
 module.exports = createUser;

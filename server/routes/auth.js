@@ -19,8 +19,8 @@ const bcryptSalt = 10;
 let loginPromise = (req, user) => {
   return new Promise((resolve,reject) => {
     req.login(user, e => e ? reject(e) : resolve(user));
-  })
-}
+  });
+};
 
 router.post("/login", isLoggedOut, (req, res, next) => {
   passport.authenticate("local",(err, theUser, failureDetails) => {
@@ -29,7 +29,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     loginPromise(req, theUser)
       .then(() => res.status(200).json(req.user))
       .catch(e => res.status(500).send(e.message));
-  })(req,res,next)
+  })(req,res,next);
 });
 
 router.post("/signup", isLoggedOut, (req, res) => {
@@ -69,11 +69,11 @@ router.post("/signup", isLoggedOut, (req, res) => {
               newUser.save()
                 .then(user => loginPromise(req,user))
                 .then(user => {
-                  res.json({user})
+                  res.json({user});
                 })
                 .catch(() => {
                   res.status(500).send("Something went wrong");
-                })
+                });
             });
         });
       });
@@ -110,7 +110,7 @@ router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
 
 router.get("/logout", isLoggedIn, (req, res) => {
   req.logout();
-  res.json({success: "OK"})
+  res.json({success: "OK"});
 });
 
 module.exports = router;

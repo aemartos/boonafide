@@ -13,7 +13,7 @@ passport.use(new FbStrategy({
       if (user) {
         return done(null, user);
       } else {
-        const u = new User({username:profile.displayName, facebookID:profile.id})
+        const u = new User({username:profile.displayName, facebookID:profile.id});
         u.save().then(user => {
           //console.log("READY USER");
           done(null, user);

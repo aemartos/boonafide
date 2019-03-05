@@ -132,14 +132,14 @@ let favors = [
     },
     locationName: "Calle Aquilino Domínguez, 61, 28020 Madrid"
   }
-]
+];
 
 
 const createFavors = (creatorId, favNeed, favOffer, whoNeedsId, whoseFavId) => {
   Favor.collection.drop();
   const favorsModified = favors.map(f => ({...f, creatorId, favNeed, favOffer, whoNeedsId, whoseFavId, categories: selectRandomFromArray(CATEGORIES_ENUM, 5)}));
   return Favor.create(favorsModified).then(favors => favors);
-}
+};
 
 
 module.exports = createFavors;

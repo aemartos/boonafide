@@ -11,8 +11,8 @@ const dotenv = require('dotenv');
 dotenv.config({path: path.join(__dirname, '../../.private.env')});
 
 mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
-  .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)})
-  .catch(err => {console.error("Error connecting to mongo", err)});
+  .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);})
+  .catch(err => {console.error("Error connecting to mongo", err);});
 
 
 const calcNumBoons = (role) => {
@@ -26,7 +26,7 @@ const calcNumBoons = (role) => {
     default:
       return 0;
   }
-}
+};
 
 createUsers()
   .then(users => {
@@ -54,7 +54,7 @@ createUsers()
           User.findByIdAndUpdate(u._id, fields).then(() => console.log(`Created ${boons.length} boons`));
         }
       });
-    })
+    });
   }).catch((e) => console.error(e));
 
 setTimeout(()=>mongoose.disconnect(), 5000);

@@ -29,4 +29,4 @@ var storageFavorPictures = cloudinaryStorage({
 const uploadProfilePicture = multer({ storage: storageProfilePictures });
 const uploadFavorPictures = multer({ storage: storageFavorPictures });
 
-module.exports = { uploadProfilePicture, uploadFavorPictures }
+module.exports = { uploadProfilePicture, uploadFavorPictures };

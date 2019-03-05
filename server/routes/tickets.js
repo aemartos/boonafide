@@ -19,7 +19,7 @@ router.get('/allTickets', isLoggedIn, (req, res, next) => {
     //.skip(parseInt(req.query.offset || 0))
     //.limit(30)
     .then(tickets => res.json({tickets}))
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.get('/:ticketId', isLoggedIn, (req, res, next) => {
@@ -28,7 +28,7 @@ router.get('/:ticketId', isLoggedIn, (req, res, next) => {
     .populate('receiverId')
     .populate('favorId')
     .then(ticket => res.json(ticket))
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
@@ -57,11 +57,11 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
                       global.io.to(global.sockets[donor._id]).emit('notification',{notification: not});
                     }
                   });
-                })
-              })
-          })
+                });
+              });
+          });
       })
-      .catch(err => next(err))
+      .catch(err => next(err));
   }
 });
 
@@ -106,19 +106,19 @@ router.post('/newTicket', isLoggedIn, (req, res) => {
                                       global.io.to(global.sockets[ticket.donorId]).emit('notification',{notification: not2});
                                     }
                                     res.json(tick);
-                                  })
+                                  });
                               });
-                            })
+                            });
                           });
                         });
-                      })
+                      });
                     });
-                  })
+                  });
                 });
               }
-            })
+            });
         })
-        .catch(() => res.status(500).send("Something went wrong"))
+        .catch(() => res.status(500).send("Something went wrong"));
   }
 });
 

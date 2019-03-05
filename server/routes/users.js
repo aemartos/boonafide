@@ -11,18 +11,18 @@ router.post('/pictures', isLoggedIn, uploadProfilePicture.single('picture'), (re
       res.json({
         success: true,
         pictureUrl: req.file.secure_url
-      })
+      });
     })
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.post('/updateUser', isLoggedIn, (req, res, next) => {
   //console.log(req.body.data);
   User.findByIdAndUpdate(req.user._id, {...req.body.data, newUser: false})
     .then(() => {
-      res.json({success: true})
+      res.json({success: true});
     })
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.get('/:userId', isLoggedIn, (req, res, next) => {
@@ -32,7 +32,7 @@ router.get('/:userId', isLoggedIn, (req, res, next) => {
     .populate({ path: "notificationsId", populate: { path: "receiverId" }})
     .populate({ path: "notificationsId", populate: { path: "ticketId" }})
       .then(user => res.json(user))
-      .catch(err => next(err))
+      .catch(err => next(err));
 });
 
 

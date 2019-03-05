@@ -29,4 +29,4 @@ const selectRandomFromArray = (array, n) => array.sort(() => .5 - Math.random())
 
 module.exports = {
   NOTIFICATIONS_ENUM, CATEGORIES_ENUM, selectRandomFromArray
-}
+};

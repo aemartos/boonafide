@@ -7,11 +7,12 @@
   "globals": {
     "exampleGlobalVariable": true
   },
+  "extends": "eslint:recommended",
   "rules": {
     "eqeqeq": 0,
-    "no-console": 0
+    "no-console": 0,
+    "semi": 1
   },
-  "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 9
   },

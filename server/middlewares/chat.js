@@ -12,7 +12,7 @@ const chat = (socket) => {
         global.sockets[obj.author] = socket.id;
       }
     });
-  })
+  });
   socket.on('sms_sent', obj => {
     let {authorId, receiverId, content} = obj;
     let roomName = authorId < receiverId ? authorId + '_' + receiverId : receiverId + '_' + authorId;
@@ -54,11 +54,11 @@ const chat = (socket) => {
               //   }
               // })
             });
-          })
+          });
     }).catch(() => {});
   });
   socket.on('ping', () => global.io.to(socket.id).emit('pong'));
-  socket.on('disconnect', () => {delete global.sockets[socket.id]});
-}
+  socket.on('disconnect', () => {delete global.sockets[socket.id];});
+};
 
-module.exports = {chat}
+module.exports = {chat};

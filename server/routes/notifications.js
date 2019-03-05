@@ -13,13 +13,13 @@ router.get('/', isLoggedIn, (req, res, next) => {
     //.skip(parseInt(req.query.offset || 0))
     //.limit(30)
     .then(notifications => res.json(notifications))
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 router.post('/:notificationId/seen', isLoggedIn, (req, res, next) => {
   Notification.findByIdAndUpdate(req.params.notificationId, {seen: true})
     .then(not => res.json(not))
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 module.exports = router;
