@@ -1,4 +1,6 @@
 # boonafide
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/032683a5d73b414688fbf6fb6967d909)](https://www.codacy.com/app/aemartos/boonafide?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=aemartos/boonafide&amp;utm_campaign=Badge_Grade)
+
 ### [https://boonafide.herokuapp.com/](https://boonafide.herokuapp.com/)
 *"When someone does you a big favor, don't pay it back... PAY IT FORWARD!"*
 Change the world through a "favors chain". A person must perform or help three people in a disinterested way. They also have to help three others and so on, until a favors chain, that improves the lives of citizens, is spread around the world.
