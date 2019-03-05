@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 import { colors } from '../lib/common/colors';
 import { formatDateMin } from '../lib/common/helpers';
-import { Link } from 'react-router-dom';
 
 const StyledComment = styled.div`
   margin: 1em 0;
@@ -46,7 +46,7 @@ const StyledComment = styled.div`
 `;
 
 export const CommentDetail = (props) => {
-  const {content, author, date} = props;
+  const { content, author, date } = props;
   return (
     <StyledComment>
       <div className="info">

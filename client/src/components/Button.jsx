@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { withRouter } from 'react-router-dom';
 
-import {colors} from '../lib/common/colors';
+import { colors } from '../lib/common/colors';
 
 const StyledLink = styled.span`
     display: block;
@@ -53,19 +53,19 @@ const StyledLink = styled.span`
   }
 `;
 
-const handleClick= (props) => {
+const handleClick = (props) => {
   props.onClick && props.onClick();
-  if(props.redirect) {
+  if (props.redirect) {
     window.location = props.link;
-  } else if (props.link){
+  } else if (props.link) {
     props.history.push(props.link);
   }
-}
+};
 
 const _Button = (props) => {
-  const {className, children} = props;
+  const { className, children } = props;
   return (
-    <StyledLink className={className} onClick={e => {handleClick(props)}}>{children}</StyledLink>
+    <StyledLink className={className} onClick={(e) => { handleClick(props); }}>{children}</StyledLink>
   );
 };
 

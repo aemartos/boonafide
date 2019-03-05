@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import {colors} from '../lib/common/colors';
+import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { LogInForm } from '../components/LogInForm';
 import { Messages } from '../components/Messages';
@@ -56,28 +56,27 @@ const StyledLogIn = styled.div`
   }
 `;
 
-export const LogInPage = () => {
-  return (
-    <StyledLogIn>
-      <div className="box-container login">
-        <div className="title-box">
-          <h2>welcome back ;)</h2>
-          <p>login your account to start changing the world!</p>
-        </div>
-        <p className="basic-text">continue with</p>
-        <div className="social-login">
-          <Button link={`${URL_SERVER}/api/auth/facebook`} className="btn btn-fcbk" redirect={true}>facebook</Button>
-          <Button link={`${URL_SERVER}/api/auth/google`} className="btn btn-ggl" redirect={true}>google</Button>
-        </div>
-        <p className="basic-text m-bottom">or your username</p>
-        <LogInForm/>
-        <Messages/>
-        <div>
-          <p className="account-message">
-            <span>don't have an account yet?</span> <span><Link to="/signup">signup</Link> or <Link to="/">go back</Link></span>
-          </p>
-        </div>
+export const LogInPage = () => (
+  <StyledLogIn>
+    <div className="box-container login">
+      <div className="title-box">
+        <h2>welcome back ;)</h2>
+        <p>login your account to start changing the world!</p>
       </div>
-    </StyledLogIn>
-  )
-}
+      <p className="basic-text">continue with</p>
+      <div className="social-login">
+        <Button link={`${URL_SERVER}/api/auth/facebook`} className="btn btn-fcbk" redirect>facebook</Button>
+        <Button link={`${URL_SERVER}/api/auth/google`} className="btn btn-ggl" redirect>google</Button>
+      </div>
+      <p className="basic-text m-bottom">or your username</p>
+      <LogInForm />
+      <Messages />
+      <div>
+        <p className="account-message">
+          <span>don't have an account yet?</span>
+          <span><Link to="/signup">signup</Link> or <Link to="/">go back</Link></span>
+        </p>
+      </div>
+    </div>
+  </StyledLogIn>
+);

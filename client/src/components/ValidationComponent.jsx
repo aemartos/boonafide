@@ -7,7 +7,7 @@ import { TicketsAPI } from '../lib/API/tickets';
 
 const StyledValidation = styled.div`
   position: absolute;
-  top: ${props => props.validating ? "0px" : "55em"};
+  top: ${props => (props.validating ? "0px" : "55em")};
   bottom: 0;
   width: 100%;
   padding: 2.4em 2em;
@@ -99,63 +99,80 @@ class _ValidationComponent extends React.Component {
     super(props);
     this.state = {
       validated: false,
-      check: false
-    }
+      check: false,
+    };
     this.handleValidate = this.handleValidate.bind(this);
   }
-  handleClose() {
-    this.props.closeValidation(false);
-    if(this.state.validated) {
-      this.props.history.push('/profile');
-    }
-  }
-  handleValidationCheck(ticket) {
-    this.setState({check: true});
-    setTimeout(()=>this.handleClose(), 1000);
-  }
-  handleValidate() {
-    let ticket = this.props.ticket;
-    TicketsAPI.validateTicket(ticket._id, ticket).then(ticket => {
-      this.setState({validated: true});
-      this.handleValidationCheck(ticket);
-    }).catch(e => this.props.history.push('/not-found'));
-  }
+
   componentDidMount() {
     validateStart(this.handleValidate);
   }
+
   componentWillUnmount() {
     validateStop();
   }
+
+  handleClose() {
+    this.props.closeValidation(false);
+    if (this.state.validated) {
+      this.props.history.push('/profile');
+    }
+  }
+
+  handleValidationCheck(ticket) {
+    this.setState({ check: true });
+    setTimeout(() => this.handleClose(), 1000);
+  }
+
+  handleValidate() {
+    const ticket = this.props.ticket;
+    TicketsAPI.validateTicket(ticket._id, ticket).then((ticket) => {
+      this.setState({ validated: true });
+      this.handleValidationCheck(ticket);
+    }).catch(e => this.props.history.push('/not-found'));
+  }
+
   render() {
-    const {validating, validated} = this.props;
-    const {check} = this.state;
+    const { validating, validated } = this.props;
+    const { check } = this.state;
     const display = {
       display: "flex",
       flexFlow: "column nowrap",
       justifyContent: "center",
-      alignItems: "center"
-    }
+      alignItems: "center",
+    };
     return (
       <StyledValidation validating={validating} style={validating ? display : null}>
-      {!validated ?
-        <React.Fragment>
-          <span className="icon b-arrow-short" onClick={()=>this.handleClose()}></span>
-          <div className="text">
-            <h2 className="title">Validate your ticket</h2>
-            <p className="subtitle">Trace the “B” to validate the ticket, you must be sure, the ticket can only be validated once.</p>
-          </div>
-          <div className={"animation"}>
-            <img className={check ? "check appear" : "check"} src="/images/heartTick.png" alt="heartTick"/>
-            <svg className={check ? "disappear" : ""} version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 108.1 108.1">
-              <path className="path back" id="path" d="M7,41.6v59.5h65c16,0,29.1-13.1,29.1-29.1l0,0c0-16-13.1-29.1-29.1-29.1h-6.7v-6.7C65.3,20.1,52.1,7,36.1,7l0,0
-              C20.1,7,7,20.1,7,36.1V41.6"/>
-              <path className="path front" id="drawMe" fill="transparent" d="M7,41.6v59.5h65c16,0,29.1-13.1,29.1-29.1l0,0c0-16-13.1-29.1-29.1-29.1h-6.7v-6.7C65.3,20.1,52.1,7,36.1,7l0,0
-              C20.1,7,7,20.1,7,36.1V41.6"/>
-              <circle className="circle oval knob" id="drag" cx="0" cy="0" r="7"/>
-            </svg>
-          </div>
-        </React.Fragment>
-      : null}
+        {!validated
+          ? (
+            <React.Fragment>
+              <span className="icon b-arrow-short" onClick={() => this.handleClose()} />
+              <div className="text">
+                <h2 className="title">Validate your ticket</h2>
+                <p className="subtitle">Trace the “B” to validate the ticket, you must be sure, the ticket can only be validated once.</p>
+              </div>
+              <div className="animation">
+                <img className={check ? "check appear" : "check"} src="/images/heartTick.png" alt="heartTick" />
+                <svg className={check ? "disappear" : ""} version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 108.1 108.1">
+                  <path
+                    className="path back"
+                    id="path"
+                    d="M7,41.6v59.5h65c16,0,29.1-13.1,29.1-29.1l0,0c0-16-13.1-29.1-29.1-29.1h-6.7v-6.7C65.3,20.1,52.1,7,36.1,7l0,0
+              C20.1,7,7,20.1,7,36.1V41.6"
+                  />
+                  <path
+                    className="path front"
+                    id="drawMe"
+                    fill="transparent"
+                    d="M7,41.6v59.5h65c16,0,29.1-13.1,29.1-29.1l0,0c0-16-13.1-29.1-29.1-29.1h-6.7v-6.7C65.3,20.1,52.1,7,36.1,7l0,0
+              C20.1,7,7,20.1,7,36.1V41.6"
+                  />
+                  <circle className="circle oval knob" id="drag" cx="0" cy="0" r="7" />
+                </svg>
+              </div>
+            </React.Fragment>
+          )
+          : null}
       </StyledValidation>
     );
   }

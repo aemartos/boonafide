@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import styled from '@emotion/styled'
+import { connect } from 'react-redux';
+import styled from '@emotion/styled';
 // import { clearMessages } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
 
@@ -12,17 +12,15 @@ const Message = styled.div`
   padding-top: .5em;
 `;
 
-const InternalMessages = ({messages, dispatch}) => {
-  return (
-    <div style={{height: "1em"}}>
-      {messages.map((m,i) =>
-        <Message key={i}>
-          {m}
-          {/* <span onClick={() => dispatch(clearMessages())}> x</span> */}
-        </Message>
-      )}
-    </div>
-  )
-};
+const InternalMessages = ({ messages, dispatch }) => (
+  <div style={{ height: "1em" }}>
+    {messages.map((m, i) => (
+      <Message key={i}>
+        {m}
+        {/* <span onClick={() => dispatch(clearMessages())}> x</span> */}
+      </Message>
+    ))}
+  </div>
+);
 
-export const Messages = connect(state => ({messages: state.messages}))(InternalMessages);
+export const Messages = connect(state => ({ messages: state.messages }))(InternalMessages);

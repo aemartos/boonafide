@@ -8,19 +8,19 @@ const ModalContent = posed.div({
     delay: 300,
     transition: {
       y: { type: 'spring', stiffness: 1000, damping: 15 },
-      default: { duration: 300 }
-    }
+      default: { duration: 300 },
+    },
   },
   exit: {
     y: 50,
     opacity: 0,
-    transition: { duration: 150 }
-  }
+    transition: { duration: 150 },
+  },
 });
 
 const Shade = posed.div({
   enter: { opacity: 1 },
-  exit: { opacity: 0 }
+  exit: { opacity: 0 },
 });
 
 export default class Modal extends React.Component {
@@ -33,8 +33,8 @@ export default class Modal extends React.Component {
       left: "0",
       right: "0",
       bottom: "0",
-      zIndex: "3"
-    }
+      zIndex: "3",
+    };
     const modalStyle = {
       position: "absolute",
       left: "5%",
@@ -44,8 +44,8 @@ export default class Modal extends React.Component {
       height: "auto",
       background: "#F0F0EC",
       borderRadius: ".5em",
-      zIndex: "4"
-    }
+      zIndex: "4",
+    };
     return (
       <PoseGroup>
         {isVisible && [
@@ -53,7 +53,7 @@ export default class Modal extends React.Component {
           <Shade style={shadowStyle} key="shade" className="shade" />,
           <ModalContent style={modalStyle} key="modal" id="modalBox" className="modal">
             {children}
-          </ModalContent>
+          </ModalContent>,
         ]}
       </PoseGroup>
     );

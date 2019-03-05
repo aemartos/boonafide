@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 import { clearMessages } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
-import styled from '@emotion/styled';
 
 const BottomNav = styled.nav`
   height: 4.5em;
   width: 100%;
   position: absolute;
   bottom: 0;
-  background-color: ${props => props.is404 ? colors.purple : colors.grey};
+  background-color: ${props => (props.is404 ? colors.purple : colors.grey)};
   border-radius: 5em;
   box-shadow: 0px 10px 20px 10px rgba(0,0,0,0.33);
   z-index: 2;
@@ -29,7 +29,7 @@ const BottomNav = styled.nav`
     align-items: flex-start;
     justify-content: space-between;
     a {
-      color: ${props => props.is404 ? colors.grey : colors.purple};
+      color: ${props => (props.is404 ? colors.grey : colors.purple)};
       margin-right: 1.2em;
       .icon {
         font-size: 1.7em;
@@ -79,29 +79,42 @@ const BottomNav = styled.nav`
 `;
 
 class _BottomMenu extends React.Component {
-  render () {
-    const {user, favor, dispatch, location, chat} = this.props;
+  render() {
+    const {
+      user, favor, dispatch, location, chat,
+    } = this.props;
     const numChat = chat.length;
     const numNot = user.notificationsId.filter(n => n.seen === false).length;
     return (
       <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
-        {favor ?
-          <div className="nav favorNav">
-            <Link to={`/messages/${favor.userId}`}><span className="icon b-mp"></span></Link>
-            <Link to=""><span className="icon b-call"></span></Link>
-          </div>
-        :
-          <div className="nav">
-            <NavLink exact to="/" onClick={()=> dispatch(clearMessages())}><span className="icon b-homem"></span></NavLink>
-            <NavLink to="/philosophy" onClick={()=> dispatch(clearMessages())}><span className="icon b-philosophy"></span></NavLink>
-            <NavLink to="/newFavor" onClick={()=> dispatch(clearMessages())}><span className="icon b-newfavor"></span></NavLink>
-            <NavLink to="/messages" onClick={()=> dispatch(clearMessages())}><div className="icon b-messages">{numChat > 0 ? <div className="notCircle">{numChat}</div> : null} </div></NavLink>
-            <NavLink to="/notifications" onClick={()=> dispatch(clearMessages())}><div className="icon b-notifications">{numNot > 0 ? <div className="notCircle">{numNot}</div> : null} </div></NavLink>
-          </div>
+        {favor
+          ? (
+            <div className="nav favorNav">
+              <Link to={`/messages/${favor.userId}`}><span className="icon b-mp" /></Link>
+              <Link to=""><span className="icon b-call" /></Link>
+            </div>
+          )
+          : (
+            <div className="nav">
+              <NavLink exact to="/" onClick={() => dispatch(clearMessages())}><span className="icon b-homem" /></NavLink>
+              <NavLink to="/philosophy" onClick={() => dispatch(clearMessages())}><span className="icon b-philosophy" /></NavLink>
+              <NavLink to="/newFavor" onClick={() => dispatch(clearMessages())}><span className="icon b-newfavor" /></NavLink>
+              <NavLink to="/messages" onClick={() => dispatch(clearMessages())}>
+                <div className="icon b-messages">
+                  {numChat > 0 ? <div className="notCircle">{numChat}</div> : null}
+                </div>
+              </NavLink>
+              <NavLink to="/notifications" onClick={() => dispatch(clearMessages())}>
+                <div className="icon b-notifications">
+                  {numNot > 0 ? <div className="notCircle">{numNot}</div> : null}
+                </div>
+              </NavLink>
+            </div>
+          )
         }
       </BottomNav>
-    )
+    );
   }
-};
+}
 
-export const BottomMenu = connect(store => ({user: store.user, favor: store.favor, chat: store.chat}))(_BottomMenu);
+export const BottomMenu = connect(store => ({ user: store.user, favor: store.favor, chat: store.chat }))(_BottomMenu);

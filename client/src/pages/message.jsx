@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MessagesAPI }  from '../lib/API/messages';
+import { MessagesAPI } from '../lib/API/messages';
 import FormField from '../components/FormField';
 import { colors } from '../lib/common/colors';
 import { getTime } from '../lib/common/helpers';
@@ -126,7 +126,7 @@ const Message = styled.div`
       height: .8em;
     }
   }
-`
+`;
 
 class _Chat extends React.Component {
   constructor(props) {
@@ -135,82 +135,90 @@ class _Chat extends React.Component {
       content: "",
       messages: [],
       moreSms: true,
-      receiver: {}
-    }
-    let authorId = this.props.user._id;
-    let receiverId = this.props.match.params.id;
-    this.room = authorId < receiverId ? authorId + '_' + receiverId : receiverId + '_' + authorId;
+      receiver: {},
+    };
+    const authorId = this.props.user._id;
+    const receiverId = this.props.match.params.id;
+    this.room = authorId < receiverId ? `${authorId}_${receiverId}` : `${receiverId}_${authorId}`;
     this.handleReceiveMsg = this.handleReceiveMsg.bind(this);
   }
 
   handleSend() {
-    const {content} = this.state;
-    this.setState({content: ""});
-    if(content === "") return;
-    window.socket.emit('sms_sent', {authorId: this.props.user._id, receiverId: this.props.match.params.id, content});
+    const { content } = this.state;
+    this.setState({ content: "" });
+    if (content === "") return;
+    window.socket.emit('sms_sent', { authorId: this.props.user._id, receiverId: this.props.match.params.id, content });
   }
+
   bottomScroll() {
     const msgBox = document.getElementById('messagesBox');
     msgBox.scrollTop = msgBox.scrollHeight;
   }
+
   handleMoreSmss() {
-    MessagesAPI.moreMessages(this.props.match.params.id, this.state.messages.length).then(res => {
-      this.setState({moreSms: res.messages.length === 30, messages:[...res.messages,...this.state.messages]});
+    MessagesAPI.moreMessages(this.props.match.params.id, this.state.messages.length).then((res) => {
+      this.setState({ moreSms: res.messages.length === 30, messages: [...res.messages, ...this.state.messages] });
     });
   }
+
   handleReceiveMsg(data) {
-      let {user} = this.props;
-      this.setState({messages: [...this.state.messages, data]})
-      if(data.receiverId !== user._id) this.bottomScroll();
+    const { user } = this.props;
+    this.setState({ messages: [...this.state.messages, data] });
+    if (data.receiverId !== user._id) this.bottomScroll();
   }
 
-  componentDidMount(){
-    let receiverId = this.props.match.params.id;
-    MessagesAPI.getMessages(receiverId).then(res => {
+  componentDidMount() {
+    const receiverId = this.props.match.params.id;
+    MessagesAPI.getMessages(receiverId).then((res) => {
       this.props.dispatch(readChat(receiverId));
-      this.setState({receiver: [res.receiver]});
+      this.setState({ receiver: [res.receiver] });
       window.socket.on('sms_received', this.handleReceiveMsg);
       this.setState(res);
-    })
+    });
   }
+
   componentDidUpdate() {
-    if(this.state.messages.length <= 30) {
+    if (this.state.messages.length <= 30) {
       this.bottomScroll();
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.socket.removeListener('sms_received', this.handleReceiveMsg);
   }
 
   render() {
-    const {user} = this.props;
-    const {messages, receiver, moreSms} = this.state;
-    return(
+    const { user } = this.props;
+    const { messages, receiver, moreSms } = this.state;
+    return (
       <div className="contentBox">
         <div className="container">
           <Receiver>{receiver.username}</Receiver>
           <MessagesBox id="messagesBox">
-            {(messages.length >= 30 && moreSms) ? <p className="moreSmss" onClick={()=>this.handleMoreSmss()}>show more</p> : null}
-            {messages.length > 0 ?
-              messages.map((m,i) => {
-                let smsClass = user._id === m.authorId ? 'me' : 'other';
-                return (<Message key={i} className={smsClass}>
-                  <p className="content">{m.content}</p>
-                  <p className="date">{getTime(new Date(m.createdAt))}</p>
-                </Message>);
+            {(messages.length >= 30 && moreSms) ? <p className="moreSmss" onClick={() => this.handleMoreSmss()}>show more</p> : null}
+            {messages.length > 0
+              ? messages.map((m, i) => {
+                const smsClass = user._id === m.authorId ? 'me' : 'other';
+                return (
+                  <Message key={i} className={smsClass}>
+                    <p className="content">{m.content}</p>
+                    <p className="date">{getTime(new Date(m.createdAt))}</p>
+                  </Message>
+                );
               })
-            : <p className="noMessages">You have no messages with <span className="receiver">{receiver.username}</span>, go ahead and say something :)</p>
+              : (
+                <p className="noMessages">You have no messages with<span className="receiver"> {receiver.username}</span>, go ahead and say something :)</p>
+              )
             }
           </MessagesBox>
           <SendBox>
-            <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({content: e.target.value})} value={this.state.content} onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleSend()}}}/>
-            <span className="icon b-arrow-fill" onClick={()=> this.handleSend()}></span>
+            <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({ content: e.target.value })} value={this.state.content} onKeyUp={(e) => { if (e.keyCode === 13) { this.handleSend(); } }} />
+            <span className="icon b-arrow-fill" onClick={() => this.handleSend()} />
           </SendBox>
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
-export const Chat = connect(store => ({user: store.user}))(withRouter(_Chat));
+export const Chat = connect(store => ({ user: store.user }))(withRouter(_Chat));

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Button } from '../components/Button';
 import { InitCarousel } from '../components/InitCarousel';
-import {colors} from '../lib/common/colors';
+import { colors } from '../lib/common/colors';
 
 const StyledGetStarted = styled.div`
   height: 100%;
@@ -32,17 +32,14 @@ const StyledGetStarted = styled.div`
 `;
 
 
-export const GetStartedPage = connect(store => ({user: store.user}))(({user, dispatch}) => {
-
-  return (
-    <StyledGetStarted>
-      <InitCarousel/>
-      <div className="bottom-box">
-        <div className="actions">
-          <Button link="/login" className="btn">login</Button>
-          <Button link="/signup" className="btn btn-primary">sign up</Button>
-        </div>
+export const GetStartedPage = connect(store => ({ user: store.user }))(({ user, dispatch }) => (
+  <StyledGetStarted>
+    <InitCarousel />
+    <div className="bottom-box">
+      <div className="actions">
+        <Button link="/login" className="btn">login</Button>
+        <Button link="/signup" className="btn btn-primary">sign up</Button>
       </div>
-    </StyledGetStarted>
-  )
-});
+    </div>
+  </StyledGetStarted>
+));

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NotificationsAPI }  from '../lib/API/notifications';
-import NotificationsThumb from '../components/NotificationsThumb';
 import styled from '@emotion/styled';
+import { NotificationsAPI } from '../lib/API/notifications';
+import NotificationsThumb from '../components/NotificationsThumb';
 import { colors } from '../lib/common/colors';
 import { readNotification } from '../lib/redux/actions';
 
@@ -27,28 +27,30 @@ class _NotificationsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: []
-    }
+      notifications: [],
+    };
   }
+
   componentDidMount() {
-    NotificationsAPI.getNotifications().then(notifications => this.setState({notifications})).catch(()=>{});
+    NotificationsAPI.getNotifications().then(notifications => this.setState({ notifications })).catch(() => {});
   }
+
   render() {
     const notifications = this.state.notifications;
-    //const notifications = [...this.props.user.notificationsId].reverse();
-    //console.log(notifications)
+    // const notifications = [...this.props.user.notificationsId].reverse();
+    // console.log(notifications)
     return (
       <div className="contentBox">
         <div className="container">
-        <NotificationsContainer>
-          {notifications.length > 0 ?
-            notifications.map(n => <NotificationsThumb key={n._id} readNotification={id=>this.props.dispatch(readNotification(id))} notification={n}/>)
-          : <p className="noNotifications">You have no notifications yet :)</p>}
-        </NotificationsContainer>
+          <NotificationsContainer>
+            {notifications.length > 0
+              ? notifications.map(n => <NotificationsThumb key={n._id} readNotification={id => this.props.dispatch(readNotification(id))} notification={n} />)
+              : <p className="noNotifications">You have no notifications yet :)</p>}
+          </NotificationsContainer>
         </div>
       </div>
     );
   }
 }
 
-export const NotificationsPage = connect(store => ({user: store.user}))(_NotificationsPage);
+export const NotificationsPage = connect(store => ({ user: store.user }))(_NotificationsPage);

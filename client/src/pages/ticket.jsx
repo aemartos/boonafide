@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { setBusy } from '../lib/redux/actions';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import truncate from 'lodash/truncate';
+import { Link } from 'react-router-dom';
+import { setBusy } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
 import { setMarker, formatDate } from '../lib/common/helpers';
 import { TicketsAPI } from '../lib/API/tickets';
-import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
 import { ValidationComponent } from '../components/ValidationComponent';
 import MapComponent from '../components/map/MapComponent';
-import { Link } from 'react-router-dom';
 
 
 const StyledTicket = styled.div`
@@ -52,8 +52,8 @@ const StyledTicket = styled.div`
   }
   .favorDescription {
     margin: 1.2em 0;
-    padding-bottom: ${({user,ticket}) => user._id === ticket.donorId._id ? "1em" : "0"};
-    border-bottom: ${({user,ticket}) => user._id === ticket.donorId._id ? `1px solid ${colors.darkGrey}` : "0"};
+    padding-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? "1em" : "0")};
+    border-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? `1px solid ${colors.darkGrey}` : "0")};
     .title {
       display: flex;
       flex-flow: row nowrap;
@@ -84,7 +84,7 @@ const StyledTicket = styled.div`
       }
     }
     #map {
-      height: ${props => props.user._id === props.ticket.donorId._id ? "16.7em" : "13em"};
+      height: ${props => (props.user._id === props.ticket.donorId._id ? "16.7em" : "13em")};
       background-color: ${colors.midGrey}
     }
   }
@@ -131,76 +131,86 @@ class _TicketDetailPage extends Component {
     this.state = {
       ticket: null,
       isVisible: false,
-      validating: false
-    }
+      validating: false,
+    };
   }
 
   handleModal(boolean) {
-    this.setState({isVisible: boolean});
+    this.setState({ isVisible: boolean });
   }
 
   handleValidate(boolean) {
-    this.setState({isVisible: false, validating: boolean});
+    this.setState({ isVisible: false, validating: boolean });
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.dispatch(setBusy(true));
   }
 
   componentDidMount() {
-    let id = this.props.match.params.id;
-    TicketsAPI.getTicket(id).then(ticket => {
+    const id = this.props.match.params.id;
+    TicketsAPI.getTicket(id).then((ticket) => {
       this.props.dispatch(setBusy(false));
-      this.setState({ticket});
+      this.setState({ ticket });
     }).catch(e => this.props.history.push('/not-found'));
   }
 
   render() {
-    const {ticket, validating} = this.state;
-    const {user} = this.props;
+    const { ticket, validating } = this.state;
+    const { user } = this.props;
     return (
       <div className="contentBox">
         <div className="container">
-          {ticket ?
-            <StyledTicket user={user} ticket={ticket}>
-              {ticket.validated ? <div className="shadow"></div> : null}
-              <ValidationComponent ticket={ticket} validating={validating} closeValidation={(bool)=>this.handleValidate(bool)}/>
-              <Modal isVisible={this.state.isVisible} bottom="35%">
-                <p className="question">Are you sure you want to validate your ticket?</p>
-                <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
-                <p className="instructions">Once a ticket is validated it can not be used again.</p>
-                <div className="actions">
-                  <Button link="" onClick={()=> this.handleModal(false)} className="btn btn-cancel">Cancel</Button>
-                  <Button link="" onClick={()=> this.handleValidate(true)} className="btn btn-confirm">Continue</Button>
+          {ticket
+            ? (
+              <StyledTicket user={user} ticket={ticket}>
+                {ticket.validated ? <div className="shadow" /> : null}
+                <ValidationComponent ticket={ticket} validating={validating} closeValidation={bool => this.handleValidate(bool)} />
+                <Modal isVisible={this.state.isVisible} bottom="35%">
+                  <p className="question">Are you sure you want to validate your ticket?</p>
+                  <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
+                  <p className="instructions">Once a ticket is validated it can not be used again.</p>
+                  <div className="actions">
+                    <Button link="" onClick={() => this.handleModal(false)} className="btn btn-cancel">Cancel</Button>
+                    <Button link="" onClick={() => this.handleValidate(true)} className="btn btn-confirm">Continue</Button>
+                  </div>
+                </Modal>
+                <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name} />
+                <div className="info">
+                  <p className="text donor">Donor: <span className="light capitalize">{ticket.donorId.username}</span></p>
+                  <p className="text receiver">Receiver: <span className="light capitalize">{ticket.receiverId.username}</span></p>
+                  <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
+                  <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
+                  <div className="favorDescription">
+                    <p className="title">
+                      <span className="name">{ticket.favorId.name}</span>
+                      <Link to={`/favors/${ticket.favorId._id}`}><span className="icon b-arrow-short" /></Link>
+                    </p>
+                    <p className="description">{truncate(ticket.favorId.description, { length: 95 })}</p>
+                  </div>
                 </div>
-              </Modal>
-              <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name}/>
-              <div className="info">
-                <p className="text donor">Donor: <span className="light capitalize">{ticket.donorId.username}</span></p>
-                <p className="text receiver">Receiver: <span className="light capitalize">{ticket.receiverId.username}</span></p>
-                <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
-                <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
-                <div className="favorDescription">
-                  <p className="title"><span className="name">{ticket.favorId.name}</span> <Link to={`/favors/${ticket.favorId._id}`}><span className="icon b-arrow-short"></span></Link></p>
-                  <p className="description">{truncate(ticket.favorId.description, {'length': 95})}</p>
+                <div className="validation">
+                  {user._id !== ticket.donorId._id
+                    ? <Button link="" onClick={() => this.handleModal(true)} className={`${ticket.validated ? "disable " : ""}btn btn-primary`}>Validate ticket</Button>
+                    : null}
                 </div>
-              </div>
-              <div className="validation">
-                {user._id !== ticket.donorId._id ?
-                  <Button link="" onClick={()=> this.handleModal(true)} className={(ticket.validated ? "disable " : "") + "btn btn-primary"}>Validate ticket</Button>
-                : null}
-              </div>
-              <div className="mapLocation">
-                <p className="location">Location: <span className="light">{ticket.favorId.locationName}</span></p>
-                { (window.google) ?
-                  <MapComponent center={{lat: ticket.favorId.location.coordinates[1], lng: ticket.favorId.location.coordinates[0]}} setMap={(map)=>{
-                    this.mapObject = map;
-                    this.marker = setMarker({lat: ticket.favorId.location.coordinates[1], lng: ticket.favorId.location.coordinates[0]}, this.marker, this.mapObject, undefined, false);
-                  }}/>
-                  : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>
+                <div className="mapLocation">
+                  <p className="location">Location: <span className="light">{ticket.favorId.locationName}</span></p>
+                  { (window.google)
+                    ? (
+                      <MapComponent
+                        center={{ lat: ticket.favorId.location.coordinates[1], lng: ticket.favorId.location.coordinates[0] }}
+                        setMap={(map) => {
+                          this.mapObject = map;
+                          this.marker = setMarker({ lat: ticket.favorId.location.coordinates[1], lng: ticket.favorId.location.coordinates[0] }, this.marker, this.mapObject, undefined, false);
+                        }}
+                      />
+                    )
+                    : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>
                 }
-              </div>
-            </StyledTicket>
+                </div>
+              </StyledTicket>
+            )
             : null
           }
         </div>
@@ -209,4 +219,4 @@ class _TicketDetailPage extends Component {
   }
 }
 
-export const TicketDetailPage = connect(store => ({user: store.user}))(withRouter(_TicketDetailPage));
+export const TicketDetailPage = connect(store => ({ user: store.user }))(withRouter(_TicketDetailPage));

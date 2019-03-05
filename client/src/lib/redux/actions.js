@@ -1,75 +1,53 @@
 
-export const login = (user) => {
-  return {
-    type: "LOGIN",
-    user
-  }
-}
+export const login = user => ({
+  type: 'LOGIN',
+  user,
+});
 
-export const updateUser = (user) => {
-  return {
-    type: "UPDATE_USER",
-    user
-  }
-}
+export const updateUser = user => ({
+  type: 'UPDATE_USER',
+  user,
+});
 
-export const logout = () => {
-  return {
-    type: "LOGOUT",
-  }
-}
+export const logout = () => ({
+  type: 'LOGOUT',
+});
 
-export const errorMessageAction = (message) => {
-  return {
-    type: "ADD_MESSAGE",
-    message
-  }
-}
+export const errorMessageAction = message => ({
+  type: 'ADD_MESSAGE',
+  message,
+});
 
-export const clearMessages = () => {
-  return {
-    type: "DELETE_ALL_MESSAGES",
-  }
-}
+export const clearMessages = () => ({
+  type: 'DELETE_ALL_MESSAGES',
+});
 
-export const setBusy = (status) => {
-  return {
-    type: "SET_BUSY",
-    status
-  }
-}
+export const setBusy = status => ({
+  type: 'SET_BUSY',
+  status,
+});
 
-export const setFavor = (favor) => {
-  return {
-    type: "SET_FAVOR",
-    favor
-  }
-}
+export const setFavor = favor => ({
+  type: 'SET_FAVOR',
+  favor,
+});
 
-export const newChat = (chat) => {
-  return {
-    type: "NEW_CHAT",
-    chat
-  }
-}
+export const newChat = chat => ({
+  type: 'NEW_CHAT',
+  chat,
+});
 
-export const newNotification = (notification) => {
-  return {
-    type: "NEW_NOTIFICATION",
-    notification
-  }
-}
+export const newNotification = notification => ({
+  type: 'NEW_NOTIFICATION',
+  notification,
+});
 
-export const readChat = (person) => {
-  return {
-    type: "READ_CHAT",
-    person
-  }
-}
+export const readChat = person => ({
+  type: 'READ_CHAT',
+  person,
+});
 
-export const readNotification = id => {
-  return {
-    type: "READ_NOTIFICATION",
-    id
-  }
-}
+export const readNotification = id => ({
+  type: 'READ_NOTIFICATION',
+  id,
+});

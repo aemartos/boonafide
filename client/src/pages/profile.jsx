@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from '@emotion/styled';
+import Slider from "react-slick";
 import { addProfilePicture } from '../lib/API/cloudinary';
 import { AuthAPI } from '../lib/API/auth';
 import { BoonsAPI } from '../lib/API/boons';
 import { updateUser, setBusy } from '../lib/redux/actions';
 import { UsersAPI } from '../lib/API/users';
-import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -85,7 +85,7 @@ const ContentBox = styled.div`
       height: 6em;
       border-radius: 50%;
       object-fit: cover;
-      opacity: ${props => props.user.currentHelped.length >= 3 && props.myUser ? ".3" : "1"};
+      opacity: ${props => (props.user.currentHelped.length >= 3 && props.myUser ? ".3" : "1")};
     }
     .redeemBtn {
       position: absolute;
@@ -177,58 +177,67 @@ class _ProfilePage extends Component {
       switchFav: "Offer",
       favOffer: [],
       favNeed: [],
-      currentHelped: []
-    }
+      currentHelped: [],
+    };
   }
+
   handleSwitch(switchFav) {
-    this.setState({switchFav});
+    this.setState({ switchFav });
     if (switchFav === "Offer") {
       this.slider.slickGoTo(0);
     } else if (switchFav === "Need") {
       this.slider.slickGoTo(1);
     }
   }
+
   handleChange(e) {
-    this.setState({file: e.target.files[0]});
+    this.setState({ file: e.target.files[0] });
   }
+
   handleSubmit(e) {
     e.preventDefault();
     addProfilePicture(this.state.file);
   }
+
   handleRedeemBoon() {
     BoonsAPI.redeemBoon().then(() => {
-      AuthAPI.currentUser().then(user => {
+      AuthAPI.currentUser().then((user) => {
         this.props.dispatch(updateUser(user));
-        this.setState({currentHelped: user.currentHelped})
+        this.setState({ currentHelped: user.currentHelped });
       }).catch(e => this.props.dispatch(setBusy(false)));
     }).catch(e => this.props.history.push('/not-found'));
-
   }
-  componentWillMount(){
+
+  componentWillMount() {
     this.props.dispatch(setBusy(true));
   }
-  componentDidMount(){
+
+  componentDidMount() {
     if (this.props.match.params.id) {
-      let id = this.props.match.params.id;
-      UsersAPI.getUser(id).then(user => this.setState({user, favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped}))
+      const id = this.props.match.params.id;
+      UsersAPI.getUser(id).then(user => this.setState({
+        user, favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped,
+      }))
         .catch(e => this.props.history.push('/not-found'));
     } else {
-      AuthAPI.currentUser().then(user => {
+      AuthAPI.currentUser().then((user) => {
         this.props.dispatch(updateUser(user));
-        this.setState({favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped})
+        this.setState({ favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped });
       }).catch(e => this.props.dispatch(setBusy(false)));
     }
   }
-  componentWillUpdate(nextProps, nextState){
+
+  componentWillUpdate(nextProps, nextState) {
     if (!this.state.user && nextState.user) {
       this.props.dispatch(setBusy(false));
     }
   }
+
   render() {
     const myUser = !this.state.user;
-    const {user} = myUser ? this.props : this.state;
-    const {isBusy} = this.props;
-    const {favOffer, favNeed, currentHelped} = this.state;
+    const { user } = myUser ? this.props : this.state;
+    const { isBusy } = this.props;
+    const { favOffer, favNeed, currentHelped } = this.state;
     const settings = {
       dots: false,
       arrows: false,
@@ -237,99 +246,109 @@ class _ProfilePage extends Component {
       slidesToScroll: 1,
       swipeToSlide: false,
       swipe: false,
-      speed: 300
+      speed: 300,
     };
     return (
       <div className="contentBox">
         <div className="container">
           <ContentBox user={user} myUser={myUser}>
-            {user && !isBusy ?
-              <React.Fragment>
-                <h2 className="username">{user.username}</h2>
-                <div className="mainBox">
-                  <div className="profPic"><img src={user.pictureUrl} alt="profile pic"/></div>
-                  <div className="actions">
-                  {myUser ?
-                    <span className="b-edit"></span>
-                  :
-                    <React.Fragment>
-                      <Link to={`/messages/${user._id}`}><span className="b-mp"></span></Link>
-                      <span className="b-sharing"></span>
-                    </React.Fragment>
+            {user && !isBusy
+              ? (
+                <React.Fragment>
+                  <h2 className="username">{user.username}</h2>
+                  <div className="mainBox">
+                    <div className="profPic"><img src={user.pictureUrl} alt="profile pic" /></div>
+                    <div className="actions">
+                      {myUser
+                        ? <span className="b-edit" />
+                        : (
+                          <React.Fragment>
+                            <Link to={`/messages/${user._id}`}><span className="b-mp" /></Link>
+                            <span className="b-sharing" />
+                          </React.Fragment>
+                        )
                   }
-                  </div>
-                </div>
-
-                <div className="currentHelped">
-                  {[...Array(3)].map((u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : ""}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic"/></Link>)}
-                  {currentHelped.length >= 3 && myUser ?
-                    <Button className="btn btn-primary redeemBtn" onClick={()=> this.handleRedeemBoon()} >Redeem boon!</Button>
-                  : null}
-                </div>
-
-                <div className="stats">
-                  <div className="statsBox">
-                    <div className="statItem received">
-                      <p className="number">{user.favReceived.length}</p>
-                      <p className="text">received</p>
-                    </div>
-                    <div className="statItem done">
-                      <p className="number">{user.favDone.length}</p>
-                      <p className="text">done</p>
-                    </div>
-                    <div className="statItem boons">
-                      <p className="number">{user.boons.length}<span className="b-boon"></span></p>
-                      <p className="text">boons</p>
                     </div>
                   </div>
-                </div>
 
-                <div className="location">
-                  <p className="locationText"> <span className="b-location"></span>{user.locationName}</p>
-                </div>
+                  <div className="currentHelped">
+                    {[...Array(3)].map((u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : ""}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic" /></Link>)}
+                    {currentHelped.length >= 3 && myUser
+                      ? <Button className="btn btn-primary redeemBtn" onClick={() => this.handleRedeemBoon()}>Redeem boon!</Button>
+                      : null}
+                  </div>
 
-                <div className="description">{user.description}</div>
+                  <div className="stats">
+                    <div className="statsBox">
+                      <div className="statItem received">
+                        <p className="number">{user.favReceived.length}</p>
+                        <p className="text">received</p>
+                      </div>
+                      <div className="statItem done">
+                        <p className="number">{user.favDone.length}</p>
+                        <p className="text">done</p>
+                      </div>
+                      <div className="statItem boons">
+                        <p className="number">
+                          {user.boons.length}
+                          <span className="b-boon" />
+                        </p>
+                        <p className="text">boons</p>
+                      </div>
+                    </div>
+                  </div>
 
-                {/* {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
+                  <div className="location">
+                    <p className="locationText">
+                      {' '}
+                      <span className="b-location" />
+                      {user.locationName}
+                    </p>
+                  </div>
+
+                  <div className="description">{user.description}</div>
+
+                  {/* {myUser ? <form onSubmit={(e)=>this.handleSubmit(e)}>
                   <input type="file" onChange={(e)=>this.handleChange(e)} /> <br/>
                   <button type="submit">Save new profile picture</button>
                 </form> : null} */}
 
-                <div className="favSwitch">
-                  <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
-                    <State active value='Offer'>Offer</State>
-                    <State active value='Need'>Need</State>
-                  </Switch>
+                  <div className="favSwitch">
+                    <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
+                      <State active value="Offer">Offer</State>
+                      <State active value="Need">Need</State>
+                    </Switch>
 
-                  <div className="favors">
-                    <Slider ref={slider => (this.slider = slider)} {...settings}>
-                      <div className="offer">
-                        {favOffer.length > 0 ?
-                          favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
-                          : <p className="noFavors">You have no favor offering, please consider adding some</p>
+                    <div className="favors">
+                      <Slider ref={slider => (this.slider = slider)} {...settings}>
+                        <div className="offer">
+                          {favOffer.length > 0
+                            ? favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
+                            : <p className="noFavors">You have no favor offering, please consider adding some</p>
                         }
-                      </div>
-                      <div className="need">
-                        {favNeed.length > 0 ?
-                          favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
-                          : <p className="noFavors">It seems you don't need anything, that's ok, but you may consider adding something</p>
+                        </div>
+                        <div className="need">
+                          {favNeed.length > 0
+                            ? favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
+                            : <p className="noFavors">It seems you don't need anything, that's ok, but you may consider adding something</p>
                         }
-                      </div>
-                    </Slider>
+                        </div>
+                      </Slider>
+                    </div>
                   </div>
-                </div>
 
-                <div className="tickets">
-                  <Button link="/tickets" className="btn btn-primary">See tickets</Button>
-                </div>
-              </React.Fragment>
+                  <div className="tickets">
+                    <Button link="/tickets" className="btn btn-primary">See tickets</Button>
+                  </div>
+                </React.Fragment>
+              )
               : null
             }
-        </ContentBox>
+          </ContentBox>
+        </div>
       </div>
-    </div>
     );
   }
 }
 
-export const ProfilePage = connect(store => ({user: store.user}))(withRouter(_ProfilePage));
+export const ProfilePage = connect(store => ({ user: store.user }))(withRouter(_ProfilePage));

@@ -44,7 +44,7 @@ export const Spinner = () => {
         <p className="author">_"{quote.author}"</p>
         <p className="message">"{quote.message}"</p>
       </div>
-      <HeartSpinner size={50} color={colors.purple} loading={true}/>
+      <HeartSpinner size={50} color={colors.purple} loading />
     </StyledSpinner>
   );
-}
+};

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { setBusy } from '../lib/redux/actions';
 import styled from '@emotion/styled';
+import { setBusy } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
 import { TicketsAPI } from '../lib/API/tickets';
 import TicketThumb from '../components/TicketThumb';
@@ -31,38 +31,38 @@ class _TicketsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickets: []
-    }
+      tickets: [],
+    };
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.dispatch(setBusy(true));
   }
 
   componentDidMount() {
-    TicketsAPI.getAllTickets().then(tickets => {
+    TicketsAPI.getAllTickets().then((tickets) => {
       this.props.dispatch(setBusy(false));
-      this.setState({tickets});
+      this.setState({ tickets });
     }).catch(e => this.props.history.push('/not-found'));
   }
 
   render() {
-    const {tickets} = this.state;
+    const { tickets } = this.state;
     return (
       <div className="contentBox">
         <div className="container">
           <ContentBox>
             <div className="tickets">
-                <div className="offer">
-                  {tickets.length > 0 ?
-                    tickets.map(t => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.pictureUrls[0]} name={t.favorId.name} date={t.date} location={t.favorId.locationName} validated={t.validated} />)
-                    : <p className="noTickets">You have no tickets, you need to accept others needs to get a ticket</p>
+              <div className="offer">
+                {tickets.length > 0
+                  ? tickets.map(t => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.pictureUrls[0]} name={t.favorId.name} date={t.date} location={t.favorId.locationName} validated={t.validated} />)
+                  : <p className="noTickets">You have no tickets, you need to accept others needs to get a ticket</p>
                   }
-                </div>
+              </div>
             </div>
           </ContentBox>
+        </div>
       </div>
-    </div>
     );
   }
 }

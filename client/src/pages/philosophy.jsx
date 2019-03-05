@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BoonsAPI } from '../lib/API/boons';
 import styled from '@emotion/styled';
-import { colors } from '../lib/common/colors';
 import FlipNumbers from 'react-flip-numbers';
+import { BoonsAPI } from '../lib/API/boons';
+import { colors } from '../lib/common/colors';
 
 const Container = styled.div`
   width: 90%;
@@ -93,14 +93,16 @@ export default class PhilosophyPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      boons: 0
-    }
+      boons: 0,
+    };
   }
+
   componentWillMount() {
-    BoonsAPI.getTotalBoons().then(boons => this.setState({boons: boons.length}));
+    BoonsAPI.getTotalBoons().then(boons => this.setState({ boons: boons.length }));
   }
+
   render() {
-    let {boons} = this.state;
+    const { boons } = this.state;
     return (
       <div className="contentBox">
         <Container>
@@ -116,14 +118,14 @@ export default class PhilosophyPage extends Component {
               numbers={boons.toString()}
               numberStyle={{ color: colors.purple }}
             />
-            <i className="icon b-boon"></i>
+            <i className="icon b-boon" />
           </div>
 
           <div className="box mainInfo">
-            <img className="logo" src="/images/logo.png" alt="logo"/>
+            <img className="logo" src="/images/logo.png" alt="logo" />
             <p className="description">Change the world through a "chain of favors”. A person must help three people in a disinterested way. They also have to help three others and so on, until a favors chain that improves the lives of citizens is spread around the world.</p>
             <p className="mainAction">When you do 3 favors, them became into 1 boon. With the boons you can ask for favors.</p>
-            <img className="chain" src="/images/chain.png" alt="chain"/>
+            <img className="chain" src="/images/chain.png" alt="chain" />
           </div>
 
           <div className="box principles">

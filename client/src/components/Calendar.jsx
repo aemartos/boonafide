@@ -2,8 +2,8 @@ import React from 'react';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import styled from '@emotion/styled';
-import { colors } from '../lib/common/colors';
 import moment from 'moment';
+import { colors } from '../lib/common/colors';
 
 const StyledCalendar = styled.div`
   .DayPicker {
@@ -63,17 +63,16 @@ export default class Calendar extends React.Component {
       selectedDays: [new Date()],
     };
   }
+
   handleDayClick(day, { selected }) {
-    let selectedDays = [...this.state.selectedDays];
-    let activeDay = this.props.selectedDay;
-    let selectedDay = moment(day).format('DD-MM-YYYY');
+    const selectedDays = [...this.state.selectedDays];
+    const activeDay = this.props.selectedDay;
+    const selectedDay = moment(day).format('DD-MM-YYYY');
     if (selected && activeDay === selectedDay) {
-      const selectedIndex = selectedDays.findIndex(selectedDay =>
-        DateUtils.isSameDay(selectedDay, day)
-      );
+      const selectedIndex = selectedDays.findIndex(selectedDay => DateUtils.isSameDay(selectedDay, day));
       selectedDays.splice(selectedIndex, 1);
       this.props.onSelectDay(day, true);
-    } else if (!selected){
+    } else if (!selected) {
       selectedDays.push(day);
       this.props.onSelectDay(day, false);
     } else {
@@ -81,6 +80,7 @@ export default class Calendar extends React.Component {
     }
     this.setState({ selectedDays });
   }
+
   render() {
     return (
       <StyledCalendar>

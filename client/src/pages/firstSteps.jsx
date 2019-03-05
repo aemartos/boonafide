@@ -13,7 +13,7 @@ import { Button } from '../components/Button';
 import InputMapSearch from '../components/map/InputMapSearch';
 import MapComponent from '../components/map/MapComponent';
 
-const center = {lat :40.4169473, lng: -3.7035285};
+const center = { lat: 40.4169473, lng: -3.7035285 };
 
 const StyledFirstSteps = styled.div`
   position: relative;
@@ -182,8 +182,8 @@ const Item = styled.div`
 `;
 
 const CategoryBox = (cat, index, action, cb) => (
-  <button key={cat} onClick={()=> cb(cat, index, action)} className={"cat" + (index !== -1 ? " cat-selected" : "")}>
-    <span className={`icon b-${cat}`}></span>
+  <button key={cat} onClick={() => cb(cat, index, action)} className={`cat${index !== -1 ? " cat-selected" : ""}`}>
+    <span className={`icon b-${cat}`} />
     <span className="text">{cat}</span>
   </button>
 );
@@ -194,49 +194,49 @@ export default class FirstStepsPage extends Component {
     this.state = {
       offerCategories: [],
       needCategories: [],
-      slideIndex: 0
-    }
+      slideIndex: 0,
+    };
     this.handleCat = this.handleCat.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleCat(cat, index, action) {
     if (index === -1) {
-      this.setState({[action]: [...this.state[action], cat]});
+      this.setState({ [action]: [...this.state[action], cat] });
     } else {
-      let deletedState = [...this.state[action]];
+      const deletedState = [...this.state[action]];
       deletedState.splice(index, 1);
-      this.setState({[action]: deletedState});
+      this.setState({ [action]: deletedState });
     }
   }
 
-  handleFinish(){
+  handleFinish() {
     const location = {
       type: "Point",
-      coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
+      coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()],
     };
-    let service = new window.google.maps.places.PlacesService(this.mapObject);
-    service.textSearch({location: this.marker.getPosition(), query: "center"}, (place)=>{
-      let code = place.length > 0 ? place[0].plus_code.compound_code : "Unknown";
-      let arr = code.split(" ");
+    const service = new window.google.maps.places.PlacesService(this.mapObject);
+    service.textSearch({ location: this.marker.getPosition(), query: "center" }, (place) => {
+      const code = place.length > 0 ? place[0].plus_code.compound_code : "Unknown";
+      const arr = code.split(" ");
       arr.shift();
-      let locationName = place.length > 0 ? arr.join(" ") : "Unknown";
-      const {offerCategories, needCategories} = this.state;
-      let data = {
+      const locationName = place.length > 0 ? arr.join(" ") : "Unknown";
+      const { offerCategories, needCategories } = this.state;
+      const data = {
         location,
         locationName,
         offerCategories,
-        needCategories
+        needCategories,
       };
-      UsersAPI.updateUser(data).then(()=>{
-          AuthAPI.currentUser()
-          .then(user => {
+      UsersAPI.updateUser(data).then(() => {
+        AuthAPI.currentUser()
+          .then((user) => {
             this.props.dispatch(updateUser(user));
-            //this.props.history.push('/');
+            // this.props.history.push('/');
           })
-          .catch(e => this.props.dispatch(setBusy(false)))
+          .catch(e => this.props.dispatch(setBusy(false)));
       })
-      .catch(e=>alert(e));
+        .catch(e => console.log(e));
     });
   }
 
@@ -265,33 +265,35 @@ export default class FirstStepsPage extends Component {
       adaptiveHeight: true,
       swipeToSlide: false,
       swipe: false,
-      beforeChange: (current, next) => this.setState({ slideIndex: next })
+      beforeChange: (current, next) => this.setState({ slideIndex: next }),
     };
     return (
       <StyledFirstSteps>
         <div className="progress-box">
           <div className="progress-bar">
-            <div className="fill-bar" style={{width: ((this.state.slideIndex + 1) * 33.333333) + "%" }}></div>
+            <div className="fill-bar" style={{ width: `${(this.state.slideIndex + 1) * 33.333333}%` }} />
           </div>
-          <div className="numbers"><span className="current-step">{this.state.slideIndex+1}</span>/3</div>
+          <div className="numbers">
+            <span className="current-step">{this.state.slideIndex + 1}</span>/3
+          </div>
         </div>
 
         <Slider ref={slider => (this.slider = slider)} {...settings}>
 
           <Item>
             <div className="box">
-              <h3 className="question">how are you going to change the world? what can you <span className="mark">offer</span>?</h3>
+              <h3 className="question">how are you going to change the world? what can you<span className="mark"> offer</span>?</h3>
               <div className="cats offer-cats">
-                {categories.map((cat) => CategoryBox(cat, this.state.offerCategories.indexOf(cat), "offerCategories", this.handleCat))}
+                {categories.map(cat => CategoryBox(cat, this.state.offerCategories.indexOf(cat), "offerCategories", this.handleCat))}
               </div>
             </div>
           </Item>
 
           <Item>
             <div className="box">
-              <h3 className="question">help others to spread the favor chain? what do you <span className="mark">need</span>?</h3>
+              <h3 className="question">help others to spread the favor chain? what do you<span className="mark"> need</span>?</h3>
               <div className="cats need-cats">
-                {categories.map((cat) => CategoryBox(cat, this.state.needCategories.indexOf(cat), "needCategories", this.handleCat))}
+                {categories.map(cat => CategoryBox(cat, this.state.needCategories.indexOf(cat), "needCategories", this.handleCat))}
               </div>
             </div>
           </Item>
@@ -311,21 +313,23 @@ export default class FirstStepsPage extends Component {
           </Item>
 
         </Slider>
-        {this.state.slideIndex === 2 && window.google ?
+        {this.state.slideIndex === 2 && window.google ? (
           <React.Fragment>
-            <InputMapSearch handleSearchResult={this.handleSearch}/>
-            <MapComponent center={center} setMap={(map)=>{
-              this.mapObject = map;
-              this.marker && this.marker.setMap(null);
-              this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
-            }}/>
+            <InputMapSearch handleSearchResult={this.handleSearch} />
+            <MapComponent
+              center={center}
+              setMap={(map) => {
+                this.mapObject = map;
+                this.marker && this.marker.setMap(null);
+                this.marker = setMarker(center, this.marker, this.mapObject, undefined, true);
+              }}
+            />
           </React.Fragment>
-        : null}
+        ) : null}
 
-        {this.state.slideIndex === 2 ?
-          <Button className="btn btn-primary" onClick={()=>{this.handleFinish()}}>finish</Button>
-          :
-          <Button className="btn btn-primary" onClick={()=>{this.slider.slickGoTo(this.state.slideIndex + 1)}}>next</Button>
+        {this.state.slideIndex === 2
+          ? <Button className="btn btn-primary" onClick={() => { this.handleFinish(); }}>finish</Button>
+          : <Button className="btn btn-primary" onClick={() => { this.slider.slickGoTo(this.state.slideIndex + 1); }}>next</Button>
         }
       </StyledFirstSteps>
     );

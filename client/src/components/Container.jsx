@@ -50,15 +50,17 @@ const StyledContainer = styled.div`
 `;
 
 const _Container = (props) => {
-  const {children, user, location, history} = props;
+  const {
+    children, user, location, history,
+  } = props;
   return (
-    <StyledContainer className={`_container`}>
+    <StyledContainer className="_container">
       {/* <img className="iphoneMask" src="/images/iphoneMask_black.png" alt=""></img> */}
-      {(user && !user.newUser) ? <TopMenu location={location} history={history}/> : null}
+      {(user && !user.newUser) ? <TopMenu location={location} history={history} /> : null}
       {children}
-      {(user && !user.newUser) ? <BottomMenu location={location}/> : null}
+      {(user && !user.newUser) ? <BottomMenu location={location} /> : null}
     </StyledContainer>
   );
 };
 
-export const Container = connect(state => ({user: state.user}))(_Container);
+export const Container = connect(state => ({ user: state.user }))(_Container);

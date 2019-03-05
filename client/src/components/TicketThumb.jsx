@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import truncate from 'lodash/truncate';
 import { colors } from '../lib/common/colors';
 import { formatDate } from '../lib/common/helpers';
-import truncate from 'lodash/truncate';
 
 const StyledThumb = styled.div`
   position: relative;
@@ -71,23 +71,30 @@ const StyledThumb = styled.div`
 
 
 export default class TicketThumb extends Component {
-
-  render(){
-    const {img, name, date, ticketId, validated, location} = this.props;
+  render() {
+    const {
+      img, name, date, ticketId, validated, location,
+    } = this.props;
     return (
       <Link to={`/tickets/${ticketId}`}>
         <StyledThumb>
-          <div className="dark" style={{display: validated ? "block" : "none"}}>
+          <div className="dark" style={{ display: validated ? "block" : "none" }}>
             <span className="finish">FINISHED</span>
           </div>
-          <img src={img} alt={name}/>
+          <img src={img} alt={name} />
           <div className="info">
             <p className="title">{name}</p>
-            <p className="location"> <span className="icon b-location"></span>{truncate(location, {'length': 45})}</p>
-            <p className="date"><span className="icon b-philosophy"></span>{formatDate(new Date(date))}</p>
+            <p className="location">
+              <span className="icon b-location" />
+              {truncate(location, { length: 45 })}
+            </p>
+            <p className="date">
+              <span className="icon b-philosophy" />
+              {formatDate(new Date(date))}
+            </p>
           </div>
         </StyledThumb>
       </Link>
     );
   }
-};
+}

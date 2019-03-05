@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import {colors} from '../lib/common/colors';
+import { colors } from '../lib/common/colors';
 import { SignUpForm } from '../components/SignUpForm';
 import { Messages } from '../components/Messages';
 
@@ -51,22 +51,21 @@ const StyledSignUp = styled.div`
   }
 `;
 
-export const SignUpPage = () => {
-  return (
-    <StyledSignUp>
+export const SignUpPage = () => (
+  <StyledSignUp>
     <div className="box-container signup">
       <div className="title-box">
         <h2>join boonafide</h2>
         <p>and be part of the favor chain that is changing the world!</p>
       </div>
-      <SignUpForm/>
-      <Messages/>
+      <SignUpForm />
+      <Messages />
       <div>
         <p className="account-message">
-          <span>do you already have an account?</span> <span><Link to="/login">login</Link> or <Link to="/">go back</Link></span>
+          <span>do you already have an account?</span>
+          <span><Link to="/login">login</Link> or <Link to="/">go back</Link></span>
         </p>
       </div>
     </div>
   </StyledSignUp>
-  )
-}
+);

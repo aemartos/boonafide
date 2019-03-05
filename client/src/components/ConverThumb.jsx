@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import truncate from 'lodash/truncate';
 import { colors } from '../lib/common/colors';
 import { getTime } from '../lib/common/helpers';
-import truncate from 'lodash/truncate';
 
 const StyledThumb = styled.div`
   margin: 1em 0;
@@ -55,15 +55,15 @@ const StyledThumb = styled.div`
 `;
 
 export const ConverThumb = (props) => {
-  const {link, img, name, content, hour} = props;
+  const { link, img, name, content, hour } = props;
   return (
     <StyledThumb>
       <Link to={link}>
-        <img src={img} alt={name}/>
+        <img src={img} alt={name} />
         <div className="info">
           <div className="text">
             <p className="name">{name}</p>
-            <p className="content">{truncate(content, {'length': 75})}</p>
+            <p className="content">{truncate(content, { length: 75 })}</p>
           </div>
           <p className="hour">{getTime(new Date(hour))}</p>
         </div>

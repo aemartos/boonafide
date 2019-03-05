@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { colors } from '../lib/common/colors';
 import truncate from 'lodash/truncate';
+import { colors } from '../lib/common/colors';
 
 const StyledThumb = styled.div`
   margin: 1em 0;
@@ -50,15 +50,15 @@ const StyledThumb = styled.div`
 `;
 
 export const FavorThumb = (props) => {
-  const {img, name, description, favorId} = props;
+  const { img, name, description, favorId } = props;
   return (
     <StyledThumb>
-      <img src={img} alt={name}/>
+      <img src={img} alt={name} />
       <div className="info">
         <p className="title">{name}</p>
-        <p className="description">{truncate(description, {'length': 60})}</p>
+        <p className="description">{truncate(description, { length: 60 })}</p>
       </div>
-      <Link to={`/favors/${favorId}`}><span className="b-arrow"></span></Link>
+      <Link to={`/favors/${favorId}`}><span className="b-arrow" /></Link>
     </StyledThumb>
   );
 };

@@ -19,7 +19,7 @@ import { NewFavorPage } from './pages/newFavor';
 import { FavorDetailPage } from './pages/favor';
 import { NotificationsPage } from './pages/notifications';
 import Page404 from './pages/page404';
-import { Sockets } from './components/Sockets';
+import { Sockets } from './components/Sockets';
 
 export default class App extends Component {
   render() {
@@ -29,27 +29,28 @@ export default class App extends Component {
           <Container location={location} history={history}>
             {/* {console.log(location, history)} */}
             <Switch location={location}>
-              <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)}/>
-              <Route path="/login" component={ConditionalUser(()=> <Redirect to="/profile"/>, LogInPage)}/>
-              <Route path="/signup" component={ConditionalUser(()=> <Redirect to="/profile"/>, SignUpPage)}/>
-              <Route path="/firstSteps" component={WithUser(FirstStepsPage)}/>
-              <Route path="/profile/:id" component={WithUser(ProfilePage)}/>
-              <Route path="/profile" component={WithUser(ProfilePage)}/>
-              <Route path="/tickets/:id" component={WithUser(TicketDetailPage)}/>
-              <Route path="/tickets" component={WithUser(TicketsPage)}/>
-              <Route path="/philosophy" component={WithUser(PhilosophyPage)}/>
-              <Route path="/newFavor" component={WithUser(NewFavorPage)}/>
-              <Route path="/favors/:id" component={WithUser(FavorDetailPage)}/>
-              <Route path="/messages/:id" component={WithUser(MessagesDetailPage)}/>
-              <Route path="/messages" component={WithUser(MessagesPage)}/>
-              <Route path="/notifications" component={WithUser(NotificationsPage)}/>
-              <Route exact strict path="/not-found" component={Page404}/>
-              <Route component={()=> {return <Redirect to="/not-found"/>}}/>
+              <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)} />
+              <Route path="/login" component={ConditionalUser(() => <Redirect to="/profile" />, LogInPage)} />
+              <Route path="/signup" component={ConditionalUser(() => <Redirect to="/profile" />, SignUpPage)} />
+              <Route path="/firstSteps" component={WithUser(FirstStepsPage)} />
+              <Route path="/profile/:id" component={WithUser(ProfilePage)} />
+              <Route path="/profile" component={WithUser(ProfilePage)} />
+              <Route path="/tickets/:id" component={WithUser(TicketDetailPage)} />
+              <Route path="/tickets" component={WithUser(TicketsPage)} />
+              <Route path="/philosophy" component={WithUser(PhilosophyPage)} />
+              <Route path="/newFavor" component={WithUser(NewFavorPage)} />
+              <Route path="/favors/:id" component={WithUser(FavorDetailPage)} />
+              <Route path="/messages/:id" component={WithUser(MessagesDetailPage)} />
+              <Route path="/messages" component={WithUser(MessagesPage)} />
+              <Route path="/notifications" component={WithUser(NotificationsPage)} />
+              <Route exact strict path="/not-found" component={Page404} />
+              <Route component={() => <Redirect to="/not-found" />} />
             </Switch>
           </Container>
-          <Sockets/>
+          <Sockets />
         </div>
-      )}/>
+      )}
+      />
     );
   }
 }

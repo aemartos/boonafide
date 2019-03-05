@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from '@emotion/styled';
+import truncate from 'lodash/truncate';
 import { updateUser } from '../lib/redux/actions';
 import { FavorsAPI } from '../lib/API/favors';
 import { AuthAPI } from '../lib/API/auth';
-import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
-import truncate from 'lodash/truncate';
 
 const StyledCard = styled.div`
   position: relative;
-  width: ${props => props.slide ? '100%' : '48%'};
+  width: ${props => (props.slide ? '100%' : '48%')};
   background-color: ${colors.white};
   border: 1px solid ${colors.midGrey};
   border-radius: .5em;
   overflow: hidden;
-  margin-bottom: ${props => props.slide ? '0' : '1em'};
+  margin-bottom: ${props => (props.slide ? '0' : '1em')};
   .typeFav {
     position: absolute;
     right: .7em;
@@ -23,7 +23,7 @@ const StyledCard = styled.div`
     height: 3em;
     width: 3em;
     padding: 1.2em .35em;
-    background-color: ${props => props.type === "Offer" ? colors.purple : colors.orange};
+    background-color: ${props => (props.type === "Offer" ? colors.purple : colors.orange)};
     border-radius: 50%;
     font-family: "Baloo Bhaina";
     line-height: 1em;
@@ -33,8 +33,8 @@ const StyledCard = styled.div`
   }
   .text {
     width: 90%;
-    height: ${props => props.withBtns ? "7.5em" : "4.7em"};
-    margin: ${props => props.withBtns ? '.5em auto' : '.5em auto 1em'};
+    height: ${props => (props.withBtns ? "7.5em" : "4.7em")};
+    margin: ${props => (props.withBtns ? '.5em auto' : '.5em auto 1em')};
     .metadata {
       display: flex;
       flex-flow: row nowrap;
@@ -142,24 +142,28 @@ class _FavorCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFavorite: this.props.user.favFavs.indexOf(this.props.favorId) !== -1
-    }
+      isFavorite: this.props.user.favFavs.indexOf(this.props.favorId) !== -1,
+    };
   }
+
   handleFav(id) {
     FavorsAPI.favFavor(id).then(() => {
-      this.setState({isFavorite: !this.state.isFavorite});
-      AuthAPI.currentUser().then(user => {
+      this.setState({ isFavorite: !this.state.isFavorite });
+      AuthAPI.currentUser().then((user) => {
         this.props.dispatch(updateUser(user));
       });
     });
   }
+
   render() {
-    const {type, img, username, date, name, description, withBtns, userId, favorId, slide} = this.props;
-    const {isFavorite} = this.state;
+    const {
+      type, img, username, date, name, description, withBtns, userId, favorId, slide,
+    } = this.props;
+    const { isFavorite } = this.state;
     return (
       <StyledCard slide={slide} withBtns={withBtns} type={type}>
         <span className="typeFav">{type}</span>
-        <img src={img} alt={name}></img>
+        <img src={img} alt={name} />
         <div className="text">
           <div className="metadata">
             <Link to={`/profile/${userId}`}><span className="usermane">{username}</span></Link>
@@ -167,22 +171,24 @@ class _FavorCard extends Component {
           </div>
           <Link to={`/favors/${favorId}`}>
             <div className="info">
-              <p className="name">{slide ? truncate(name, {'length': 22}) : truncate(name, {'length': 18})}</p>
-              <p className="description">{slide ? truncate(description, {'length': 68}) : truncate(description, {'length': 45})}</p>
+              <p className="name">{slide ? truncate(name, { length: 22 }) : truncate(name, { length: 18 })}</p>
+              <p className="description">{slide ? truncate(description, { length: 68 }) : truncate(description, { length: 45 })}</p>
             </div>
           </Link>
-          {withBtns ?
-            <div className="actions">
-              <Link to={`/messages/${userId}`}><span className="b-mp"></span></Link>
-              <span className={isFavorite ? "b-heart-fill active" : "b-heart"} onClick={()=>this.handleFav(favorId)}></span>
-              <Link to=""><span className="b-sharing"></span></Link>
-            </div>
+          {withBtns
+            ? (
+              <div className="actions">
+                <Link to={`/messages/${userId}`}><span className="b-mp" /></Link>
+                <span className={isFavorite ? "b-heart-fill active" : "b-heart"} onClick={() => this.handleFav(favorId)} />
+                <Link to=""><span className="b-sharing" /></Link>
+              </div>
+            )
             : null
           }
         </div>
       </StyledCard>
     );
-  };
-};
+  }
+}
 
-export const FavorCard = connect(store => ({user: store.user}))(_FavorCard);
+export const FavorCard = connect(store => ({ user: store.user }))(_FavorCard);

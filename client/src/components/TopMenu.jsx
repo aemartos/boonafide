@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import styled from '@emotion/styled';
 import { AuthAPI } from '../lib/API/auth';
-import { logout, clearMessages, /*setBusy*/ } from '../lib/redux/actions';
+import { logout, clearMessages /* setBusy */ } from '../lib/redux/actions';
 import { updateUser } from '../lib/redux/actions';
 import { FavorsAPI } from '../lib/API/favors';
 import { colors } from '../lib/common/colors';
-import styled from '@emotion/styled';
 
 const TopNav = styled.nav`
   height: 5em;
@@ -104,46 +104,58 @@ class _TopMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFavorite: this.props.user.favFavs.indexOf(this.props.favorId) !== -1
-    }
+      isFavorite: this.props.user.favFavs.indexOf(this.props.favorId) !== -1,
+    };
   }
+
   handleFav(id) {
     FavorsAPI.favFavor(id).then(() => {
-      this.setState({isFavorite: !this.state.isFavorite});
-      AuthAPI.currentUser().then(user => {
+      this.setState({ isFavorite: !this.state.isFavorite });
+      AuthAPI.currentUser().then((user) => {
         this.props.dispatch(updateUser(user));
       });
     });
   }
-  render () {
-    const {user, favor, dispatch, location, history} = this.props;
-    const {isFavorite} = this.state;
+
+  render() {
+    const { user, favor, dispatch, location, history } = this.props;
+    const { isFavorite } = this.state;
     return (
       <TopNav>
-        {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') || location.pathname.startsWith('/favors/') ?
-          <React.Fragment>
-            <span className="icon btn-arrow b-arrow-short" onClick={()=> history.goBack()}></span>
-            {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
-          </React.Fragment>
-        :
-          <span className="logout btn" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => {/*dispatch(setBusy(false))*/})}>
-            <span className="icon b-logout"></span>
-          </span>
+        {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') || location.pathname.startsWith('/favors/')
+          ? (
+            <React.Fragment>
+              <span className="icon btn-arrow b-arrow-short" onClick={() => history.goBack()} />
+              {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
+            </React.Fragment>
+          )
+          : (
+            <span className="logout btn" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => { /* dispatch(setBusy(false)) */ })}>
+              <span className="icon b-logout" />
+            </span>
+          )
         }
-        {favor ?
-          <div className="favMenu">
-            <span className={isFavorite ? "icon b-heart-fill active" : "icon b-heart"} onClick={()=>this.handleFav(favor._id)}></span>
-            <span className="icon b-sharing"></span>
-            <div className="threeDots">
-              <span className="dot"></span>
-              <span className="dot"></span>
-              <span className="dot"></span>
+        {favor
+          ? (
+            <div className="favMenu">
+              <span className={ isFavorite ? "icon b-heart-fill active" : "icon b-heart"} onClick={() => this.handleFav(favor._id) } />
+              <span className="icon b-sharing" />
+              <div className="threeDots">
+                <span className="dot" />
+                <span className="dot" />
+                <span className="dot" />
+              </div>
             </div>
-          </div>
-          : <NavLink className="profile-pic" to="/profile" onClick={()=> dispatch(clearMessages())}> <img src={user.pictureUrl} alt={`${user.name} profile`}/></NavLink>}
+          )
+          : (
+            <NavLink className="profile-pic" to="/profile" onClick={() => dispatch(clearMessages())}>
+              {' '}
+              <img src={user.pictureUrl} alt={`${user.name} profile`} />
+            </NavLink>
+          )}
       </TopNav>
-    )
+    );
   }
-};
+}
 
-export const TopMenu = connect(store => ({user: store.user, favor: store.favor}))(_TopMenu);
+export const TopMenu = connect(store => ({ user: store.user, favor: store.favor }))(_TopMenu);
