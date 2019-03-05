@@ -8,8 +8,6 @@
     "antd": "^3.13.4",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-react": "^1.1.7",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -44,9 +42,6 @@
     "eject": "react-scripts eject",
     "postinstall": "prefix-css .timePickerComponent $(pwd)/node_modules/antd/dist/antd.min.css > $(pwd)/src/assets/stylesheets/antd.min.css",
     "copy_to_server": "yarn build && cp -r build/* ../server/public"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "homepage": "/",
   "browserslist": [
