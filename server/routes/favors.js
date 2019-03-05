@@ -81,7 +81,7 @@ router.get('/nearbyFavors', isLoggedIn, (req, res, next) => {
       //.limit(20)
       .then(favorsUnfiltered => {
         let filterFavs = favorsUnfiltered.filter(f => f.creatorId.username !== req.user.username && f.remainingFavNum > 0);
-        let favors = filterFavs.map((f)=> {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`};});
+        let favors = filterFavs.map((f) => {return {...JSON.parse(JSON.stringify(f)), creationdate: `${f.createdAt.getDate()}/${f.createdAt.getMonth() + 1}/${f.createdAt.getFullYear()}`};});
         res.json({favors});
       });
     })
