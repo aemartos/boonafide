@@ -6,7 +6,8 @@
     "start": "node ./server/bin/www",
     "dev": "cat ./server/boonafide && DEBUG=server:* nodemon ./server/bin/www",
     "dev-windows": "nodemon ./server/bin/www",
-    "heroku-prebuild": "./build.sh"
+    "heroku-prebuild": "./build.sh",
+    "lint": "eslint server"
   },
   "engines": {
     "node": "10.6.0"
@@ -39,6 +40,9 @@
   },
   "homepage": "/",
   "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-import": "^2.16.0",
     "nodemon": "^1.12.1"
   }
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User');
-const Boon = require('../models/Boon');
 const {isLoggedOut, isLoggedIn} = require('../middlewares/isLogged');
 
 const generateHash = require('random-hash').generateHash;
@@ -33,7 +32,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   })(req,res,next)
 });
 
-router.post("/signup", isLoggedOut, (req, res, next) => {
+router.post("/signup", isLoggedOut, (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -72,7 +71,7 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
                 .then(user => {
                   res.json({user})
                 })
-                .catch(err => {
+                .catch(() => {
                   res.status(500).send("Something went wrong");
                 })
             });

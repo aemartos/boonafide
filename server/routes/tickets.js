@@ -65,7 +65,7 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
   }
 });
 
-router.post('/newTicket', isLoggedIn, (req, res, next) => {
+router.post('/newTicket', isLoggedIn, (req, res) => {
   const ticket = req.body.data;
   if (ticket.donorId.toString() === req.user._id.toString() || ticket.receiverId.toString() === req.user._id.toString() ) {
     const newTicket = new Ticket(ticket);
@@ -118,7 +118,7 @@ router.post('/newTicket', isLoggedIn, (req, res, next) => {
               }
             })
         })
-        .catch(err => res.status(500).send("Something went wrong"))
+        .catch(() => res.status(500).send("Something went wrong"))
   }
 });
 

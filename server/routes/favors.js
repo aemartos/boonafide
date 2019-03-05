@@ -96,7 +96,7 @@ router.get('/:favorId', isLoggedIn, (req, res, next) => {
       .catch(err => next(err));
 });
 
-router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
+router.post('/:favorId/addComment', isLoggedIn, (req, res) => {
   const review = req.body.data;
   const authorId = req.user._id;
   Review.create({...review, authorId}).then(rev => {
@@ -120,7 +120,7 @@ router.post('/:favorId/addComment', isLoggedIn, (req, res, next) => {
           })
         })
       })
-      .catch(err => res.status(500).send("Something went wrong"));
+      .catch(() => res.status(500).send("Something went wrong"));
     });
   });
 
@@ -145,14 +145,14 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
           })
         })
       }
-      favor.save().then(fav=>{
+      favor.save().then(() => {
         User.findById(userId).then(user => {
           if (user.favFavs.indexOf(favorId) !== -1) {
             user.favFavs.pull(favorId);
           } else {
             user.favFavs.push(favorId);
           }
-          user.save().then(u=>{
+          user.save().then(() => {
             res.json(favor.whoseFavId);
           })
         });
@@ -161,7 +161,7 @@ router.post("/:favorId/favorite", isLoggedIn, (req, res) => {
   }
 );
 
-router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (req, res, next) => {
+router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (req, res) => {
   const pictureUrls = [];
   if (req.files.length > 0) {
     for (let i = 0; i < req.files.length; i++) {
@@ -171,7 +171,7 @@ router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (r
   res.json(pictureUrls);
 });
 
-router.post('/newFavor', isLoggedIn, (req, res, next) => {
+router.post('/newFavor', isLoggedIn, (req, res) => {
   const creatorId = req.user._id;
   const favor = {...req.body.favor, creatorId};
   const newFavor = new Favor(favor);
@@ -179,10 +179,10 @@ router.post('/newFavor', isLoggedIn, (req, res, next) => {
   newFavor.save()
     .then(fav => {
       User.findByIdAndUpdate(creatorId, {$push: {[favorType]: fav._id}})
-      .then(user => {})
+      .then(() => {})
         .then(() => res.json(fav)) ;
     })
-      .catch(err => res.status(500).send("Something went wrong"))
+      .catch(() => res.status(500).send("Something went wrong"))
 });
 
 

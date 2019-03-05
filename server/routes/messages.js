@@ -3,7 +3,7 @@ const router = express.Router();
 const {isLoggedIn} = require('../middlewares/isLogged');
 const Message = require("../models/Message");
 const Conversation = require("../models/Conversation");
-const Notification = require("../models/Notification");
+//const Notification = require("../models/Notification");
 const User = require("../models/User");
 
 
@@ -37,7 +37,7 @@ const getPreviousMessages = (req, res) => {
       .skip(parseInt(req.query.offset || 0))
       .limit(30)
       .then(messages => res.json({receiver, messages:messages.reverse()}))
-      .catch(err => {/*console.error(err)*/})
+      .catch(() => {/*console.error(err)*/})
     });
 }
 

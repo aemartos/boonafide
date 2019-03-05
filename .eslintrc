@@ -1,0 +1,21 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "exampleGlobalVariable": true
+  },
+  "rules": {
+    "eqeqeq": 0,
+    "no-console": 0
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "plugins": [
+    "node"
+  ]
+}

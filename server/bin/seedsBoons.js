@@ -3,7 +3,7 @@ const Boon = require("../models/Boon");
 const createBoons = (num) => {
   Boon.collection.drop();
   return (num ? Boon.create(Array(num).fill({}))
-    : new Promise((resolve, reject) => resolve([])))
+    : new Promise((resolve) => resolve([])))
     .then(boons => boons)
 }
 

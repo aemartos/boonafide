@@ -1,6 +1,6 @@
 const Message = require("../models/Message");
 const Conversation = require("../models/Conversation");
-const Notification = require("../models/Notification");
+//const Notification = require("../models/Notification");
 const User = require("../models/User");
 
 global.sockets = {};
@@ -14,12 +14,12 @@ const chat = (socket) => {
     });
   })
   socket.on('sms_sent', obj => {
-    let {authorId, receiverId, content, token} = obj;
+    let {authorId, receiverId, content} = obj;
     let roomName = authorId < receiverId ? authorId + '_' + receiverId : receiverId + '_' + authorId;
     const newSms = new Message({ content, authorId, receiverId });
     //save in the db
     newSms.save()
-      .then(sms => {
+      .then(() => {
         //new conversation or add sms to existing conversation
         Conversation.find({roomName})
           .then(res => {
@@ -31,7 +31,7 @@ const chat = (socket) => {
               conversation.messages = [...conversation.messages, newSms];
               conversation.lastSmsId = newSms;
             }
-            conversation.save().then(e=>{
+            conversation.save().then(() => {
               global.io.to(global.sockets[authorId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
               global.io.to(global.sockets[receiverId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
               // Notification.find({
@@ -55,10 +55,10 @@ const chat = (socket) => {
               // })
             });
           })
-    }).catch(err => {});
+    }).catch(() => {});
   });
-  socket.on('ping', (x) => global.io.to(socket.id).emit('pong'));
-  socket.on('disconnect', obj=> {delete global.sockets[socket.id]});
+  socket.on('ping', () => global.io.to(socket.id).emit('pong'));
+  socket.on('disconnect', () => {delete global.sockets[socket.id]});
 }
 
 module.exports = {chat}

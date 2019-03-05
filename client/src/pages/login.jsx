@@ -73,8 +73,8 @@ export const LogInPage = () => (
       <Messages />
       <div>
         <p className="account-message">
-          <span>don't have an account yet?</span>
-          <span><Link to="/signup">signup</Link> or <Link to="/">go back</Link></span>
+          <span>don't have an account yet?</span> <br />
+          <span><Link to="/signup"> signup</Link> or <Link to="/">go back</Link></span>
         </p>
       </div>
     </div>

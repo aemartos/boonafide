@@ -24,7 +24,7 @@ mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
   .catch(err => {console.error('Error connecting to mongo', err)});
 
 const app_name = require('../package.json').name;
-const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
+require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
 const app = express();
 

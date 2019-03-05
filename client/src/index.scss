@@ -11,9 +11,10 @@
 input, textarea, select, button {
   user-select: initial;
 }
-html, body {
-  overflow: hidden;
-}
+
+// html, body {
+//   overflow: hidden;
+// }
 
 html, body, #root {
   margin: 0;
@@ -152,6 +153,7 @@ a {
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     #root {
       position: relative;
       height: 736px;

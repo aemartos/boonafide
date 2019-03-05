@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const Favor = require("../models/Favor");
 const createUsers = require("./seedsUsers.js");
 const createBoons = require("./seedsBoons.js");
 const createFavors = require("./seedsFavors.js");
@@ -46,7 +45,7 @@ createUsers()
             let favOffer = favors.filter(f => f.type === "Offer");
             let favNeed = favors.filter(f => f.type === "Need");
             if (favNeed.length > 0) {
-              createTickets(selectRandomFromArray(otherUsers, 1)[0], u._id.toString(), favNeed[0]._id.toString()).then(ticket => console.log(`Created ticket`));
+              createTickets(selectRandomFromArray(otherUsers, 1)[0], u._id.toString(), favNeed[0]._id.toString()).then(() => console.log(`Created ticket`));
             }
             fields = {...fields, favNeed, favOffer};
             User.findByIdAndUpdate(u._id, fields).then(() => console.log(`Created ${favors.length} favors`));
