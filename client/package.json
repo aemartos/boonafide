@@ -41,7 +41,6 @@
     "start": "cat boonafide && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint src --ext .js,.jsx",
     "eject": "react-scripts eject",
     "postinstall": "prefix-css .timePickerComponent $(pwd)/node_modules/antd/dist/antd.min.css > $(pwd)/src/assets/stylesheets/antd.min.css",
     "copy_to_server": "yarn build && cp -r build/* ../server/public"
@@ -55,13 +54,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "eslint": "^5.12.0",
-    "eslint-config-react-app": "^3.0.7",
-    "eslint-plugin-flowtype": "^3.4.2",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
-  }
+  ]
 }
