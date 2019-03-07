@@ -11,7 +11,6 @@ passport.deserializeUser((userIdFromSession, cb) => {
     .populate({ path: "notificationsId", populate: { path: "personId" }})
     .populate({ path: "notificationsId", populate: { path: "receiverId" }})
     .populate({ path: "notificationsId", populate: { path: "ticketId" }})
-
   .then(userDocument => {
     return cb(null, userDocument);})
   .catch(err => {cb(err);});

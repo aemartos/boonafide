@@ -171,7 +171,6 @@ class _Chat extends React.Component {
     const receiverId = this.props.match.params.id;
     MessagesAPI.getMessages(receiverId).then((res) => {
       this.props.dispatch(readChat(receiverId));
-      this.setState({ receiver: [res.receiver] });
       window.socket.on('sms_received', this.handleReceiveMsg);
       this.setState(res);
     });

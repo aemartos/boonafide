@@ -122,7 +122,7 @@ class _TopMenu extends React.Component {
     const { isFavorite } = this.state;
     return (
       <TopNav>
-        {location.pathname.startsWith('/tickets') || location.pathname.startsWith('/messages/') || location.pathname.startsWith('/favors/')
+        {location.pathname.startsWith('/tickets') || location.pathname.match(/\/messages\/.+/) || location.pathname.match(/\/favors\/.+/)
           ? (
             <React.Fragment>
               <span className="icon btn-arrow b-arrow-short" onClick={() => history.goBack()} />

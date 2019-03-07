@@ -272,7 +272,7 @@ class _ProfilePage extends Component {
                   </div>
 
                   <div className="currentHelped">
-                    {[...Array(3)].map((u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : ""}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic" /></Link>)}
+                    {[...Array(3)].map((u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : "#"}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic" /></Link>)}
                     {currentHelped.length >= 3 && myUser
                       ? <Button className="btn btn-primary redeemBtn" onClick={() => this.handleRedeemBoon()}>Redeem boon!</Button>
                       : null}

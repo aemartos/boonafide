@@ -459,13 +459,9 @@ class _FavorDetailPage extends Component {
                           transitionTime={200}
                           trigger={(
                             <div className="collapTitle">
-                              {' '}
                               <span className="text">Comments</span>
-                              {' '}
                               <span className="trigger b-arrow" />
-                            </div>
-)}
-                        >
+                            </div>)}>
                           <div className="showComments">
                             {comments.map((c, i) => <CommentDetail key={i} content={c.content} author={c.authorId} date={c.createdAt} />)}
                           </div>
@@ -477,7 +473,7 @@ class _FavorDetailPage extends Component {
                           <p className="noComments">There are no comments for this favor :)</p>
                         </React.Fragment>
                       )
-                }
+                    }
                     <div className="sendCommentBox">
                       <div className="error">{showError || null}</div>
                       <div className="post">

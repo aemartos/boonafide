@@ -32,27 +32,27 @@ const chat = (socket) => {
               conversation.lastSmsId = newSms;
             }
             conversation.save().then(() => {
-              global.io.to(global.sockets[authorId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
-              global.io.to(global.sockets[receiverId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
-              // Notification.find({
-              //   "type": "newMessage",
-              //   "receiverId": receiverId,
-              //   "personId": authorId,
-              //   "seen": false
-              // }).then(nots => {
-              //   if (!nots || nots.length === 0) {
-              //     Notification.create({
-              //       type: "newMessage",
-              //       receiverId,
-              //       personId: authorId
-              //     }).then(not => {
-              //       User.findByIdAndUpdate(receiverId, {$push: {notificationsId: not._id}}, {new: true})
-              //         .then(()=> {
-              //           global.io.to(global.sockets[receiverId]).emit('notification',{notification: not});
-              //         })
-              //     });
-              //   }
-              // })
+              global.sockets[authorId] && global.io.to(global.sockets[authorId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
+              global.sockets[receiverId] && global.io.to(global.sockets[receiverId]).emit('sms_received', {authorId, receiverId, content, createdAt: newSms.createdAt});
+              /*Notification.find({
+                "type": "newMessage",
+                "receiverId": receiverId,
+                "personId": authorId,
+                "seen": false
+              }).then(nots => {
+                if (!nots || nots.length === 0) {
+                  Notification.create({
+                    type: "newMessage",
+                    receiverId,
+                    personId: authorId
+                  }).then(not => {
+                    User.findByIdAndUpdate(receiverId, {$push: {notificationsId: not._id}}, {new: true})
+                      .then(()=> {
+                        global.io.to(global.sockets[receiverId]).emit('notification',{notification: not});
+                      })
+                  });
+                }
+              })*/
             });
           });
     }).catch(() => {});

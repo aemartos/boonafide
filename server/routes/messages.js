@@ -16,7 +16,7 @@ router.get('/conversations', isLoggedIn, (req, res, next) => {
   .populate('authorId')
   .populate('receiverId')
   .populate('lastSmsId')
-  .sort({ createdAt: 1 })
+  .sort({ updatedAt: -1 })
   //.skip(req.params.offset || 0)
   //.limit(30)
   .then(conversations => res.json(conversations))

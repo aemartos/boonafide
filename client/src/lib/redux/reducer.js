@@ -15,7 +15,7 @@ export const rootReducer = (store = initialStore, action) => {
 
     case 'LOGIN':
     case 'UPDATE_USER':
-      return { ...store, user: action.user, isBusy: false };
+      return { ...store, user: action.user, notificationsId: action.user.notificationsId, isBusy: false };
 
     case 'LOGOUT':
       return { ...store, user: null, isBusy: false };
