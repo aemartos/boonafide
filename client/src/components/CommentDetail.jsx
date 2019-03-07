@@ -41,7 +41,7 @@ const StyledComment = styled.div`
     width: 75%;
     font-size: .9em;
     margin-bottom: 0;
-    word-break: break-all;
+    /* word-break: break-all; */
   }
 `;
 

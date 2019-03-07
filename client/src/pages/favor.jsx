@@ -440,8 +440,7 @@ class _FavorDetailPage extends Component {
                 </div>
                 <div className="info">
                   <p className="text creator">
-                    {favor.type === "Offer" ? "Offer " : "Request "} by:
-                    <span className="light capitalize">{favor.creatorId.username}</span>
+                    {favor.type === "Offer" ? "Offer " : "Request "} by: <span className="light capitalize">{favor.creatorId.username}</span>
                   </p>
                   <p className="text remainingFavors">Remaining favors: <span className="light">{favor.remainingFavNum}</span></p>
                   <div className="favorDescription">

@@ -13,7 +13,6 @@ class _Sockets extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.user && this.props.user) {
       const { user } = this.props;
-
       window.socket = io(`${URL_SERVER}/`);
       window.socket.on('connect', (data) => {
         window.socket.emit('register', { author: user._id.toString(), token: user.token });
