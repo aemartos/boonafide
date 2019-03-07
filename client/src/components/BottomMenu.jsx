@@ -80,9 +80,7 @@ const BottomNav = styled.nav`
 
 class _BottomMenu extends React.Component {
   render() {
-    const {
-      user, favor, dispatch, location, chat,
-    } = this.props;
+    const { user, favor, dispatch, location, chat } = this.props;
     const numChat = chat.length;
     const numNot = user.notificationsId.filter(n => n.seen === false).length;
     return (
@@ -90,7 +88,7 @@ class _BottomMenu extends React.Component {
         {favor
           ? (
             <div className="nav favorNav">
-              <Link to={`/messages/${favor.userId}`}><span className="icon b-mp" /></Link>
+              <Link to={`/messages/${favor.creatorId._id}`}><span className="icon b-mp" /></Link>
               <Link to=""><span className="icon b-call" /></Link>
             </div>
           )

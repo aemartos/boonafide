@@ -424,16 +424,8 @@ class _FavorDetailPage extends Component {
               <StyledFavor id="scroll" user={user} favor={favor}>
                 {favor.remainingFavNum < 1 ? <div className="shadow" /> : null}
                 <Modal isVisible={this.state.isVisible} bottom="20%">
-                  <p className="question">
-Are you sure you want to
-                    {favor.type === "Need" ? "offer" : "request"}
-                    {' '}
-the favor?
-                  </p>
-                  <p className="description">
-Remember if you
-                    {favor.type === "Need" ? "offer the favor, no boon will be removed from the user" : "request the favor, a boon will be removed from your account when the ticket will be validated."}
-                  </p>
+                  <p className="question">Are you sure you want to {favor.type === "Need" ? "offer" : "request"} the favor?</p>
+                  <p className="description">Remember if you {favor.type === "Need" ? "offer the favor, no boon will be removed from the user" : "request the favor, a boon will be removed from your account when the ticket will be validated."}</p>
                   <p className="instructions">Once a favor is set it can not be removed.</p>
                   <div className="actions">
                     <Button link="" onClick={() => this.handleModal()} className="btn btn-cancel">Cancel</Button>
@@ -448,15 +440,10 @@ Remember if you
                 </div>
                 <div className="info">
                   <p className="text creator">
-                    {favor.type === "Offer" ? "Offer " : "Request "}
-by:
-                    {' '}
+                    {favor.type === "Offer" ? "Offer " : "Request "} by:
                     <span className="light capitalize">{favor.creatorId.username}</span>
                   </p>
-                  <p className="text remainingFavors">
-Remaining favors:
-                    <span className="light">{favor.remainingFavNum}</span>
-                  </p>
+                  <p className="text remainingFavors">Remaining favors: <span className="light">{favor.remainingFavNum}</span></p>
                   <div className="favorDescription">
                     <p className="title">{favor.name}</p>
                     <p className="description">{truncate(favor.description, { length: 193 })}</p>
@@ -515,10 +502,7 @@ Remaining favors:
                   </Slider>
                 </div>
                 <div className="mapLocation">
-                  <p className="location">
-Location:
-                    <span className="light">{favor.locationName}</span>
-                  </p>
+                  <p className="location">Location: <span className="light">{favor.locationName}</span></p>
                   { (window.google)
                     ? (
                       <MapComponent
@@ -536,9 +520,7 @@ Location:
                   {user._id !== favor.creatorId._id || favor.remainingFavNum < 1
                     ? (
                       <Button link="" onClick={() => this.handleModal()} className={`${boonsReceiver <= 0 ? "disable " : ""}btn btn-primary`}>
-                        {favor.type === "Offer" ? "Request " : "Offer"}
-                        {' '}
-favor
+                        {favor.type === "Offer" ? "Request " : "Offer"} favor
                       </Button>
                     )
                     : null}
