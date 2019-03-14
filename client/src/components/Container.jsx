@@ -17,7 +17,7 @@ const StyledContainer = styled.div`
   background-color: ${colors.grey};
   @media (orientation: landscape) {
     display: block;
-    height: unset;
+    /*height: unset;*/
   }
   h1, h2, h3, h4, p {
     margin-top: 0;
