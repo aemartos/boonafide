@@ -136,7 +136,7 @@ let favors = [
 
 
 const createFavors = (creatorId, favNeed, favOffer, whoNeedsId, whoseFavId) => {
-  Favor.collection.drop();
+  Favor.collection.drop().catch(err=>console.error('Error dropping Favor collection'));
   const favorsModified = favors.map(f => ({...f, creatorId, favNeed, favOffer, whoNeedsId, whoseFavId, categories: selectRandomFromArray(CATEGORIES_ENUM, 5)}));
   return Favor.create(favorsModified).then(favors => favors);
 };

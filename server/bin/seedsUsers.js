@@ -143,7 +143,7 @@ let users = [
 ];
 
 const createUser = () => {
-  User.collection.drop();
+  User.collection.drop().catch(err=>console.error('Error dropping User collection'));
   return User.create(users);
 };
 
