@@ -8,7 +8,7 @@ const userSchema = new Schema({
   password: String,
   caption: {type: String, default: "When someone does you a big favor, don't pay it back... PAY IT FORWARD!"},
   description: {type: String, default: "Edit your profile to change this"},
-  location: {type: {type: String, default: 'Point'}, coordinates: [Number]},
+  location: {type: {type: String, default: 'Point'}, coordinates: {type:[Number], default: [0.000000,0.000000]}},
   locationName: {type: String, default: "Unknown"},
   offerCategories: [{type: String, enum: CATEGORIES_ENUM}],
   needCategories: [{type: String, enum: CATEGORIES_ENUM}],

@@ -6,9 +6,8 @@ const {isLoggedOut, isLoggedIn} = require('../middlewares/isLogged');
 
 const generateHash = require('random-hash').generateHash;
 
-const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config({path: path.join(__dirname, '../../.private.env')});
+dotenv.config();
 
 
 // Bcrypt to encrypt passwords
@@ -71,7 +70,8 @@ router.post("/signup", isLoggedOut, (req, res) => {
                 .then(user => {
                   res.json({user});
                 })
-                .catch(() => {
+                .catch((err) => {
+                  console.log({err});
                   res.status(500).send("Something went wrong");
                 });
             });
@@ -109,7 +109,7 @@ router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
 }));
 
 router.get("/logout", isLoggedIn, (req, res) => {
-  req.logout();
+  req.logout({}, () => {});
   res.json({success: "OK"});
 });
 

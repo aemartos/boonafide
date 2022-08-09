@@ -1,5 +1,5 @@
 const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 
 cloudinary.config({
@@ -8,21 +8,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET
 });
 
-var storageProfilePictures = cloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: 'profile-pictures',
-  allowedFormats: ['jpg', 'png'],
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+var storageProfilePictures = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'profile-pictures',
+    allowed_formats: ['jpg', 'png'],
+    public_id: (_, file) => file.originalname,
   }
 });
 
-var storageFavorPictures = cloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: 'favor-pictures',
-  allowedFormats: ['jpg', 'png'],
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+var storageFavorPictures = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'favor-pictures',
+    allowed_formats: ['jpg', 'png'],
+    public_id: (_, file) => file.originalname,
   }
 });
 
