@@ -2,7 +2,7 @@ import { axiosInstance } from '../common/helpers';
 
 export class NotificationsAPI {
   static errorHandler(e) {
-    // console.error(e.response.data);
+    // console.error('----------> NotificationsAPI', e.response.data);
     throw e.response.data;
   }
 

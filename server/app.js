@@ -1,21 +1,20 @@
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
-dotenv.config({path: path.join(__dirname, '../.private.env')});
-dotenv.config({path: path.join(__dirname, '../.public.env')});
 const http = require('http');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-//const favicon = require('serve-favicon');
+const nodeSaas = require('node-sass-middleware');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
 const session = require("express-session");
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
+const socketIo = require('socket.io');
 
 const chat = require('./middlewares/chat').chat;
 
@@ -49,7 +48,7 @@ app.use(cookieParser());
 
 // Express View engine setup
 
-app.use(require('node-sass-middleware')({
+app.use(nodeSaas({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   sourceMap: true
@@ -78,19 +77,20 @@ app.use(session({
   secret: 'project',
   resave: true,
   saveUninitialized: true,
-  store: new MongoStore({mongooseConnection: mongoose.connection})
+  store: MongoStore.create({
+    mongoUrl: process.env.DBURL,
+  })
 }));
 app.use(flash());
 require('./passport')(app);
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  //console.log(req.user);
   next();
 });
 
 let server = http.createServer(app);
-var io = require('socket.io')(server);
+var io = socketIo(server);
 global.io = io;
 global.io.on('connection', chat);
 
@@ -119,8 +119,11 @@ app.use('/api/messages', msgRoutes);
 const notificationsRoutes = require('./routes/notifications');
 app.use('/api/notifications', notificationsRoutes);
 
-app.use('*', (req, res) => {
+app.use('*', (_, res) => {
   res.sendFile(path.join(__dirname,'public/index.html'));
 });
 
-module.exports = {app:app,server:server};
+module.exports = {
+  app,
+  server,
+};

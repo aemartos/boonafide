@@ -33,7 +33,7 @@ class _Sockets extends React.Component {
   }
 
   componentWillUnmount() {
-    window.socket.disconnect();
+    if (window.socket) window.socket.disconnect();
     clearInterval(this.ping);
   }
 

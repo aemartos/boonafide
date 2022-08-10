@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { TimePicker } from 'antd';
+import TimePicker from 'react-time-picker';
 import Calendar from '../components/Calendar';
 import { colors } from '../lib/common/colors';
-import '../assets/stylesheets/antd.min.css';
 import moment from 'moment';
 import FormField from '../components/FormField';
 import Select from '../components/Select';
@@ -109,6 +108,7 @@ const StyledAddFavorPage = styled.div`
       flex-flow: row nowrap;
       justify-content: space-between;
       align-items: flex-start;
+      height: 190px;
       .noDay {
         font-size: .9em;
         text-align: center;
@@ -146,6 +146,7 @@ const HoursSelect = styled.div`
   color: ${colors.purple};
   border: 1px solid ${colors.darkGrey};
   border-radius: .3em;
+  height: -webkit-fill-available;
   .activeDay {
     text-align: center;
     font-size: .8em;
@@ -178,21 +179,30 @@ const HoursSelect = styled.div`
     color: ${colors.darkGrey};
     padding: .5em 0 .2em;
     font-size: .8em;
+    &.b-plus:hover {
+      color: ${colors.black};
+      cursor: pointer;
+    }
   }
   .timePickerComponent {
-    .ant-time-picker {
-      width: fit-content;
-    }
-    .ant-time-picker-input {
-      width: 8em;
-      background-color: transparent;
+    width: 8em;
+    background-color: transparent;
+    border: 0;
+    border-top: 1px solid ${colors.darkGrey};
+    border-bottom: 1px solid ${colors.darkGrey};
+    border-radius: 0;
+    color: ${colors.purple};
+    .react-time-picker__wrapper {
       border: 0;
-      border-top: 1px solid ${colors.darkGrey};
-      border-bottom: 1px solid ${colors.darkGrey};
-      border-radius: 0;
+      button svg {
+        stroke: ${colors.darkGrey};
+        &:hover {
+          stroke: ${colors.orange};
+        }
+      }
     }
-    .ant-time-picker-icon {
-      right: 9px;
+    .react-time-picker__inputGroup input {
+      color: ${colors.purple};
     }
   }
 `;
@@ -216,7 +226,6 @@ export default class _NewFavorPage extends Component {
   }
 
   onChangeHour(selectedHour) {
-    // let selectedHour = moment(hour).format("HH:mm");
     this.setState({ selectedHour });
   }
 
@@ -253,7 +262,7 @@ export default class _NewFavorPage extends Component {
 
   handleAddHours() {
     if (this.state.selectedHour !== undefined) {
-      this.setState({ shifts: { ...this.state.shifts, [this.state.selectedDay]: [...(this.state.shifts[this.state.selectedDay] || []), moment(this.state.selectedHour).format("HH:mm")] }, selectedHour: undefined });
+      this.setState({ shifts: { ...this.state.shifts, [this.state.selectedDay]: [...(this.state.shifts[this.state.selectedDay] || []), this.state.selectedHour] }, selectedHour: undefined });
     }
   }
 
@@ -293,7 +302,7 @@ export default class _NewFavorPage extends Component {
 
   handleAddFavor() {
     const {
-      categories, type, name, description, remainingFavNum, shifts,
+      categories, type, name, description, remainingFavNum, shifts
     } = this.state;
     if (categories && categories.length > 0 && type !== undefined && name !== undefined && description !== undefined && remainingFavNum !== undefined && Object.keys(shifts).length > 0) {
       this.props.dispatch(setBusy("force"));
@@ -317,7 +326,6 @@ export default class _NewFavorPage extends Component {
             shifts,
           };
           FavorsAPI.createFavor(favor).then((res) => {
-            // console.log('ADD', res);
             AuthAPI.currentUser()
               .then((user) => {
                 this.props.dispatch(updateUser(user));
@@ -325,7 +333,6 @@ export default class _NewFavorPage extends Component {
               });
           })
             .catch((e) => {
-            // console.log(e);
               this.props.dispatch(setBusy(false));
               this.setState({ showError: e.data });
             });
@@ -397,8 +404,15 @@ export default class _NewFavorPage extends Component {
                         <p key={i}>{time} <span className="b-cross" onClick={() => this.handleDeleteHour(i)} /></p>
                       ))}
                     </div>
-                    <div className="timePickerComponent"><TimePicker popupClassName="timePickerComponent" popupStyle={{ width: "7em" }} format="HH:mm" value={selectedHour} onChange={this.onChangeHour.bind(this)} /></div>
-                    <span className="more b-plus" onClick={() => this.handleAddHours()} />
+                    <div >
+                      <TimePicker
+                        className="timePickerComponent"
+                        value={selectedHour}
+                        onChange={this.onChangeHour.bind(this)}
+                        disableClock={true}
+                      />
+                    </div>
+                    <span className="more b-plus" onClick={this.handleAddHours.bind(this)} />
                   </HoursSelect>
                 ) : <p className="noDay">Please, select a day to set different times</p> }
               </div>
@@ -415,7 +429,7 @@ export default class _NewFavorPage extends Component {
               />
             </div>
             <div className="error">{showError || null}</div>
-            <Button link="" onClick={() => this.handleAddFavor()} className="btn btn-primary">add favor</Button>
+            <Button link="" onClick={this.handleAddFavor.bind(this)} className="btn btn-primary">add favor</Button>
           </StyledAddFavorPage>
         </div>
       </div>
