@@ -6,10 +6,14 @@ import moment from 'moment';
 import { colors } from '../lib/common/colors';
 
 const StyledCalendar = styled.div`
+  height: 100%;
   .DayPicker {
     color: ${colors.darkGrey};
     font-size: .65em;
+    height: 100%;
     .DayPicker-wrapper {
+      height: 100%;
+      padding: 0;
       border: 1px solid ${colors.darkGrey};
       border-radius: .5em;
       .DayPicker-NavBar {

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i');
-@import './assets/fonts/boonafide-font/boonafide-font';
+@import './assets/fonts/boonafide-font/_boonafide-font.scss';
 
 * {
   box-sizing: border-box;
@@ -166,7 +166,7 @@ a {
         top: -3.8em;
         content: '';
         display: block;
-        background: url("/images/iPhone-X-Mockup.png");
+        background: url("../public/images/iPhone-X-Mockup.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;

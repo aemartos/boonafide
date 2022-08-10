@@ -1,7 +1,10 @@
 
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { Container } from './components/Container';
 import { WithUser, ConditionalUser } from './components/UserComponent';
 import { GetStartedPage } from './pages/getStarted';
@@ -27,7 +30,6 @@ export default class App extends Component {
       <Route render={({ location, history }) => (
         <div className="app">
           <Container location={location} history={history}>
-            {/* {console.log(location, history)} */}
             <Switch location={location}>
               <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)} />
               <Route path="/login" component={ConditionalUser(() => <Redirect to="/profile" />, LogInPage)} />
