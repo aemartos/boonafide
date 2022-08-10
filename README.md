@@ -61,8 +61,8 @@ $ yarn start
 ```
 ###### Root
 ```bash
-$ npm install
-$ npm run dev
+$ yarn
+$ yarn dev
 ```
 
 #### Environment variables
@@ -72,13 +72,13 @@ You have to create a .private.env file, where you must specify this variables:
 | Key           | Description |
 |:-------------|:-------------|
 | DBURL | database URL |
-| CLOUDINARY_NAME | the name of your Cloudinary account. Used to build the public URL for the media assets. | 
-| CLOUDINARY_KEY | used together with the API secret to communicate with the Cloudinary API and sign requests. | 
-| CLOUDINARY_SECRET | used together with the API key to communicate with the Cloudinary API and sign requests. | 
-| FACEBOOK_CLIENT_ID | Facebook client id credentials | 
-| FACEBOOK_CLIENT_SECRET | Facebook client secret credentials | 
-| GOOGLE_CLIENT_ID | Google client id credentials | 
-| GOOGLE_CLIENT_SECRET | Google client secret credentials | 
+| CLOUDINARY_NAME | the name of your Cloudinary account. Used to build the public URL for the media assets. |
+| CLOUDINARY_KEY | used together with the API secret to communicate with the Cloudinary API and sign requests. |
+| CLOUDINARY_SECRET | used together with the API key to communicate with the Cloudinary API and sign requests. |
+| FACEBOOK_CLIENT_ID | Facebook client id credentials |
+| FACEBOOK_CLIENT_SECRET | Facebook client secret credentials |
+| GOOGLE_CLIENT_ID | Google client id credentials |
+| GOOGLE_CLIENT_SECRET | Google client secret credentials |
 
 Cloudinary hosting [configuration link](https://cloudinary.com/documentation/solution_overview#account_and_api_setup).
 Facebook social login [configuration link](https://developers.facebook.com/docs/facebook-login/web/).

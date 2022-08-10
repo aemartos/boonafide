@@ -165,7 +165,7 @@ router.post('/pictures', isLoggedIn, uploadFavorPictures.array("picture", 3), (r
   const pictureUrls = [];
   if (req.files.length > 0) {
     for (let i = 0; i < req.files.length; i++) {
-      pictureUrls.push(req.files[i].secure_url);
+      pictureUrls.push(req.files[i].path);
     }
   }
   res.json(pictureUrls);

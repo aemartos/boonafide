@@ -109,7 +109,9 @@ router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
 }));
 
 router.get("/logout", isLoggedIn, (req, res) => {
-  req.logout({}, () => {});
+  req.logout((error) => {
+    // console.error('logout error', { error });
+  });
   res.json({success: "OK"});
 });
 
