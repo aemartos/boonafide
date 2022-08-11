@@ -29,7 +29,6 @@ class _LogInForm extends React.Component {
       })
       .catch((e) => {
         timeOutMessages(dispatch, e.message);
-        history.push('/login');
       });
   }
 

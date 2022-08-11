@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 let app = require('../app').app;
 
-// catch 404 and render a not-found.hbs template
 app.use((req, res, next) => {
   res.status(404).json({status:"NOT FOUND", message: `${req.path} does not exist`});
 });

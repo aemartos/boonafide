@@ -29,6 +29,7 @@ const TopNav = styled.nav`
   }
   a, .icon, .logout {
     color: ${colors.grey};
+    cursor: pointer;
     &.btn {
       font-size: 1.6em;
       margin: 1em 0 0 1em;

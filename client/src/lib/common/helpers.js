@@ -1,16 +1,19 @@
 import axios from 'axios';
 import { errorMessageAction, clearMessages } from '../redux/actions';
-import { URL_SERVER } from './constants';
+import { DEFAULT_ERROR_MESSAGE, URL_SERVER } from './constants';
 
 export const timeOutMessages = (dispatch, msg, time = 3000) => {
-  dispatch(errorMessageAction(msg));
+  let message = msg;
+  if (typeof msg !== 'string') {
+    message = DEFAULT_ERROR_MESSAGE;
+  }
+  dispatch(errorMessageAction(message));
   setTimeout(() => dispatch(clearMessages()), time);
 };
 
 export const axiosInstance = axios.create({
   baseURL: URL_SERVER,
-  // baseURL: "http://localhost:3001",
-  timeout: 1000,
+  timeout: 1000 * 5, // Wait for 5 seconds
   withCredentials: true,
   crossDomain: true,
 });

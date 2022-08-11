@@ -16,7 +16,7 @@ const userSchema = new Schema({
   googleID: {type: String, default: null},
   pictureUrl: {type: String, default: 'https://res.cloudinary.com/boonafide/image/upload/v1549110826/profile-pictures/profPicDefault02.png'},
   status: {type: String, enum: ['Pending Confirmation','Active'], default: 'Pending Confirmation'},
-  confirmationCode: {type: String, unique: true},
+  // confirmationCode: {type: String, unique: true},
   role: {type: String, enum: ['Bank', 'Admin', 'User'], default: 'User'},
   boons: [{ type: Schema.Types.ObjectId, ref:'Boon' }],
   favOffer: [{ type: Schema.Types.ObjectId, ref:'Favor' }],

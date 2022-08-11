@@ -10,7 +10,6 @@
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "moment": "2.24.0",
-    "node-sass": "^7.0.1",
     "prop-types": "^15.8.1",
     "react": "17.0.0",
     "react-collapsible": "^2.10.0",
@@ -34,12 +33,18 @@
     "styled-components": "^5.3.5",
     "typescript": "^4.7.4"
   },
+  "devDependencies": {
+    "sass": "^1.54.4"
+  },
+  "engines": {
+    "node": "v14.20.0",
+    "npm": "6.14.13"
+  },
   "scripts": {
     "start": "cat boonafide && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "copy_to_server": "yarn build && cp -r build/* ../server/public"
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",

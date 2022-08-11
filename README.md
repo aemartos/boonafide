@@ -79,6 +79,7 @@ You have to create a .private.env file, where you must specify this variables:
 | FACEBOOK_CLIENT_SECRET | Facebook client secret credentials |
 | GOOGLE_CLIENT_ID | Google client id credentials |
 | GOOGLE_CLIENT_SECRET | Google client secret credentials |
+| URL_CLIENT | Client app url |
 
 Cloudinary hosting [configuration link](https://cloudinary.com/documentation/solution_overview#account_and_api_setup).
 Facebook social login [configuration link](https://developers.facebook.com/docs/facebook-login/web/).

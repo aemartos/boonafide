@@ -16,13 +16,13 @@ export class AuthAPI {
   static login(username, password) {
     return axiosInstance.post('/api/auth/login', { username, password })
       .then(res => res.data)
-      .catch(e => AuthAPI.errorHandler(e));
+      .catch(AuthAPI.errorHandler);
   }
 
   static signup(username, email, password) {
     return axiosInstance.post('/api/auth/signup', { username, email, password })
       .then(res => res.data.user)
-      .catch(e => AuthAPI.errorHandler(e));
+      .catch(AuthAPI.errorHandler);
   }
 
   static logout(username, password) {
