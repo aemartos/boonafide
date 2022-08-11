@@ -28,8 +28,10 @@
   },
   "scripts": {
     "start": "cat ./boonafide && node ./bin/www",
+    "start-prod": "cat ./boonafide && node ./server/bin/www",
     "dev": "cat ./boonafide && DEBUG=server:* nodemon ./bin/www",
     "dev-windows": "nodemon ./bin/www",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
