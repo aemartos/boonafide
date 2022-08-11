@@ -42,10 +42,8 @@ Technologies used in development: React, Redux, MongoDB, Express, Node.js, JavaS
 ## Software requirements
 This webapp is based on a JavaScript environment and Mongo database. In order to run the project the following requirements must be installed:
 
-- node.js (^10.6.0)
-- mongo (^4.0.3)
-- npm (^6.5.0)
-- yarn (^1.13.0)
+- node.js (v14.20.0)
+- npm (6.14.13)
 
 ## How to install
 Copy repository:
@@ -56,22 +54,64 @@ git clone https://github.com/aemartos/boonafide
 ###### Client
 ```bash
 $ cd client
-$ yarn
-$ yarn start
+$ npm i
+$ npm start
 ```
-###### Root
+###### Server
 ```bash
-$ yarn
-$ yarn dev
+$ cd server
+$ npm i
+$ npm run dev
+```
+
+#### docker-compose
+
+###### Build
+To create the build for the entire application, we need to run the following command:
+```bash
+$ docker-compose build
+```
+
+###### Starting the services
+To start the multi-container system using the following simple command:
+```bash
+$ docker-compose up
+```
+
+| App            | URL                      |
+|:---------------|:-------------------------|
+| Client App     | `http://localhost:3000`  |
+| Backend Server | `http://localhost:3001`  |
+| MongoDB        | `http://localhost:27017` |
+
+###### Maintenance & Inspection
+We can inspect running services using the following command:
+```bash
+$ docker-compose ps
+```
+
+To dump the logs of all the running services:
+```bash
+$ docker-compose logs
+```
+
+###### Stopping the containers
+To stop all the services:
+```bash
+$ docker-compose stop
+```
+
+To bring everything down and remove the containers entirely, with the data volume of the services:
+```bash
+$ docker-compose down --volumes
 ```
 
 #### Environment variables
-
-You have to create a .private.env file, where you must specify this variables:
+You have to create a `.env` file, where you must specify this variables:
 
 | Key           | Description |
 |:-------------|:-------------|
-| DBURL | database URL |
+| DBURL | database URL (`mongodb://mongo:27017/test` with docker-compose) |
 | CLOUDINARY_NAME | the name of your Cloudinary account. Used to build the public URL for the media assets. |
 | CLOUDINARY_KEY | used together with the API secret to communicate with the Cloudinary API and sign requests. |
 | CLOUDINARY_SECRET | used together with the API key to communicate with the Cloudinary API and sign requests. |
