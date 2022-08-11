@@ -91,23 +91,6 @@ router.get("/currentuser", (req, res) => {
   // }
 });
 
-router.get("/facebook", isLoggedOut, passport.authenticate("facebook"));
-router.get("/facebook/callback", isLoggedOut,
-  passport.authenticate("facebook", {
-    successRedirect: `${process.env.URL_CLIENT}/profile`,
-    failureRedirect: `${process.env.URL_CLIENT}/api/auth/login`
-  })
-);
-
-router.get("/google", isLoggedOut, passport.authenticate("google", {
-  scope: ["https://www.googleapis.com/auth/plus.login",
-          "https://www.googleapis.com/auth/plus.profile.emails.read"]
-}));
-router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
-  successRedirect: `${process.env.URL_CLIENT}/profile`,
-  failureRedirect: `${process.env.URL_CLIENT}/api/auth/login`
-}));
-
 router.get("/logout", isLoggedIn, (req, res) => {
   req.logout((err) => {
     if (err) {
