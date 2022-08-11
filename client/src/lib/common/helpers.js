@@ -9,8 +9,7 @@ export const timeOutMessages = (dispatch, msg, time = 3000) => {
 
 export const axiosInstance = axios.create({
   baseURL: URL_SERVER,
-  // baseURL: "http://localhost:3001",
-  timeout: 1000,
+  timeout: 1000 * 5, // Wait for 5 seconds
   withCredentials: true,
   crossDomain: true,
 });
