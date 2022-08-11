@@ -109,10 +109,23 @@ router.get("/google/callback", isLoggedOut, passport.authenticate("google", {
 }));
 
 router.get("/logout", isLoggedIn, (req, res) => {
-  req.logout((error) => {
-    // console.error('logout error', { error });
+  req.logout((err) => {
+    if (err) {
+      res.status(400).send('Unable to log out');
+    } else {
+      if (req.session) {
+        req.session.destroy(error => {
+          if (error) {
+            res.status(400).send('Unable to log out');
+          } else {
+            res.json({success: "OK"});
+          }
+        });
+      } else {
+        res.end();
+      }
+    }
   });
-  res.json({success: "OK"});
 });
 
 module.exports = router;
