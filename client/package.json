@@ -37,7 +37,8 @@
     "sass": "^1.54.4"
   },
   "engines": {
-    "node": "<=v14.20.0"
+    "node": "v14.20.0",
+    "npm": "6.14.13"
   },
   "scripts": {
     "start": "cat boonafide && react-scripts start",
