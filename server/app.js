@@ -6,7 +6,6 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const nodeSaas = require('node-sass-middleware');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
 const logger = require('morgan');
@@ -47,12 +46,6 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 // Express View engine setup
-
-app.use(nodeSaas({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
-}));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
