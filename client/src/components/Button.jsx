@@ -30,14 +30,6 @@ const StyledLink = styled.span`
       background-color: ${colors.purple};
       color: ${colors.darkGrey};
     }
-    &.btn-fcbk {
-      background-color: ${colors.facebook};
-      color: ${colors.grey};
-    }
-    &.btn-ggl {
-      background-color: ${colors.google};
-      color: ${colors.grey};
-    }
     &.btn-confirm {
       background-color: ${colors.green};
       color: ${colors.grey};

@@ -15,6 +15,4 @@ export const colors = {
   green: '#39AA68',
   blue: '#3E59C8',
   lightBlue: '#96ACD3',
-  facebook: '#3b5998',
-  google: '#dd4b39',
 };

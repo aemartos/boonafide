@@ -63,12 +63,6 @@ export const LogInPage = () => (
         <h2>welcome back ;)</h2>
         <p>login your account to start changing the world!</p>
       </div>
-      {/*<p className="basic-text">continue with</p>
-      <div className="social-login">
-        <Button link={`${URL_SERVER}/api/auth/facebook`} className="btn btn-fcbk" redirect>facebook</Button>
-        <Button link={`${URL_SERVER}/api/auth/google`} className="btn btn-ggl" redirect>google</Button>
-      </div>
-<p className="basic-text m-bottom">or your username</p>*/}
       <LogInForm />
       <Messages />
       <div>
