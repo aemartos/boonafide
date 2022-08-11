@@ -94,3 +94,5 @@ export const mapStyle = [{
 ];
 
 export const URL_SERVER = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
+
+export const DEFAULT_ERROR_MESSAGE = 'Something happened, try again later';

@@ -29,7 +29,6 @@ class _SignUpForm extends React.Component {
       })
       .catch((e) => {
         timeOutMessages(dispatch, e);
-        history.push('/signup');
       });
   }
 
