@@ -36,6 +36,9 @@
   "devDependencies": {
     "sass": "^1.54.4"
   },
+  "engines": {
+    "node": "<=v14.20.0"
+  },
   "scripts": {
     "start": "cat boonafide && react-scripts start",
     "build": "react-scripts build",
