@@ -1,19 +1,33 @@
-FROM node:14.20.0-alpine
+############ Stage 1
+FROM node:14.20.0-alpine AS builder
 
 # Create App Directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY /server/package*.json ./
+# Copy client app
+COPY ./client .
 
-###  Installing dependencies
+# Install client app dependencies
 RUN npm i
 
-# Bundle app source
-COPY . .
+# Build client app
+RUN npm run build
 
-# Exec script to build the FE
-# COPY client-build.sh ./
-# RUN . client-build.sh
 
-EXPOSE 8000
-CMD ["npm", "run", "start-prod"]
+############ Stage 2
+FROM node:14.20.0-alpine
+
+# Create final app
+WORKDIR /app
+
+# Copy server
+COPY ./server .
+
+# Install server dependencies
+RUN npm i
+
+# Copies static resources from builder stage
+COPY --from=builder /app/build /app/public
+
+EXPOSE 3001
+CMD ["npm", "run", "start"]
