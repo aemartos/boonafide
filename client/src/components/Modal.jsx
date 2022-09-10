@@ -27,24 +27,24 @@ export default class Modal extends React.Component {
   render() {
     const { isVisible, children, bottom } = this.props;
     const shadowStyle = {
-      position: "absolute",
-      background: "rgba(0, 0, 0, 0.8)",
-      top: "0",
-      left: "0",
-      right: "0",
-      bottom: "0",
-      zIndex: "3",
+      position: 'absolute',
+      background: 'rgba(0, 0, 0, 0.8)',
+      top: '0',
+      left: '0',
+      right: '0',
+      bottom: '0',
+      zIndex: '3',
     };
     const modalStyle = {
-      position: "absolute",
-      left: "5%",
+      position: 'absolute',
+      left: '5%',
       bottom,
-      width: "90%",
-      padding: "2em",
-      height: "auto",
-      background: "#F0F0EC",
-      borderRadius: ".5em",
-      zIndex: "4",
+      width: '90%',
+      padding: '2em',
+      height: 'auto',
+      background: '#F0F0EC',
+      borderRadius: '.5em',
+      zIndex: '4',
     };
     return (
       <PoseGroup>

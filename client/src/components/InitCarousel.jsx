@@ -1,11 +1,10 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 import { colors } from '../lib/common/colors';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Item = styled.div`
   /* display: flex !important; */
@@ -35,7 +34,7 @@ const Item = styled.div`
   }
 `;
 
-export const InitCarousel = () => {
+export function InitCarousel() {
   const settings = {
     dots: true,
     arrows: false,
@@ -49,20 +48,34 @@ export const InitCarousel = () => {
   return (
     <Slider {...settings}>
       <Item>
-        <h3>When someone does you a big favor,<br />dont’t pay it back... PAY IT FORWARD!</h3>
+        <h3>
+          When someone does you a big favor,
+          <br />
+          dont’t pay it back... PAY IT FORWARD!
+        </h3>
         <img className="logo" src="/images/logo.png" alt="logo" />
         <img className="illus" src="/images/illus01.png" alt="illustration01" />
       </Item>
       <Item>
-        <h3>Join for free and start doing and<br /> receiving selfless favors</h3>
+        <h3>
+          Join for free and start doing and
+          <br />
+          {' '}
+          receiving selfless favors
+        </h3>
         <img className="logo" src="/images/logo.png" alt="logo" />
         <img className="illus" src="/images/illus02.png" alt="illustration02" />
       </Item>
       <Item>
-        <h3>Take part in the favor chain<br /> that is making the world a better place!</h3>
+        <h3>
+          Take part in the favor chain
+          <br />
+          {' '}
+          that is making the world a better place!
+        </h3>
         <img className="logo" src="/images/logo.png" alt="logo" />
         <img className="illus" src="/images/illus03.png" alt="illustration03" />
       </Item>
     </Slider>
   );
-};
+}

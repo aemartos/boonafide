@@ -73,7 +73,7 @@ export default class Calendar extends React.Component {
     const activeDay = this.props.selectedDay;
     const selectedDay = moment(day).format('DD-MM-YYYY');
     if (selected && activeDay === selectedDay) {
-      const selectedIndex = selectedDays.findIndex(selectedDay => DateUtils.isSameDay(selectedDay, day));
+      const selectedIndex = selectedDays.findIndex((sDay) => DateUtils.isSameDay(sDay, day));
       selectedDays.splice(selectedIndex, 1);
       this.props.onSelectDay(day, true);
     } else if (!selected) {

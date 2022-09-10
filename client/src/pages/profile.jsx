@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import Slider from "react-slick";
-import { addProfilePicture } from '../lib/API/cloudinary';
+import Slider from 'react-slick';
+import Switch, { State } from 'react-switchable';
+// import { addProfilePicture } from '../lib/API/cloudinary';
 import { AuthAPI } from '../lib/API/auth';
 import { BoonsAPI } from '../lib/API/boons';
 import { updateUser, setBusy } from '../lib/redux/actions';
@@ -12,10 +12,9 @@ import { UsersAPI } from '../lib/API/users';
 import { colors } from '../lib/common/colors';
 import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import Switch, { State } from 'react-switchable';
 import 'react-switchable/dist/main.css';
 
 const ContentBox = styled.div`
@@ -85,7 +84,7 @@ const ContentBox = styled.div`
       height: 6em;
       border-radius: 50%;
       object-fit: cover;
-      opacity: ${props => (props.user.currentHelped.length >= 3 && props.myUser ? ".3" : "1")};
+      opacity: ${(props) => (props.user.currentHelped.length >= 3 && props.myUser ? '.3' : '1')};
     }
     .redeemBtn {
       position: absolute;
@@ -173,39 +172,12 @@ class _ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null,
-      switchFav: "Offer",
+      // file: null,
+      // switchFav: 'Offer',
       favOffer: [],
       favNeed: [],
       currentHelped: [],
     };
-  }
-
-  handleSwitch(switchFav) {
-    this.setState({ switchFav });
-    if (switchFav === "Offer") {
-      this.slider.slickGoTo(0);
-    } else if (switchFav === "Need") {
-      this.slider.slickGoTo(1);
-    }
-  }
-
-  handleChange(e) {
-    this.setState({ file: e.target.files[0] });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    addProfilePicture(this.state.file);
-  }
-
-  handleRedeemBoon() {
-    BoonsAPI.redeemBoon().then(() => {
-      AuthAPI.currentUser().then((user) => {
-        this.props.dispatch(updateUser(user));
-        this.setState({ currentHelped: user.currentHelped });
-      }).catch(e => this.props.dispatch(setBusy(false)));
-    }).catch(e => this.props.history.push('/not-found'));
   }
 
   componentWillMount() {
@@ -214,16 +186,16 @@ class _ProfilePage extends Component {
 
   componentDidMount() {
     if (this.props.match.params.id) {
-      const id = this.props.match.params.id;
-      UsersAPI.getUser(id).then(user => this.setState({
+      const { id } = this.props.match.params;
+      UsersAPI.getUser(id).then((user) => this.setState({
         user, favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped,
       }))
-        .catch(e => this.props.history.push('/not-found'));
+        .catch(() => this.props.history.push('/not-found'));
     } else {
       AuthAPI.currentUser().then((user) => {
         this.props.dispatch(updateUser(user));
         this.setState({ favOffer: user.favOffer, favNeed: user.favNeed, currentHelped: user.currentHelped });
-      }).catch(e => this.props.dispatch(setBusy(false)));
+      }).catch(() => this.props.dispatch(setBusy(false)));
     }
   }
 
@@ -231,6 +203,33 @@ class _ProfilePage extends Component {
     if (!this.state.user && nextState.user) {
       this.props.dispatch(setBusy(false));
     }
+  }
+
+  handleSwitch(switchFav) {
+    // this.setState({ switchFav });
+    if (switchFav === 'Offer') {
+      this.slider.slickGoTo(0);
+    } else if (switchFav === 'Need') {
+      this.slider.slickGoTo(1);
+    }
+  }
+
+  // handleChange(e) {
+  //   this.setState({ file: e.target.files[0] });
+  // }
+
+  // handleSubmit(e) {
+  //   e.preventDefault();
+  // //   addProfilePicture(this.state.file);
+  // }
+
+  handleRedeemBoon() {
+    BoonsAPI.redeemBoon().then(() => {
+      AuthAPI.currentUser().then((user) => {
+        this.props.dispatch(updateUser(user));
+        this.setState({ currentHelped: user.currentHelped });
+      }).catch(() => this.props.dispatch(setBusy(false)));
+    }).catch(() => this.props.history.push('/not-found'));
   }
 
   render() {
@@ -254,7 +253,7 @@ class _ProfilePage extends Component {
           <ContentBox user={user} myUser={myUser}>
             {user && !isBusy
               ? (
-                <React.Fragment>
+                <>
                   <h2 className="username">{user.username}</h2>
                   <div className="mainBox">
                     <div className="profPic"><img src={user.pictureUrl} alt="profile pic" /></div>
@@ -262,17 +261,16 @@ class _ProfilePage extends Component {
                       {myUser
                         ? <span className="b-edit" />
                         : (
-                          <React.Fragment>
+                          <>
                             <Link to={`/messages/${user._id}`}><span className="b-mp" /></Link>
                             <span className="b-sharing" />
-                          </React.Fragment>
-                        )
-                  }
+                          </>
+                        )}
                     </div>
                   </div>
 
                   <div className="currentHelped">
-                    {[...Array(3)].map((u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : "#"}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : "/images/personIcon.png"} alt="userHelped pic" /></Link>)}
+                    {[...Array(3)].map((_u, i) => <Link key={i} to={currentHelped[i] ? `/profile/${currentHelped[i]._id.toString()}` : '#'}><img key={i} src={currentHelped[i] ? currentHelped[i].pictureUrl : '/images/personIcon.png'} alt="userHelped pic" /></Link>)}
                     {currentHelped.length >= 3 && myUser
                       ? <Button className="btn btn-primary redeemBtn" onClick={() => this.handleRedeemBoon()}>Redeem boon!</Button>
                       : null}
@@ -314,24 +312,23 @@ class _ProfilePage extends Component {
                 </form> : null} */}
 
                   <div className="favSwitch">
-                    <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
+                    <Switch onValueChange={(newValue) => this.handleSwitch(newValue)}>
                       <State active value="Offer">Offer</State>
                       <State active value="Need">Need</State>
                     </Switch>
 
                     <div className="favors">
-                      <Slider ref={slider => (this.slider = slider)} {...settings}>
+                      {/* eslint-disable-next-line no-return-assign */}
+                      <Slider ref={(slider) => (this.slider = slider)} {...settings}>
                         <div className="offer">
                           {favOffer.length > 0
-                            ? favOffer.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
-                            : <p className="noFavors">You have no favor offering, please consider adding some</p>
-                        }
+                            ? favOffer.map((f) => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
+                            : <p className="noFavors">You have no favor offering, please consider adding some</p>}
                         </div>
                         <div className="need">
                           {favNeed.length > 0
-                            ? favNeed.map(f => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
-                            : <p className="noFavors">It seems you don't need anything, that's ok, but you may consider adding something</p>
-                        }
+                            ? favNeed.map((f) => <FavorThumb key={f._id} favorId={f._id} img={f.pictureUrls[0]} name={f.name} description={f.description} />)
+                            : <p className="noFavors">It seems you don&apos;t need anything, that&apos;s ok, but you may consider adding something</p>}
                         </div>
                       </Slider>
                     </div>
@@ -340,10 +337,9 @@ class _ProfilePage extends Component {
                   <div className="tickets">
                     <Button link="/tickets" className="btn btn-primary">See tickets</Button>
                   </div>
-                </React.Fragment>
+                </>
               )
-              : null
-            }
+              : null}
           </ContentBox>
         </div>
       </div>
@@ -351,4 +347,4 @@ class _ProfilePage extends Component {
   }
 }
 
-export const ProfilePage = connect(store => ({ user: store.user }))(withRouter(_ProfilePage));
+export const ProfilePage = connect((store) => ({ user: store.user }))(withRouter(_ProfilePage));

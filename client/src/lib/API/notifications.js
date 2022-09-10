@@ -8,13 +8,13 @@ export class NotificationsAPI {
 
   static getNotifications() {
     return axiosInstance.get('/api/notifications/')
-      .then(res => res.data)
-      .catch(e => NotificationsAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => NotificationsAPI.errorHandler(e));
   }
 
   static notificationSeen(id) {
     return axiosInstance.post(`/api/notifications/${id}/seen`)
-      .then(res => res.data)
-      .catch(e => NotificationsAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => NotificationsAPI.errorHandler(e));
   }
 }

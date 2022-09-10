@@ -69,7 +69,6 @@ const StyledThumb = styled.div`
   } */
 `;
 
-
 export default class TicketThumb extends Component {
   render() {
     const {
@@ -78,7 +77,7 @@ export default class TicketThumb extends Component {
     return (
       <Link to={`/tickets/${ticketId}`}>
         <StyledThumb>
-          <div className="dark" style={{ display: validated ? "block" : "none" }}>
+          <div className="dark" style={{ display: validated ? 'block' : 'none' }}>
             <span className="finish">FINISHED</span>
           </div>
           <img src={img} alt={name} />

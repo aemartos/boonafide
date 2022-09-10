@@ -98,7 +98,7 @@ export default class PhilosophyPage extends Component {
   }
 
   componentWillMount() {
-    BoonsAPI.getTotalBoons().then(boons => this.setState({ boons: boons.length }));
+    BoonsAPI.getTotalBoons().then((boons) => this.setState({ boons: boons.length }));
   }
 
   render() {
@@ -123,7 +123,7 @@ export default class PhilosophyPage extends Component {
 
           <div className="box mainInfo">
             <img className="logo" src="/images/logo.png" alt="logo" />
-            <p className="description">Change the world through a "chain of favors”. A person must help three people in a disinterested way. They also have to help three others and so on, until a favors chain that improves the lives of citizens is spread around the world.</p>
+            <p className="description">Change the world through a &quot;chain of favors&quot;. A person must help three people in a disinterested way. They also have to help three others and so on, until a favors chain that improves the lives of citizens is spread around the world.</p>
             <p className="mainAction">When you do 3 favors, them became into 1 boon. With the boons you can ask for favors.</p>
             <img className="chain" src="/images/chain.png" alt="chain" />
           </div>
@@ -133,7 +133,8 @@ export default class PhilosophyPage extends Component {
             <ol className="list principlesList">
               <li className="item">Unlimited favors. 3 favors = 1 boon.</li>
               <li className="item">Individual boon and favor creation, with receiver verification.</li>
-              <li className="item">Non speculative coins or favors.
+              <li className="item">
+                Non speculative coins or favors.
                 <ul>
                   <li>1 favor === 1 favor.  1 boon === 1 boon.  </li>
                   <li>(No matter the value of the good or service received).</li>
@@ -169,7 +170,10 @@ export default class PhilosophyPage extends Component {
           </div>
 
           <div className="box cannot">
-            <h2 className="title">CAN <span className="not">NOT</span></h2>
+            <h2 className="title">
+              CAN
+              <span className="not">NOT</span>
+            </h2>
             <ul className="list cannotList">
               <li className="item">Buy or sell favors or boons.</li>
               <li className="item">Change 1 favor for several favors.</li>
@@ -179,7 +183,10 @@ export default class PhilosophyPage extends Component {
           </div>
 
           <div className="box copyright">
-            <h2 className="title">boonafide© by <a href="https://github.com/aemartos/boonafide" target="_blank" rel="noopener noreferrer">anæstrada</a></h2>
+            <h2 className="title">
+              boonafide© by
+              <a href="https://github.com/aemartos/boonafide" target="_blank" rel="noopener noreferrer">anæstrada</a>
+            </h2>
           </div>
         </Container>
       </div>

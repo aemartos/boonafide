@@ -48,8 +48,7 @@ class _MessagesPage extends Component {
                 const person = c.authorId.username === user.username ? c.receiverId : c.authorId;
                 return <ConverThumb key={person._id} link={`/messages/${person._id}`} img={person.pictureUrl} name={person.username} content={c.lastSmsId.content} hour={c.lastSmsId.createdAt} />;
               })
-              : <p className="noConversations">You have no active chats, go ahead and take the step to talk with someone :)</p>
-            }
+              : <p className="noConversations">You have no active chats, go ahead and take the step to talk with someone :)</p>}
           </StyledBox>
         </div>
       </div>
@@ -57,4 +56,4 @@ class _MessagesPage extends Component {
   }
 }
 
-export const MessagesPage = connect(store => ({ user: store.user }))(_MessagesPage);
+export const MessagesPage = connect((store) => ({ user: store.user }))(_MessagesPage);
