@@ -47,6 +47,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
+// To serve app built in PROD
+app.use(express.static(path.join(__dirname, 'public')));
+
 // default value for title local
 app.locals.title = 'boonafide';
 

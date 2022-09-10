@@ -1,7 +1,7 @@
 {
   "name": "boonafide-server",
   "version": "1.0.0",
-  "main": "./bin/www.js",
+  "main": "./bin/www",
   "dependencies": {
     "bcryptjs": "2.4.3",
     "body-parser": "^1.20.0",
@@ -30,9 +30,9 @@
     "nodemon": "^2.0.19"
   },
   "scripts": {
-    "start": "cat ./boonafide && node ./bin/www.js",
-    "dev": "cat ./boonafide && DEBUG=server:* nodemon ./bin/www.js",
-    "dev-windows": "nodemon ./bin/www.js",
+    "start": "cat ./boonafide && node ./bin/www",
+    "dev": "cat ./boonafide && DEBUG=server:* nodemon ./bin/www",
+    "dev-windows": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint './**/*.js' --fix"
   },
