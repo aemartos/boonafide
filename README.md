@@ -1,5 +1,5 @@
 # boonafide
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/032683a5d73b414688fbf6fb6967d909)](https://www.codacy.com/app/aemartos/boonafide?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=aemartos/boonafide&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d3063bad3df7460caa6f37f021f1d10e)](https://www.codacy.com/gh/aemartos/boonafide/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=aemartos/boonafide&amp;utm_campaign=Badge_Grade)
 
 ### [https://boonafide.herokuapp.com/](https://boonafide.herokuapp.com/)
 *"When someone does you a big favor, don't pay it back... PAY IT FORWARD!"*
