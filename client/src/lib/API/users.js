@@ -8,13 +8,13 @@ export class UsersAPI {
 
   static getUser(id) {
     return axiosInstance.get(`/api/users/${id}`)
-      .then(res => res.data)
-      .catch(e => UsersAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => UsersAPI.errorHandler(e));
   }
 
   static updateUser(data) {
     return axiosInstance.post('/api/users/updateUser', { data })
-      .then(res => true)
-      .catch(e => UsersAPI.errorHandler(e));
+      .then(() => true)
+      .catch((e) => UsersAPI.errorHandler(e));
   }
 }

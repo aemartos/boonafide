@@ -32,11 +32,11 @@ class _NotificationsPage extends Component {
   }
 
   componentDidMount() {
-    NotificationsAPI.getNotifications().then(notifications => this.setState({ notifications })).catch(() => {});
+    NotificationsAPI.getNotifications().then((notifications) => this.setState({ notifications })).catch(() => {});
   }
 
   render() {
-    const notifications = this.state.notifications;
+    const { notifications } = this.state;
     // const notifications = [...this.props.user.notificationsId].reverse();
     // console.log(notifications)
     return (
@@ -44,7 +44,7 @@ class _NotificationsPage extends Component {
         <div className="container">
           <NotificationsContainer>
             {notifications.length > 0
-              ? notifications.map(n => <NotificationsThumb key={n._id} readNotification={id => this.props.dispatch(readNotification(id))} notification={n} />)
+              ? notifications.map((n) => <NotificationsThumb key={n._id} readNotification={(id) => this.props.dispatch(readNotification(id))} notification={n} />)
               : <p className="noNotifications">You have no notifications yet :)</p>}
           </NotificationsContainer>
         </div>
@@ -53,4 +53,4 @@ class _NotificationsPage extends Component {
   }
 }
 
-export const NotificationsPage = connect(store => ({ user: store.user }))(_NotificationsPage);
+export const NotificationsPage = connect((store) => ({ user: store.user }))(_NotificationsPage);

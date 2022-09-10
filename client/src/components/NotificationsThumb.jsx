@@ -76,82 +76,176 @@ export default class NotificationsThumb extends React.Component {
   }
 
   handleClick(id) {
-    NotificationsAPI.notificationSeen(id).then(()=>{
+    NotificationsAPI.notificationSeen(id).then(() => {
       this.props.readNotification(id);
     }).catch(() => {});
   }
 
+  // eslint-disable-next-line consistent-return
   createContent(notification) {
-    const { _id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers, seen } = notification;
+    const {
+      _id, type, createdAt, favorId, personId, receiverId, ticketId, helpedUsers, seen,
+    } = notification;
     switch (type) {
       case 'ticketValidated':
         return (
-          <Link to="/profile" className={(seen ? "" : "noSeen ") + "notification"} onClick={() => this.handleClick(_id)}>
-            <img src={personId.pictureUrl} alt=""/>
+          <Link to="/profile" className={`${seen ? '' : 'noSeen '}notification`} onClick={() => this.handleClick(_id)}>
+            <img src={personId.pictureUrl} alt="" />
             <div className="info">
-            { helpedUsers < 3 ?
-              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. You only have to help {3 - helpedUsers} more people to get a boon.</p>
-              :
-              <p className="content"> <span className="capitalize bold">{personId.username}</span> validated <span className="bold italic">"{favorId.name}"</span>. Good job! You have helped 3 people, you can now redeem a boon!!!</p>
-            }
+              { helpedUsers < 3
+                ? (
+                  <p className="content">
+                    {' '}
+                    <span className="capitalize bold">{personId.username}</span>
+                    {' '}
+                    validated
+                    {' '}
+                    <span className="bold italic">
+                      &quot;{favorId.name}&quot;
+                    </span>
+                    . You only have to help
+                    {' '}
+                    {3 - helpedUsers}
+                    {' '}
+                    more people to get a boon.
+                  </p>
+                )
+                : (
+                  <p className="content">
+                    {' '}
+                    <span className="capitalize bold">{personId.username}</span>
+                    {' '}
+                    validated
+                    {' '}
+                    <span className="bold italic">
+                      &quot;{favorId.name}&quot;
+                    </span>
+                    . Good job! You have helped 3 people, you can now redeem a boon!!!
+                  </p>
+                )}
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>
-        )
+        );
       case 'newTicket':
         return (
-          <Link to={`/tickets/${ticketId._id}`} className={(seen ? "" : "noSeen ") + "notification"} onClick={()=>this.handleClick(_id)}>
-            <img src={personId.pictureUrl} alt=""/>
+          <Link to={`/tickets/${ticketId._id}`} className={`${seen ? '' : 'noSeen '}notification`} onClick={() => this.handleClick(_id)}>
+            <img src={personId.pictureUrl} alt="" />
             <div className="info">
-              { favorId.type === "Offer" ?
-                (receiverId._id.toString() === ticketId.donorId.toString() ?
-                  <p className="content"> <span className="capitalize bold">{personId.username}</span> has asked you for the favor: <span className="bold italic">"{favorId.name}"</span>. The ticket generated is available in your profile.</p>
-                :
-                  <p className="content">You have requested <span className="capitalize bold">{personId.username}</span> for <span className="bold italic">"{favorId.name}"</span>. The ticket generated is available in your profile.</p>
+              {/* eslint-disable-next-line no-nested-ternary */}
+              { favorId.type === 'Offer'
+                ? (receiverId._id.toString() === ticketId.donorId.toString()
+                  ? (
+                    <p className="content">
+                      {' '}
+                      <span className="capitalize bold">{personId.username}</span>
+                      {' '}
+                      has asked you for the favor:
+                      {' '}
+                      <span className="bold italic">
+                        &quot;
+                        {favorId.name}
+                        &quot;
+                      </span>
+                      . The ticket generated is available in your profile.
+                    </p>
+                  )
+                  : (
+                    <p className="content">
+                      You have requested
+                      <span className="capitalize bold">{personId.username}</span>
+                      {' '}
+                      for
+                      <span className="bold italic">
+                        &quot;{favorId.name}&quot;
+                      </span>
+                      . The ticket generated is available in your profile.
+                    </p>
+                  )
                 )
-              :
-                (receiverId._id.toString() === ticketId.donorId.toString() ?
-                  <p className="content">You have offered <span className="bold italic">"{favorId.name}"</span> to <span className="capitalize bold">{personId.username}</span>. The ticket generated is available in your profile.</p>
-                :
-                  <p className="content"> <span className="capitalize bold">{personId.username}</span> has offered <span className="bold italic">"{favorId.name}"</span> to you. The ticket generated is available in your profile.</p>
-                )
-              }
+                : (receiverId._id.toString() === ticketId.donorId.toString()
+                  ? (
+                    <p className="content">
+                      You have offered
+                      <span className="bold italic">
+                        &quot;{favorId.name}&quot;
+                      </span>
+                      {' '}
+                      to
+                      <span className="capitalize bold">{personId.username}</span>
+                      . The ticket generated is available in your profile.
+                    </p>
+                  )
+                  : (
+                    <p className="content">
+                      {' '}
+                      <span className="capitalize bold">{personId.username}</span>
+                      {' '}
+                      has offered
+                      {' '}
+                      <span className="bold italic">
+                        &quot;{favorId.name}&quot;
+                      </span>
+                      {' '}
+                      to you. The ticket generated is available in your profile.
+                    </p>
+                  )
+                )}
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>
         );
       case 'newMessage':
         return (
-          <Link to={`/messages/${personId._id}`} className={(seen ? "" : "noSeen ") + "notification"} onClick={() => this.handleClick(_id)}>
+          <Link to={`/messages/${personId._id}`} className={`${seen ? '' : 'noSeen '}notification`} onClick={() => this.handleClick(_id)}>
             <img src={personId.pictureUrl} alt="" />
             <div className="info">
-              <p className="content"><span className="capitalize bold">{personId.username}</span> contacted you.</p>
+              <p className="content">
+                <span className="capitalize bold">{personId.username}</span>
+                {' '}
+                contacted you.
+              </p>
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>
         );
       case 'favoriteFavor':
         return (
-          <Link to={`/favors/${favorId._id}`} className={(seen ? "" : "noSeen ") + "notification"} onClick={() => this.handleClick(_id)}>
+          <Link to={`/favors/${favorId._id}`} className={`${seen ? '' : 'noSeen '}notification`} onClick={() => this.handleClick(_id)}>
             <img src={personId.pictureUrl} alt="" />
             <div className="info">
-              <p className="content"><span className="capitalize bold">{personId.username}</span> fav'd your favor: <span className="bold italic">"{favorId.name}".</span></p>
+              <p className="content">
+                <span className="capitalize bold">{personId.username}</span>
+                {' '}
+                fav&apos;d your favor:
+                {' '}
+                <span className="bold italic">
+                  &quot;{favorId.name}&quot;.
+                </span>
+              </p>
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>
         );
       case 'commentInFavor':
         return (
-          <Link to={`/favors/${favorId._id}`} className={(seen ? "" : "noSeen ") + "notification"} onClick={() => this.handleClick(_id)}>
+          <Link to={`/favors/${favorId._id}`} className={`${seen ? '' : 'noSeen '}notification`} onClick={() => this.handleClick(_id)}>
             <img src={personId.pictureUrl} alt="" />
             <div className="info">
-              <p className="content"><span className="capitalize bold">{personId.username}</span> commented on your favor: <span className="bold italic">"{favorId.name}".</span></p>
+              <p className="content">
+                <span className="capitalize bold">{personId.username}</span>
+                {' '}
+                commented on your favor:
+                {' '}
+                <span className="bold italic">
+                  &quot;{favorId.name}&quot;.
+                </span>
+              </p>
               <p className="time">{formatDateMin(new Date(createdAt))}</p>
             </div>
           </Link>
         );
       default:
-        return;
     }
   }
 
@@ -163,4 +257,4 @@ export default class NotificationsThumb extends React.Component {
       </StyledNotification>
     );
   }
-};
+}

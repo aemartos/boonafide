@@ -10,11 +10,11 @@ class _Sockets extends React.Component {
     this.state = {};
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (!prevProps.user && this.props.user) {
       const { user } = this.props;
       window.socket = io(`${URL_SERVER}/`);
-      window.socket.on('connect', (data) => {
+      window.socket.on('connect', () => {
         window.socket.emit('register', { author: user._id.toString(), token: user.token });
       });
       this.ping = setInterval(() => window.socket.emit('ping'), 2000);
@@ -42,4 +42,4 @@ class _Sockets extends React.Component {
   }
 }
 
-export const Sockets = connect(store => ({ user: store.user, chat: store.chat }))(_Sockets);
+export const Sockets = connect((store) => ({ user: store.user, chat: store.chat }))(_Sockets);

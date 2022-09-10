@@ -6,7 +6,6 @@ import { colors } from '../lib/common/colors';
 import { TicketsAPI } from '../lib/API/tickets';
 import TicketThumb from '../components/TicketThumb';
 
-
 const ContentBox = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -43,7 +42,7 @@ class _TicketsPage extends Component {
     TicketsAPI.getAllTickets().then((tickets) => {
       this.props.dispatch(setBusy(false));
       this.setState({ tickets });
-    }).catch(e => this.props.history.push('/not-found'));
+    }).catch(() => this.props.history.push('/not-found'));
   }
 
   render() {
@@ -55,9 +54,8 @@ class _TicketsPage extends Component {
             <div className="tickets">
               <div className="offer">
                 {tickets.length > 0
-                  ? tickets.map(t => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.pictureUrls[0]} name={t.favorId.name} date={t.date} location={t.favorId.locationName} validated={t.validated} />)
-                  : <p className="noTickets">You have no tickets, you need to accept others needs to get a ticket</p>
-                  }
+                  ? tickets.map((t) => <TicketThumb key={t._id} ticketId={t._id} img={t.favorId.pictureUrls[0]} name={t.favorId.name} date={t.date} location={t.favorId.locationName} validated={t.validated} />)
+                  : <p className="noTickets">You have no tickets, you need to accept others needs to get a ticket</p>}
               </div>
             </div>
           </ContentBox>

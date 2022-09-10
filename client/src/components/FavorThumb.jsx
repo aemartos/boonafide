@@ -49,8 +49,10 @@ const StyledThumb = styled.div`
   }
 `;
 
-export const FavorThumb = (props) => {
-  const { img, name, description, favorId } = props;
+export function FavorThumb(props) {
+  const {
+    img, name, description, favorId,
+  } = props;
   return (
     <StyledThumb>
       <img src={img} alt={name} />
@@ -61,4 +63,4 @@ export const FavorThumb = (props) => {
       <Link to={`/favors/${favorId}`}><span className="b-arrow" /></Link>
     </StyledThumb>
   );
-};
+}

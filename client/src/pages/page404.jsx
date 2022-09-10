@@ -37,16 +37,19 @@ const StyledContainer = styled.div`
 
 class Page404 extends Component {
   componentDidMount() {
-    getScript("/vendor/TweenMax.min.js", "tmax", () => {
-      getScript("/vendor/MorphSVGPlugin.min.js", "morph", () => {
-        const { MorphSVGPlugin, TimelineMax, Back, Power1, Power4 } = window;
-        MorphSVGPlugin.convertToPath("ellipse", "circle");
-        new TimelineMax().to('#milk-spill--large', 60, { scale: 1.25, transformOrigin: "right", ease: Power1.easeInOut });
+    getScript('/vendor/TweenMax.min.js', 'tmax', () => {
+      getScript('/vendor/MorphSVGPlugin.min.js', 'morph', () => {
+        const {
+          MorphSVGPlugin, TimelineMax, Back, Power1, Power4,
+        } = window;
+        MorphSVGPlugin.convertToPath('ellipse', 'circle');
+        new TimelineMax().to('#milk-spill--large', 60, { scale: 1.25, transformOrigin: 'right', ease: Power1.easeInOut });
         // new TimelineMax({yoyo: true, repeat: -1}).to('#milk-face', 10, {yPercent: -15, ease: Power1.easeInOut});
         const tl = new TimelineMax({ repeatDelay: 5, repeat: -1, yoyo: true });
-        tl.to(["#eye-left-open", "#eye-right-open"], 0.10, {
-          transformOrigin: "center", scaleY: 0, ease: Power4.easeNone, repeat: 1, yoyo: true,
+        tl.to(['#eye-left-open', '#eye-right-open'], 0.10, {
+          transformOrigin: 'center', scaleY: 0, ease: Power4.easeNone, repeat: 1, yoyo: true,
         }, 0);
+        // eslint-disable-next-line no-new
         new TimelineMax({ repeatDelay: 8, repeat: -1, yoyo: true });
         tl.to('#mouth', 3, { morphSVG: { shape: 'M368.4 240.8s-15.4-10.5-27.3 3.5' }, ease: Back.easeOut.config(1.7) });
         new TimelineMax({ SVG2GIF: true, repeat: 0 }).timeScale(1);
@@ -55,8 +58,8 @@ class Page404 extends Component {
   }
 
   componentWillUnmount() {
-    document.getElementById("tmax").remove();
-    document.getElementById("morph").remove();
+    document.getElementById('tmax').remove();
+    document.getElementById('morph').remove();
   }
 
   render() {
@@ -95,7 +98,7 @@ class Page404 extends Component {
             </g>
           </g>
         </svg>
-        <div className="message404">It seems like we couldn't find the page you were looking for</div>
+        <div className="message404">It seems like we couldn&apos;t find the page you were looking for</div>
         <div className="action">
           <Button className="btn" onClick={() => this.props.history.goBack()}>go back</Button>
         </div>
