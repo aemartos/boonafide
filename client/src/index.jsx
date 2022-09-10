@@ -7,14 +7,15 @@ import App from './App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
-
-const MainApp = () => (
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>
-);
+function MainApp() {
+  return (
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  );
+}
 
 ReactDOM.render(<MainApp />, document.getElementById('root'));
 

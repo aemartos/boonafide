@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import TimePicker from 'react-time-picker';
+import moment from 'moment';
+import Switch, { State } from 'react-switchable';
 import Calendar from '../components/Calendar';
 import { colors } from '../lib/common/colors';
-import moment from 'moment';
 import FormField from '../components/FormField';
 import Select from '../components/Select';
 import { Button } from '../components/Button';
@@ -13,7 +14,6 @@ import { addFavorPictures } from '../lib/API/cloudinary';
 import { setMarker } from '../lib/common/helpers';
 import InputMapSearch from '../components/map/InputMapSearch';
 import MapComponent from '../components/map/MapComponent';
-import Switch, { State } from 'react-switchable';
 import 'react-switchable/dist/main.css';
 import { FavorsAPI } from '../lib/API/favors';
 import { AuthAPI } from '../lib/API/auth';
@@ -218,15 +218,19 @@ export default class _NewFavorPage extends Component {
       remainingFavNum: '',
       pictureUrls: [undefined, undefined, undefined],
       imagePreviewUrl: [undefined, undefined, undefined],
-      selectedDay: moment(new Date()).format("DD-MM-YYYY"),
+      selectedDay: moment(new Date()).format('DD-MM-YYYY'),
       selectedHour: undefined,
       shifts: {},
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  onChangeHour(selectedHour) {
-    this.setState({ selectedHour });
+  componentDidMount() {
+    document.body.classList.add('newFavor');
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('newFavor');
   }
 
   handleAddCategory(option) {
@@ -237,17 +241,6 @@ export default class _NewFavorPage extends Component {
 
   handleDeleteCategory(idx) {
     this.setState({ categories: [...this.state.categories.slice(0, idx), ...this.state.categories.slice(idx + 1)] });
-  }
-
-  onSelectDay(day, isSelected) {
-    let selectedDay = moment(day).format("DD-MM-YYYY");
-    let shifts = { ...this.state.shifts };
-    if (isSelected) {
-      shifts = { ...this.state.shifts };
-      delete shifts[selectedDay];
-      selectedDay = undefined;
-    }
-    this.setState({ selectedDay, shifts });
   }
 
   handleDeleteHour(idx) {
@@ -287,9 +280,9 @@ export default class _NewFavorPage extends Component {
   }
 
   handleSearch(places) {
-    const geometry = places[0].geometry;
-    const location = geometry.location;
-    this.marker && this.marker.setMap(null);
+    const { geometry } = places[0];
+    const { location } = geometry;
+    if (this.marker) this.marker.setMap(null);
     this.marker = setMarker(location, this.marker, this.mapObject, undefined, true);
     this.bounds = new window.google.maps.LatLngBounds();
     if (geometry.viewport) {
@@ -302,18 +295,18 @@ export default class _NewFavorPage extends Component {
 
   handleAddFavor() {
     const {
-      categories, type, name, description, remainingFavNum, shifts
+      categories, type, name, description, remainingFavNum, shifts,
     } = this.state;
     if (categories && categories.length > 0 && type !== undefined && name !== undefined && description !== undefined && remainingFavNum !== undefined && Object.keys(shifts).length > 0) {
-      this.props.dispatch(setBusy("force"));
+      this.props.dispatch(setBusy('force'));
       addFavorPictures(this.state.pictureUrls).then((pictureUrls) => {
         const location = {
-          type: "Point",
+          type: 'Point',
           coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()],
         };
         const service = new window.google.maps.places.PlacesService(this.mapObject);
-        service.textSearch({ location: this.marker.getPosition(), query: "center" }, (place) => {
-          const locationName = place.length > 0 ? place[0].formatted_address : "Unknown";
+        service.textSearch({ location: this.marker.getPosition(), query: 'center' }, (place) => {
+          const locationName = place.length > 0 ? place[0].formatted_address : 'Unknown';
           const favor = {
             location,
             locationName,
@@ -344,16 +337,23 @@ export default class _NewFavorPage extends Component {
   }
 
   handleBlankFields() {
-    this.setState({ showError: "You have to fill in all the fields :)" });
+    this.setState({ showError: 'You have to fill in all the fields :)' });
     setTimeout(() => this.setState({ showError: undefined }), 1500);
   }
 
-  componentDidMount() {
-    document.body.classList.add("newFavor");
+  onSelectDay(day, isSelected) {
+    let selectedDay = moment(day).format('DD-MM-YYYY');
+    let shifts = { ...this.state.shifts };
+    if (isSelected) {
+      shifts = { ...this.state.shifts };
+      delete shifts[selectedDay];
+      selectedDay = undefined;
+    }
+    this.setState({ selectedDay, shifts });
   }
 
-  componentWillUnmount() {
-    document.body.classList.remove("newFavor");
+  onChangeHour(selectedHour) {
+    this.setState({ selectedHour });
   }
 
   render() {
@@ -368,13 +368,17 @@ export default class _NewFavorPage extends Component {
 
             <div className="categoriesFav">
               {categories.length > 0 ? categories.map((c, i) => (
-                <span key={i}>{c} <span className="icon b-cross" onClick={() => this.handleDeleteCategory(i)} /></span>
+                <span key={i}>
+                  {c}
+                  {' '}
+                  <span tabIndex={0} aria-hidden="true" role="button" className="icon b-cross" onClick={() => this.handleDeleteCategory(i)} />
+                </span>
               ))
                 : <p className="categoriesLabel">First of all, select the favor categories, please :)</p>}
             </div>
-            <Select className="catSelect" name="categories" options={categoriesArr} onSelectOption={option => this.handleAddCategory(option)} />
+            <Select className="catSelect" name="categories" options={categoriesArr} onSelectOption={(option) => this.handleAddCategory(option)} />
 
-            <Switch onValueChange={newValue => this.handleSwitch(newValue)}>
+            <Switch onValueChange={(newValue) => this.handleSwitch(newValue)}>
               <State active value="Offer">Offer</State>
               <State active value="Need">Need</State>
             </Switch>
@@ -382,37 +386,41 @@ export default class _NewFavorPage extends Component {
             <div className="previewImg">
               {[...Array(3)].map((u, i) => (
                 <div key={i} className="imgPrev">
-                  <input type="file" onChange={e => this.handleChange(e, i)} />
-                  <img className={imagePreviewUrl[i] ? "preview" : ""} src={imagePreviewUrl[i] ? imagePreviewUrl[i] : "/images/addPic.png"} alt="favor pic" />
+                  <input type="file" onChange={(e) => this.handleChange(e, i)} />
+                  <img className={imagePreviewUrl[i] ? 'preview' : ''} src={imagePreviewUrl[i] ? imagePreviewUrl[i] : '/images/addPic.png'} alt="favor pic" />
                 </div>
               ))}
             </div>
 
-            <FormField className="line" type="text" placeholder="write a title" onChange={e => this.setState({ name: e.target.value })} value={this.state.name} />
-            <textarea placeholder="write a description" onChange={e => this.setState({ description: e.target.value })} value={this.state.description} />
-            <FormField className="line" type="number" placeholder="write a number of available favors" onChange={e => this.setState({ remainingFavNum: e.target.value })} value={this.state.remainingFavNum} />
+            <FormField className="line" type="text" placeholder="write a title" onChange={(e) => this.setState({ name: e.target.value })} value={this.state.name} />
+            <textarea placeholder="write a description" onChange={(e) => this.setState({ description: e.target.value })} value={this.state.description} />
+            <FormField className="line" type="number" placeholder="write a number of available favors" onChange={(e) => this.setState({ remainingFavNum: e.target.value })} value={this.state.remainingFavNum} />
 
             <div className="dateAndHourBox">
               <div className="text">Select preferred days and hours</div>
               <div className="dateAndHour">
-                <Calendar onSelectDay={this.onSelectDay.bind(this)} selectedDay={selectedDay} />
+                <Calendar onSelectDay={() => this.onSelectDay()} selectedDay={selectedDay} />
                 { selectedDay ? (
                   <HoursSelect>
                     <div className="activeDay">{selectedDay}</div>
                     <div className="availableHours">
                       {availableTimesForSelectedDay.map((time, i) => (
-                        <p key={i}>{time} <span className="b-cross" onClick={() => this.handleDeleteHour(i)} /></p>
+                        <p key={i}>
+                          {time}
+                          {' '}
+                          <span tabIndex={0} aria-hidden="true" role="button" className="b-cross" onClick={() => this.handleDeleteHour(i)} />
+                        </p>
                       ))}
                     </div>
-                    <div >
+                    <div>
                       <TimePicker
                         className="timePickerComponent"
                         value={selectedHour}
-                        onChange={this.onChangeHour.bind(this)}
-                        disableClock={true}
+                        onChange={() => this.onChangeHour()}
+                        disableClock
                       />
                     </div>
-                    <span className="more b-plus" onClick={this.handleAddHours.bind(this)} />
+                    <span tabIndex={0} aria-hidden="true" role="button" className="more b-plus" onClick={() => this.handleAddHours()} />
                   </HoursSelect>
                 ) : <p className="noDay">Please, select a day to set different times</p> }
               </div>
@@ -423,13 +431,13 @@ export default class _NewFavorPage extends Component {
                 center={{ lat: 40.4169473, lng: -3.7035285 }}
                 setMap={(map) => {
                   this.mapObject = map;
-                  this.marker && this.marker.setMap(null);
+                  if (this.marker) this.marker.setMap(null);
                   this.marker = setMarker({ lat: 40.4169473, lng: -3.7035285 }, this.marker, this.mapObject, undefined, true);
                 }}
               />
             </div>
             <div className="error">{showError || null}</div>
-            <Button link="" onClick={this.handleAddFavor.bind(this)} className="btn btn-primary">add favor</Button>
+            <Button link="" onClick={() => this.handleAddFavor()} className="btn btn-primary">add favor</Button>
           </StyledAddFavorPage>
         </div>
       </div>
@@ -437,5 +445,5 @@ export default class _NewFavorPage extends Component {
   }
 }
 
-export const NewFavorPage = connect(store => ({ user: store.user }))(_NewFavorPage);
+export const NewFavorPage = connect((store) => ({ user: store.user }))(_NewFavorPage);
 // onKeyUp={(e)=>{if (e.keyCode === 13) {this.handleAddFavor()}}}

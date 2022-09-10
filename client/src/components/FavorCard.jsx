@@ -10,12 +10,12 @@ import { colors } from '../lib/common/colors';
 
 const StyledCard = styled.div`
   position: relative;
-  width: ${props => (props.slide ? '100%' : '48%')};
+  width: ${(props) => (props.slide ? '100%' : '48%')};
   background-color: ${colors.white};
   border: 1px solid ${colors.midGrey};
   border-radius: .5em;
   overflow: hidden;
-  margin-bottom: ${props => (props.slide ? '0' : '1em')};
+  margin-bottom: ${(props) => (props.slide ? '0' : '1em')};
   .typeFav {
     position: absolute;
     right: .7em;
@@ -23,7 +23,7 @@ const StyledCard = styled.div`
     height: 3em;
     width: 3em;
     padding: 1.2em .35em;
-    background-color: ${props => (props.type === "Offer" ? colors.purple : colors.orange)};
+    background-color: ${(props) => (props.type === 'Offer' ? colors.purple : colors.orange)};
     border-radius: 50%;
     font-family: "Baloo Bhaina";
     line-height: 1em;
@@ -33,8 +33,8 @@ const StyledCard = styled.div`
   }
   .text {
     width: 90%;
-    height: ${props => (props.withBtns ? "7.5em" : "4.7em")};
-    margin: ${props => (props.withBtns ? '.5em auto' : '.5em auto 1em')};
+    height: ${(props) => (props.withBtns ? '7.5em' : '4.7em')};
+    margin: ${(props) => (props.withBtns ? '.5em auto' : '.5em auto 1em')};
     .metadata {
       display: flex;
       flex-flow: row nowrap;
@@ -137,7 +137,6 @@ const StyledCard = styled.div`
   }
 `;
 
-
 class _FavorCard extends Component {
   constructor(props) {
     super(props);
@@ -179,16 +178,16 @@ class _FavorCard extends Component {
             ? (
               <div className="actions">
                 <Link to={`/messages/${userId}`}><span className="b-mp" /></Link>
-                <span className={isFavorite ? "b-heart-fill active" : "b-heart"} onClick={() => this.handleFav(favorId)} />
+                <span tabIndex={0} aria-hidden="true" role="button" className={isFavorite ? 'b-heart-fill active' : 'b-heart'} onClick={() => this.handleFav(favorId)} />
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <Link to=""><span className="b-sharing" /></Link>
               </div>
             )
-            : null
-          }
+            : null}
         </div>
       </StyledCard>
     );
   }
 }
 
-export const FavorCard = connect(store => ({ user: store.user }))(_FavorCard);
+export const FavorCard = connect((store) => ({ user: store.user }))(_FavorCard);

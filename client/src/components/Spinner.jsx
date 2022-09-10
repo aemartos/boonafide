@@ -1,5 +1,5 @@
-import React from "react";
-import { HeartSpinner } from "react-spinners-kit";
+import React from 'react';
+import { HeartSpinner } from 'react-spinners-kit';
 import sample from 'lodash/sample';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
@@ -36,15 +36,19 @@ const StyledSpinner = styled.div`
   }
 `;
 
-export const Spinner = () => {
+export function Spinner() {
   const quote = sample(wQuotes);
   return (
     <StyledSpinner>
       <div className="waiting-quote">
-        <p className="author">_"{quote.author}"</p>
-        <p className="message">"{quote.message}"</p>
+        <p className="author">
+          _&quot;{quote.author}&quot;
+        </p>
+        <p className="message">
+          &quot;{quote.message}&quot;
+        </p>
       </div>
       <HeartSpinner size={50} color={colors.purple} loading />
     </StyledSpinner>
   );
-};
+}

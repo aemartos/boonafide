@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { getScript } from './helpers';
 
 export function validateStart(callback) {
@@ -49,11 +50,13 @@ export function validateStart(callback) {
           drawTween.progress(prog);
           if (prog > 0.994 && callback) {
             callback();
+            // eslint-disable-next-line no-param-reassign
             callback = null;
           }
           return p.point;
         };
 
+        // eslint-disable-next-line no-new
         new Draggable(drag, {
           liveSnap: {
             points: pointModifier,
@@ -64,7 +67,7 @@ export function validateStart(callback) {
           autoAlpha: 1,
         });
 
-        function closestPoint(pathNode, pathLength, point) {
+        function closestPoint(pathNode, pathLengthh, point) {
           const precision = 1;
           let best;
           let bestLength;
@@ -78,24 +81,23 @@ export function validateStart(callback) {
             scanTo = scanFrom + 20;
           }
 
-          scanTo = scanTo > pathLength ? pathLength : scanTo;
+          scanTo = scanTo > pathLengthh ? pathLengthh : scanTo;
 
           for (
             // eslint-disable-next-line
             var scan, scanLength = scanFrom, scanDistance; scanLength <= scanTo; scanLength += precision
           ) {
-            if (
-              (scanDistance = distance2(
-                (scan = pathNode.getPointAtLength(scanLength)),
-              )) < bestDistance
-            ) {
+            scanDistance = distance2(
+              (scan = pathNode.getPointAtLength(scanLength)),
+            );
+            if (scanDistance < bestDistance) {
               best = scan;
               bestLength = scanLength;
               bestDistance = scanDistance;
             }
           }
 
-          const len2 = bestLength + (bestLength === pathLength ? -0.1 : 0.1);
+          const len2 = bestLength + (bestLength === pathLengthh ? -0.1 : 0.1);
           const rotation = getRotation(best, pathNode.getPointAtLength(len2));
 
           return {

@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Spinner } from './Spinner';
 
-const firstSteps = "/firstSteps";
+const firstSteps = '/firstSteps';
 
-export const WithUser = (Component, redirectTo = "/") => connect(state => ({ user: state.user, isBusy: state.isBusy }))((props) => {
+export const WithUser = (Component, redirectTo = '/') => connect((state) => ({ user: state.user, isBusy: state.isBusy }))((props) => {
   const { user, isBusy, location } = props;
-  if (isBusy === "force") {
+  if (isBusy === 'force') {
     return <Spinner />;
   } if (user) {
     if (user.newUser && location.pathname !== firstSteps) {
@@ -22,7 +22,7 @@ export const WithUser = (Component, redirectTo = "/") => connect(state => ({ use
   return <Redirect to={{ pathname: redirectTo }} />;
 });
 
-export const ConditionalUser = (ComponentUser, ComponentNoUser) => connect(state => ({ user: state.user, isBusy: state.isBusy }))((props) => {
+export const ConditionalUser = (ComponentUser, ComponentNoUser) => connect((state) => ({ user: state.user, isBusy: state.isBusy }))((props) => {
   const { user, isBusy, location } = props;
   if (user) {
     if (user.newUser && location.pathname !== firstSteps) {

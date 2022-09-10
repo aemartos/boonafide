@@ -64,4 +64,4 @@ const _Container = (props) => {
   );
 };
 
-export const Container = connect(state => ({ user: state.user }))(_Container);
+export const Container = connect((state) => ({ user: state.user }))(_Container);

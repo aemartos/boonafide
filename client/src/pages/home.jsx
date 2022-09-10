@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 import { FavorsAPI } from '../lib/API/favors';
 import FormField from '../components/FormField';
 import { FavorCard } from '../components/FavorCard';
@@ -40,7 +40,7 @@ const ContentBox = styled.div`
   margin: 0 auto;
   padding: 5em 0 6em;
   .slick-list {
-    width: ${props => (props.favors.length < 2 ? "100%" : "105.5%")};
+    width: ${(props) => (props.favors.length < 2 ? '100%' : '105.5%')};
   }
   .slick-slide {
     margin-right: 1em;
@@ -76,18 +76,18 @@ export default class HomePage extends Component {
     };
   }
 
+  componentDidMount() {
+    FavorsAPI.offerFavors().then((favorsOthersNeed) => this.setState({ favorsOthersNeed })).catch(() => {});
+    FavorsAPI.nearbyFavors().then((favorsNearby) => this.setState({ favorsNearby })).catch(() => {});
+  }
+
   handleSearch(e) {
-    if (e.target.value !== "") {
-      FavorsAPI.getFavorSearch(`${e.target.value}`).then(filterFavors => this.setState({ filterFavors }));
-    } else if (e.target.value === "") {
+    if (e.target.value !== '') {
+      FavorsAPI.getFavorSearch(`${e.target.value}`).then((filterFavors) => this.setState({ filterFavors }));
+    } else if (e.target.value === '') {
       this.setState({ filterFavors: null });
     }
     this.setState({ search: e.target.value || '' });
-  }
-
-  componentDidMount() {
-    FavorsAPI.offerFavors().then(favorsOthersNeed => this.setState({ favorsOthersNeed })).catch(() => {});
-    FavorsAPI.nearbyFavors().then(favorsNearby => this.setState({ favorsNearby })).catch(() => {});
   }
 
   render() {
@@ -108,7 +108,7 @@ export default class HomePage extends Component {
       <div className="contentBox">
         <div className="container">
           <SearchBox>
-            <FormField className="light" type="text" placeholder="search favors..." onChange={e => this.handleSearch(e)} value={search} />
+            <FormField className="light" type="text" placeholder="search favors..." onChange={(e) => this.handleSearch(e)} value={search} />
             <span className="b-filters" />
           </SearchBox>
           <ContentBox favors={favorsOthersNeed}>
@@ -116,18 +116,18 @@ export default class HomePage extends Component {
               ? (
                 <div className="favorsBox">
                   <div className="favorsSearch">
-                    {filterFavors.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} />)}
+                    {filterFavors.map((f) => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} />)}
                   </div>
                 </div>
               )
               : (
-                <React.Fragment>
+                <>
                   {favorsOthersNeed.length > 0
                     ? (
                       <div className="favorsBox favorsOthers">
                         <p className="title">We have found this favors you can offer</p>
                         <Slider {...settings}>
-                          {favorsOthersNeed.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide />)}
+                          {favorsOthersNeed.map((f) => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} slide />)}
                         </Slider>
                       </div>
                     )
@@ -135,12 +135,11 @@ export default class HomePage extends Component {
                   <div className="favorsBox">
                     <p className="title">Favors near you</p>
                     <div className="favorsNearby">
-                      {favorsNearby.map(f => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} withBtns />)}
+                      {favorsNearby.map((f) => <FavorCard key={f._id} favorId={f._id} userId={f.creatorId._id} type={f.type} img={f.pictureUrls[0]} username={f.creatorId.username} date={f.creationdate} name={f.name} description={f.description} withBtns />)}
                     </div>
                   </div>
-                </React.Fragment>
-              )
-            }
+                </>
+              )}
           </ContentBox>
         </div>
       </div>

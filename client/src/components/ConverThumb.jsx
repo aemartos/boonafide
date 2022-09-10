@@ -54,8 +54,10 @@ const StyledThumb = styled.div`
   }
 `;
 
-export const ConverThumb = (props) => {
-  const { link, img, name, content, hour } = props;
+export function ConverThumb(props) {
+  const {
+    link, img, name, content, hour,
+  } = props;
   return (
     <StyledThumb>
       <Link to={link}>
@@ -70,4 +72,4 @@ export const ConverThumb = (props) => {
       </Link>
     </StyledThumb>
   );
-};
+}

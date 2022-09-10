@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
-import { Button } from '../components/Button';
 import { LogInForm } from '../components/LogInForm';
 import { Messages } from '../components/Messages';
-import { URL_SERVER } from '../lib/common/constants';
 
 const StyledLogIn = styled.div`
   height: 100% !important;
@@ -56,21 +54,31 @@ const StyledLogIn = styled.div`
   }
 `;
 
-export const LogInPage = () => (
-  <StyledLogIn>
-    <div className="box-container login">
-      <div className="title-box">
-        <h2>welcome back ;)</h2>
-        <p>login your account to start changing the world!</p>
+export function LogInPage() {
+  return (
+    <StyledLogIn>
+      <div className="box-container login">
+        <div className="title-box">
+          <h2>welcome back ;)</h2>
+          <p>login your account to start changing the world!</p>
+        </div>
+        <LogInForm />
+        <Messages />
+        <div>
+          <p className="account-message">
+            <span>don&apos;t have an account yet?</span>
+            {' '}
+            <br />
+            <span>
+              <Link to="/signup"> signup</Link>
+              {' '}
+              or
+              {' '}
+              <Link to="/">go back</Link>
+            </span>
+          </p>
+        </div>
       </div>
-      <LogInForm />
-      <Messages />
-      <div>
-        <p className="account-message">
-          <span>don't have an account yet?</span> <br />
-          <span><Link to="/signup"> signup</Link> or <Link to="/">go back</Link></span>
-        </p>
-      </div>
-    </div>
-  </StyledLogIn>
-);
+    </StyledLogIn>
+  );
+}

@@ -31,8 +31,7 @@ const StyledGetStarted = styled.div`
   }
 `;
 
-
-export const GetStartedPage = connect(store => ({ user: store.user }))(({ user, dispatch }) => (
+export const GetStartedPage = connect((store) => ({ user: store.user }))(() => (
   <StyledGetStarted>
     <InitCarousel />
     <div className="bottom-box">

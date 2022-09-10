@@ -1,27 +1,28 @@
+/* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import Slider from "react-slick";
+import Slider from 'react-slick';
+import truncate from 'lodash/truncate';
+import moment from 'moment';
+import Collapsible from 'react-collapsible';
 import { updateUser, setBusy, setFavor } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { setMarker, getCompleteDate } from '../lib/common/helpers';
 import { FavorsAPI } from '../lib/API/favors';
 import { TicketsAPI } from '../lib/API/tickets';
 import { AuthAPI } from '../lib/API/auth';
-import truncate from 'lodash/truncate';
 import { Button } from '../components/Button';
 import Modal from '../components/Modal';
 import MapComponent from '../components/map/MapComponent';
-import moment from 'moment';
 import { CommentDetail } from '../components/CommentDetail';
-import Collapsible from 'react-collapsible';
 
 const StyledFavor = styled.div`
   position: relative;
-  padding-bottom: ${props => (props.user._id === props.favor.creatorId._id ? "0" : "4.5em")};
+  padding-bottom: ${(props) => (props.user._id === props.favor.creatorId._id ? '0' : '4.5em')};
   .shadow {
     position: absolute;
     top: 0;
@@ -236,7 +237,7 @@ const StyledFavor = styled.div`
       }
     }
     #map {
-      height: ${props => (props.user._id === props.favor.creatorId._id ? "16.7em" : "13em")};
+      height: ${(props) => (props.user._id === props.favor.creatorId._id ? '16.7em' : '13em')};
       background-color: ${colors.midGrey};
     }
   }
@@ -310,8 +311,32 @@ class _FavorDetailPage extends Component {
       selectedDay: null,
       selectedHour: null,
       comments: null,
-      commentContent: "",
+      commentContent: '',
     };
+  }
+
+  componentWillMount() {
+    this.props.dispatch(setBusy(true));
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    const { user } = this.props;
+    FavorsAPI.getFavor(id).then((favor) => {
+      const donorId = favor.type === 'Offer' ? favor.creatorId._id : user._id;
+      const receiverId = favor.type === 'Offer' ? user._id : favor.creatorId._id;
+      const boonsReceiver = favor.type === 'Offer' ? user.boons.length : favor.creatorId.boons.length;
+      const comments = favor.reviewsId;
+      const selectedDay = Object.keys(favor.shifts)[0];
+      this.props.dispatch(setFavor(favor));
+      this.setState({
+        favor, boonsReceiver, donorId, receiverId, selectedDay, selectedHour: favor.shifts[selectedDay][0], comments,
+      });
+    }).catch(() => this.props.history.push('/not-found'));
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(setFavor(undefined));
   }
 
   handlePostComment() {
@@ -320,9 +345,9 @@ class _FavorDetailPage extends Component {
       content: commentContent,
       favId: favor._id,
     };
-    if (commentContent === "") return;
-    this.setState({ commentContent: "" });
-    FavorsAPI.addComment(favor._id, review).then(fav => this.setState({ comments: fav.reviewsId }))
+    if (commentContent === '') return;
+    this.setState({ commentContent: '' });
+    FavorsAPI.addComment(favor._id, review).then((fav) => this.setState({ comments: fav.reviewsId }))
       .catch((e) => {
         // console.log(e);
         this.setState({ showError: e.data });
@@ -360,30 +385,6 @@ class _FavorDetailPage extends Component {
       });
   }
 
-  componentWillMount() {
-    this.props.dispatch(setBusy(true));
-  }
-
-  componentDidMount() {
-    const id = this.props.match.params.id;
-    const { user } = this.props;
-    FavorsAPI.getFavor(id).then((favor) => {
-      const donorId = favor.type === "Offer" ? favor.creatorId._id : user._id;
-      const receiverId = favor.type === "Offer" ? user._id : favor.creatorId._id;
-      const boonsReceiver = favor.type === "Offer" ? user.boons.length : favor.creatorId.boons.length;
-      const comments = favor.reviewsId;
-      const selectedDay = Object.keys(favor.shifts)[0];
-      this.props.dispatch(setFavor(favor));
-      this.setState({
-        favor, boonsReceiver, donorId, receiverId, selectedDay, selectedHour: favor.shifts[selectedDay][0], comments,
-      });
-    }).catch(e => this.props.history.push('/not-found'));
-  }
-
-  componentWillUnmount() {
-    this.props.dispatch(setFavor(undefined));
-  }
-
   render() {
     const {
       favor, selectedDay, boonsReceiver, comments, showError, commentContent,
@@ -404,7 +405,7 @@ class _FavorDetailPage extends Component {
       focusOnSelect: true,
       centerMode: true,
       slidesToScroll: 1,
-      afterChange: idx => this.setState({ selectedDay: Object.keys(favor.shifts)[idx] }),
+      afterChange: (idx) => this.setState({ selectedDay: Object.keys(favor.shifts)[idx] }),
     };
     const settingsHours = {
       dots: false,
@@ -414,7 +415,7 @@ class _FavorDetailPage extends Component {
       focusOnSelect: true,
       centerMode: true,
       slidesToScroll: 1,
-      afterChange: idx => this.setState({ selectedHour: favor.shifts[selectedDay][idx] }),
+      afterChange: (idx) => this.setState({ selectedHour: favor.shifts[selectedDay][idx] }),
     };
     return (
       <div className="contentBox">
@@ -424,8 +425,16 @@ class _FavorDetailPage extends Component {
               <StyledFavor id="scroll" user={user} favor={favor}>
                 {favor.remainingFavNum < 1 ? <div className="shadow" /> : null}
                 <Modal isVisible={this.state.isVisible} bottom="20%">
-                  <p className="question">Are you sure you want to {favor.type === "Need" ? "offer" : "request"} the favor?</p>
-                  <p className="description">Remember if you {favor.type === "Need" ? "offer the favor, no boon will be removed from the user" : "request the favor, a boon will be removed from your account when the ticket will be validated."}</p>
+                  <p className="question">
+                    Are you sure you want to
+                    {favor.type === 'Need' ? 'offer' : 'request'}
+                    {' '}
+                    the favor?
+                  </p>
+                  <p className="description">
+                    Remember if you
+                    {favor.type === 'Need' ? 'offer the favor, no boon will be removed from the user' : 'request the favor, a boon will be removed from your account when the ticket will be validated.'}
+                  </p>
                   <p className="instructions">Once a favor is set it can not be removed.</p>
                   <div className="actions">
                     <Button link="" onClick={() => this.handleModal()} className="btn btn-cancel">Cancel</Button>
@@ -440,9 +449,15 @@ class _FavorDetailPage extends Component {
                 </div>
                 <div className="info">
                   <p className="text creator">
-                    {favor.type === "Offer" ? "Offer " : "Request "} by: <span className="light capitalize">{favor.creatorId.username}</span>
+                    {favor.type === 'Offer' ? 'Offer ' : 'Request '}
+                    {' '}
+                    by:
+                    <span className="light capitalize">{favor.creatorId.username}</span>
                   </p>
-                  <p className="text remainingFavors">Remaining favors: <span className="light">{favor.remainingFavNum}</span></p>
+                  <p className="text remainingFavors">
+                    Remaining favors:
+                    <span className="light">{favor.remainingFavNum}</span>
+                  </p>
                   <div className="favorDescription">
                     <p className="title">{favor.name}</p>
                     <p className="description">{truncate(favor.description, { length: 193 })}</p>
@@ -460,24 +475,25 @@ class _FavorDetailPage extends Component {
                             <div className="collapTitle">
                               <span className="text">Comments</span>
                               <span className="trigger b-arrow" />
-                            </div>)}>
+                            </div>
+)}
+                        >
                           <div className="showComments">
                             {comments.map((c, i) => <CommentDetail key={i} content={c.content} author={c.authorId} date={c.createdAt} />)}
                           </div>
                         </Collapsible>
                       )
                       : (
-                        <React.Fragment>
+                        <>
                           <p className="text">Comments</p>
                           <p className="noComments">There are no comments for this favor :)</p>
-                        </React.Fragment>
-                      )
-                    }
+                        </>
+                      )}
                     <div className="sendCommentBox">
                       <div className="error">{showError || null}</div>
                       <div className="post">
-                        <textarea placeholder="write a comment" onChange={e => this.setState({ commentContent: e.target.value })} value={commentContent} onKeyUp={(e) => { if (e.keyCode === 13) { this.handlePostComment(); } }} />
-                        <span className="sendCommentBtn b-newfavor" onClick={() => this.handlePostComment()} />
+                        <textarea placeholder="write a comment" onChange={(e) => this.setState({ commentContent: e.target.value })} value={commentContent} onKeyUp={(e) => { if (e.keyCode === 13) { this.handlePostComment(); } }} />
+                        <span tabIndex={0} aria-hidden="true" role="button" className="sendCommentBtn b-newfavor" onClick={() => this.handlePostComment()} />
                       </div>
                     </div>
                   </div>
@@ -486,7 +502,7 @@ class _FavorDetailPage extends Component {
                 <div className="dateHourBox">
                   <p className="text dateHour">Select day and hour</p>
                   <Slider {...settingsDays} className="days">
-                    {Object.keys(favor.shifts).map((day, i) => <p key={i} className="day">{getCompleteDate(moment(day, "DD-MM-YYYY").toDate())}</p>)}
+                    {Object.keys(favor.shifts).map((day, i) => <p key={i} className="day">{getCompleteDate(moment(day, 'DD-MM-YYYY').toDate())}</p>)}
                     <p className="day" />
                     <p className="day" />
                   </Slider>
@@ -497,7 +513,10 @@ class _FavorDetailPage extends Component {
                   </Slider>
                 </div>
                 <div className="mapLocation">
-                  <p className="location">Location: <span className="light">{favor.locationName}</span></p>
+                  <p className="location">
+                    Location:
+                    <span className="light">{favor.locationName}</span>
+                  </p>
                   { (window.google)
                     ? (
                       <MapComponent
@@ -508,14 +527,15 @@ class _FavorDetailPage extends Component {
                         }}
                       />
                     )
-                    : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>
-              }
+                    : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>}
                 </div>
                 <div className="request">
                   {user._id !== favor.creatorId._id || favor.remainingFavNum < 1
                     ? (
-                      <Button link="" onClick={() => this.handleModal()} className={`${boonsReceiver <= 0 ? "disable " : ""}btn btn-primary`}>
-                        {favor.type === "Offer" ? "Request " : "Offer"} favor
+                      <Button link="" onClick={() => this.handleModal()} className={`${boonsReceiver <= 0 ? 'disable ' : ''}btn btn-primary`}>
+                        {favor.type === 'Offer' ? 'Request ' : 'Offer'}
+                        {' '}
+                        favor
                       </Button>
                     )
                     : null}
@@ -529,4 +549,4 @@ class _FavorDetailPage extends Component {
   }
 }
 
-export const FavorDetailPage = connect(store => ({ user: store.user }))(withRouter(_FavorDetailPage));
+export const FavorDetailPage = connect((store) => ({ user: store.user }))(withRouter(_FavorDetailPage));

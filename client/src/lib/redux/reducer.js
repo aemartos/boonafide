@@ -5,6 +5,7 @@ const initialStore = {
   chat: [],
 };
 
+// eslint-disable-next-line default-param-last
 export const rootReducer = (store = initialStore, action) => {
   switch (action.type) {
     case 'ADD_MESSAGE':
@@ -15,7 +16,9 @@ export const rootReducer = (store = initialStore, action) => {
 
     case 'LOGIN':
     case 'UPDATE_USER':
-      return { ...store, user: action.user, notificationsId: action.user.notificationsId, isBusy: false };
+      return {
+        ...store, user: action.user, notificationsId: action.user.notificationsId, isBusy: false,
+      };
 
     case 'LOGOUT':
       return { ...store, user: null, isBusy: false };
@@ -33,10 +36,10 @@ export const rootReducer = (store = initialStore, action) => {
       return { ...store, user: { ...store.user, notificationsId: [...store.user.notificationsId, action.notification] } };
 
     case 'READ_CHAT':
-      return { ...store, chat: store.chat.filter(c => c.authorId !== action.person) };
+      return { ...store, chat: store.chat.filter((c) => c.authorId !== action.person) };
 
     case 'READ_NOTIFICATION':
-      return { ...store, user: { ...store.user, notificationsId: store.user.notificationsId.map(not => (not._id === action.id ? { ...not, seen: true } : not)) } };
+      return { ...store, user: { ...store.user, notificationsId: store.user.notificationsId.map((not) => (not._id === action.id ? { ...not, seen: true } : not)) } };
 
     default: return store;
   }

@@ -45,7 +45,7 @@ const StyledComment = styled.div`
   }
 `;
 
-export const CommentDetail = (props) => {
+export function CommentDetail(props) {
   const { content, author, date } = props;
   return (
     <StyledComment>
@@ -56,4 +56,4 @@ export const CommentDetail = (props) => {
       <div className="content">{content}</div>
     </StyledComment>
   );
-};
+}

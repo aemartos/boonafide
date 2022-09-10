@@ -59,18 +59,18 @@ const StyledInput = styled.input`
 `;
 
 export default class InputMapSearch extends React.Component {
-
   componentDidMount() {
     this.searchBox = new window.google.maps.places.SearchBox(this.inputSearch);
     this.searchBox.addListener('places_changed', this.handleSearch.bind(this));
   }
 
-  handleSearch(e) {
+  handleSearch() {
     this.places = this.searchBox.getPlaces();
     this.props.handleSearchResult(this.places);
   }
 
   render() {
-    return <StyledInput className={`inputSearch ${this.props.className}`} ref={inputSearch => (this.inputSearch = inputSearch)} type="text" placeholder="write a search" />;
+    // eslint-disable-next-line no-return-assign
+    return <StyledInput className={`inputSearch ${this.props.className}`} ref={(inputSearch) => (this.inputSearch = inputSearch)} type="text" placeholder="write a search" />;
   }
 }

@@ -51,21 +51,31 @@ const StyledSignUp = styled.div`
   }
 `;
 
-export const SignUpPage = () => (
-  <StyledSignUp>
-    <div className="box-container signup">
-      <div className="title-box">
-        <h2>join boonafide</h2>
-        <p>and be part of the favor chain that is changing the world!</p>
+export function SignUpPage() {
+  return (
+    <StyledSignUp>
+      <div className="box-container signup">
+        <div className="title-box">
+          <h2>join boonafide</h2>
+          <p>and be part of the favor chain that is changing the world!</p>
+        </div>
+        <SignUpForm />
+        <Messages />
+        <div>
+          <p className="account-message">
+            <span>do you already have an account?</span>
+            {' '}
+            <br />
+            <span>
+              <Link to="/login"> login</Link>
+              {' '}
+              or
+              {' '}
+              <Link to="/">go back</Link>
+            </span>
+          </p>
+        </div>
       </div>
-      <SignUpForm />
-      <Messages />
-      <div>
-        <p className="account-message">
-          <span>do you already have an account?</span> <br />
-          <span><Link to="/login"> login</Link> or <Link to="/">go back</Link></span>
-        </p>
-      </div>
-    </div>
-  </StyledSignUp>
-);
+    </StyledSignUp>
+  );
+}

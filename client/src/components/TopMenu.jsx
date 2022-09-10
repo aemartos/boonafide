@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { AuthAPI } from '../lib/API/auth';
-import { logout, clearMessages /* setBusy */ } from '../lib/redux/actions';
-import { updateUser } from '../lib/redux/actions';
+import { logout, clearMessages /* setBusy */, updateUser } from '../lib/redux/actions';
 import { FavorsAPI } from '../lib/API/favors';
 import { colors } from '../lib/common/colors';
 
@@ -119,27 +118,28 @@ class _TopMenu extends React.Component {
   }
 
   render() {
-    const { user, favor, dispatch, location, history } = this.props;
+    const {
+      user, favor, dispatch, location, history,
+    } = this.props;
     const { isFavorite } = this.state;
     return (
       <TopNav>
         {location.pathname.startsWith('/tickets') || location.pathname.match(/\/messages\/.+/) || location.pathname.match(/\/favors\/.+/)
           ? (
-            <React.Fragment>
-              <span className="icon btn-arrow b-arrow-short" onClick={() => history.goBack()} />
+            <>
+              <span tabIndex={0} aria-hidden="true" role="button" className="icon btn-arrow b-arrow-short" onClick={() => history.goBack()} />
               {location.pathname.startsWith('/tickets') ? <span className="pathName">{location.pathname.split('/')[1]}</span> : null }
-            </React.Fragment>
+            </>
           )
           : (
-            <span className="logout btn" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => { /* dispatch(setBusy(false)) */ })}>
+            <span tabIndex={0} aria-hidden="true" role="button" className="logout btn" onClick={() => AuthAPI.logout().then(() => dispatch(logout())).catch(() => { /* dispatch(setBusy(false)) */ })}>
               <span className="icon b-logout" />
             </span>
-          )
-        }
+          )}
         {favor
           ? (
             <div className="favMenu">
-              <span className={ isFavorite ? "icon b-heart-fill active" : "icon b-heart"} onClick={() => this.handleFav(favor._id) } />
+              <span tabIndex={0} aria-hidden="true" role="button" className={isFavorite ? 'icon b-heart-fill active' : 'icon b-heart'} onClick={() => this.handleFav(favor._id)} />
               <span className="icon b-sharing" />
               <div className="threeDots">
                 <span className="dot" />
@@ -159,4 +159,4 @@ class _TopMenu extends React.Component {
   }
 }
 
-export const TopMenu = connect(store => ({ user: store.user, favor: store.favor }))(_TopMenu);
+export const TopMenu = connect((store) => ({ user: store.user, favor: store.favor }))(_TopMenu);

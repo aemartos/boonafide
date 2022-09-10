@@ -10,7 +10,7 @@ const BottomNav = styled.nav`
   width: 100%;
   position: absolute;
   bottom: 0;
-  background-color: ${props => (props.is404 ? colors.purple : colors.grey)};
+  background-color: ${(props) => (props.is404 ? colors.purple : colors.grey)};
   border-radius: 5em;
   box-shadow: 0px 10px 20px 10px rgba(0,0,0,0.33);
   z-index: 2;
@@ -29,7 +29,7 @@ const BottomNav = styled.nav`
     align-items: flex-start;
     justify-content: space-between;
     a {
-      color: ${props => (props.is404 ? colors.grey : colors.purple)};
+      color: ${(props) => (props.is404 ? colors.grey : colors.purple)};
       margin-right: 1.2em;
       .icon {
         font-size: 1.7em;
@@ -80,15 +80,18 @@ const BottomNav = styled.nav`
 
 class _BottomMenu extends React.Component {
   render() {
-    const { user, favor, dispatch, location, chat } = this.props;
+    const {
+      user, favor, dispatch, location, chat,
+    } = this.props;
     const numChat = chat.length;
-    const numNot = user.notificationsId.filter(n => n.seen === false).length;
+    const numNot = user.notificationsId.filter((n) => n.seen === false).length;
     return (
-      <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? " isClosed" : ""}>
+      <BottomNav is404={location.pathname === '/not-found'} className={location.pathname.startsWith('/tickets') ? ' isClosed' : ''}>
         {favor
           ? (
             <div className="nav favorNav">
               <Link to={`/messages/${favor.creatorId._id}`}><span className="icon b-mp" /></Link>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <Link to=""><span className="icon b-call" /></Link>
             </div>
           )
@@ -108,11 +111,10 @@ class _BottomMenu extends React.Component {
                 </div>
               </NavLink>
             </div>
-          )
-        }
+          )}
       </BottomNav>
     );
   }
 }
 
-export const BottomMenu = connect(store => ({ user: store.user, favor: store.favor, chat: store.chat }))(_BottomMenu);
+export const BottomMenu = connect((store) => ({ user: store.user, favor: store.favor, chat: store.chat }))(_BottomMenu);
