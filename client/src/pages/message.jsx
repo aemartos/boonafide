@@ -129,42 +129,23 @@ const Message = styled.div`
 `;
 
 class _Chat extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: "",
-      messages: [],
-      moreSms: true,
-      receiver: {},
-    };
-    const authorId = this.props.user._id;
-    const receiverId = this.props.match.params.id;
-    this.room = authorId < receiverId ? `${authorId}_${receiverId}` : `${receiverId}_${authorId}`;
-    this.handleReceiveMsg = this.handleReceiveMsg.bind(this);
-  }
-
-  handleSend() {
-    const { content } = this.state;
-    this.setState({ content: "" });
-    if (content === "") return;
-    window.socket.emit('sms_sent', { authorId: this.props.user._id, receiverId: this.props.match.params.id, content });
-  }
-
-  bottomScroll() {
+  static bottomScroll() {
     const msgBox = document.getElementById('messagesBox');
     msgBox.scrollTop = msgBox.scrollHeight;
   }
 
-  handleMoreSmss() {
-    MessagesAPI.moreMessages(this.props.match.params.id, this.state.messages.length).then((res) => {
-      this.setState({ moreSms: res.messages.length === 30, messages: [...res.messages, ...this.state.messages] });
-    });
-  }
-
-  handleReceiveMsg(data) {
-    const { user } = this.props;
-    this.setState({ messages: [...this.state.messages, data] });
-    if (data.receiverId !== user._id) this.bottomScroll();
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: '',
+      messages: [],
+      moreSms: true,
+      receiver: {},
+    };
+    // const authorId = this.props.user._id;
+    // const receiverId = this.props.match.params.id;
+    // this.room = authorId < receiverId ? `${authorId}_${receiverId}` : `${receiverId}_${authorId}`;
+    this.handleReceiveMsg = this.handleReceiveMsg.bind(this);
   }
 
   componentDidMount() {
@@ -186,6 +167,25 @@ class _Chat extends React.Component {
     window.socket.removeListener('sms_received', this.handleReceiveMsg);
   }
 
+  handleSend() {
+    const { content } = this.state;
+    this.setState({ content: '' });
+    if (content === '') return;
+    window.socket.emit('sms_sent', { authorId: this.props.user._id, receiverId: this.props.match.params.id, content });
+  }
+
+  handleMoreSmss() {
+    MessagesAPI.moreMessages(this.props.match.params.id, this.state.messages.length).then((res) => {
+      this.setState({ moreSms: res.messages.length === 30, messages: [...res.messages, ...this.state.messages] });
+    });
+  }
+
+  handleReceiveMsg(data) {
+    const { user } = this.props;
+    this.setState({ messages: [...this.state.messages, data] });
+    if (data.receiverId !== user._id) this.bottomScroll();
+  }
+
   render() {
     const { user } = this.props;
     const { messages, receiver, moreSms } = this.state;
@@ -194,7 +194,7 @@ class _Chat extends React.Component {
         <div className="container">
           <Receiver>{receiver.username}</Receiver>
           <MessagesBox id="messagesBox">
-            {(messages.length >= 30 && moreSms) ? <p className="moreSmss" onClick={() => this.handleMoreSmss()}>show more</p> : null}
+            {(messages.length >= 30 && moreSms) ? <p aria-hidden="true" className="moreSmss" onClick={() => this.handleMoreSmss()}>show more</p> : null}
             {messages.length > 0
               ? messages.map((m, i) => {
                 const smsClass = user._id === m.authorId ? 'me' : 'other';
@@ -206,13 +206,19 @@ class _Chat extends React.Component {
                 );
               })
               : (
-                <p className="noMessages">You have no messages with<span className="receiver"> {receiver.username}</span>, go ahead and say something :)</p>
-              )
-            }
+                <p className="noMessages">
+                  You have no messages with
+                  <span className="receiver">
+                    {' '}
+                    {receiver.username}
+                  </span>
+                  , go ahead and say something :)
+                </p>
+              )}
           </MessagesBox>
           <SendBox>
-            <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={e => this.setState({ content: e.target.value })} value={this.state.content} onKeyUp={(e) => { if (e.keyCode === 13) { this.handleSend(); } }} />
-            <span className="icon b-arrow-fill" onClick={() => this.handleSend()} />
+            <FormField className="line" type="text" placeholder={`write a message to ${receiver.username}`} onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} onKeyUp={(e) => { if (e.keyCode === 13) { this.handleSend(); } }} />
+            <span tabIndex={0} aria-hidden="true" role="button" className="icon b-arrow-fill" onClick={() => this.handleSend()} />
           </SendBox>
         </div>
       </div>
@@ -220,4 +226,4 @@ class _Chat extends React.Component {
   }
 }
 
-export const Chat = connect(store => ({ user: store.user }))(withRouter(_Chat));
+export const Chat = connect((store) => ({ user: store.user }))(withRouter(_Chat));

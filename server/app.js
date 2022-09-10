@@ -1,5 +1,6 @@
 const path = require('path');
 const dotenv = require('dotenv');
+
 dotenv.config();
 const http = require('http');
 
@@ -9,38 +10,40 @@ const express = require('express');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
-const session = require("express-session");
+const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const flash = require("connect-flash");
+const flash = require('connect-flash');
 const socketIo = require('socket.io');
 
-const chat = require('./middlewares/chat').chat;
+const { chat } = require('./middlewares/chat');
 
-mongoose.connect(process.env.DBURL, {useNewUrlParser: true})
-  .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);})
-  .catch(err => {console.error('Error connecting to mongo', err);});
+mongoose.connect(process.env.DBURL, { useNewUrlParser: true })
+  .then((x) => { console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`); })
+  .catch((err) => { console.error('Error connecting to mongo', err); });
 
-const app_name = require('./package.json').name;
-require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
+// eslint-disable-next-line import/extensions
+const appName = require('./package.json').name;
+// eslint-disable-next-line import/no-extraneous-dependencies
+require('debug')(`${appName}:${path.basename(__filename).split('.')[0]}`);
 
 const app = express();
 
 // Middleware Setup
 const whitelist = ['http://localhost:3000'];
 const corsOptions = {
-  origin: function (origin, callback) {
-    var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+  origin(origin, callback) {
+    const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
     callback(null, originIsWhitelisted);
   },
-  credentials: true
+  credentials: true,
 };
-app.enable("trust proxy");
+app.enable('trust proxy');
 app.use(cors(corsOptions));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
 }));
 app.use(cookieParser());
 
@@ -57,7 +60,7 @@ app.use(session({
   saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: process.env.DBURL,
-  })
+  }),
 }));
 app.use(flash());
 require('./passport')(app);
@@ -67,8 +70,8 @@ app.use((req, res, next) => {
   next();
 });
 
-let server = http.createServer(app);
-var io = socketIo(server);
+const server = http.createServer(app);
+const io = socketIo(server);
 global.io = io;
 global.io.on('connection', chat);
 
@@ -77,28 +80,35 @@ global.io.on('connection', chat);
 // app.use('/', index);
 
 const authRoutes = require('./routes/auth');
+
 app.use('/api/auth', authRoutes);
 
 const userRoutes = require('./routes/users');
+
 app.use('/api/users', userRoutes);
 
 const favorRoutes = require('./routes/favors');
+
 app.use('/api/favors', favorRoutes);
 
 const boonsRoutes = require('./routes/boons');
+
 app.use('/api/boons', boonsRoutes);
 
 const ticketRoutes = require('./routes/tickets');
+
 app.use('/api/tickets', ticketRoutes);
 
 const msgRoutes = require('./routes/messages');
+
 app.use('/api/messages', msgRoutes);
 
 const notificationsRoutes = require('./routes/notifications');
+
 app.use('/api/notifications', notificationsRoutes);
 
 app.use('*', (_, res) => {
-  res.sendFile(path.join(__dirname,'public/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 module.exports = {

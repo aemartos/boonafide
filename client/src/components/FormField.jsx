@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 
 const StyledForm = styled.div`
   width: 100%;
-  /* margin-top: ${label => ((label === undefined) ? '0' : '.8em')}; */
+  /* margin-top: ${(label) => ((label === undefined) ? '0' : '.8em')}; */
   label {
     width: 100%;
     font-weight: bold;
@@ -46,7 +46,7 @@ const StyledForm = styled.div`
   input {
     border-radius: 5em;
     padding: .7em 1em;
-    /* margin: ${label => ((label === undefined) ? '0' : '.5em 0')}; */
+    /* margin: ${(label) => ((label === undefined) ? '0' : '.5em 0')}; */
     &[type='checkbox'] {
       width: auto;
     }
@@ -103,8 +103,8 @@ export default class FormField extends Component {
     } = this.props;
     return (
       <StyledForm>
-        <label className="label">{label}</label>
-        <input className={`input ${className}`} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value} />
+        <label htmlFor="controlLabel" className="label">{label}</label>
+        <input id="controlLabel" className={`input ${className}`} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value} />
       </StyledForm>
     );
   }

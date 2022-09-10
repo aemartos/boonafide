@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import truncate from 'lodash/truncate';
-import { Link } from 'react-router-dom';
 import { setBusy } from '../lib/redux/actions';
 import { colors } from '../lib/common/colors';
 import { setMarker, formatDate } from '../lib/common/helpers';
@@ -12,7 +11,6 @@ import { Button } from '../components/Button';
 import Modal from '../components/Modal';
 import { ValidationComponent } from '../components/ValidationComponent';
 import MapComponent from '../components/map/MapComponent';
-
 
 const StyledTicket = styled.div`
   .shadow {
@@ -52,8 +50,8 @@ const StyledTicket = styled.div`
   }
   .favorDescription {
     margin: 1.2em 0;
-    padding-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? "1em" : "0")};
-    border-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? `1px solid ${colors.darkGrey}` : "0")};
+    padding-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? '1em' : '0')};
+    border-bottom: ${({ user, ticket }) => (user._id === ticket.donorId._id ? `1px solid ${colors.darkGrey}` : '0')};
     .title {
       display: flex;
       flex-flow: row nowrap;
@@ -84,7 +82,7 @@ const StyledTicket = styled.div`
       }
     }
     #map {
-      height: ${props => (props.user._id === props.ticket.donorId._id ? "16.7em" : "13em")};
+      height: ${(props) => (props.user._id === props.ticket.donorId._id ? '16.7em' : '13em')};
       background-color: ${colors.midGrey}
     }
   }
@@ -135,24 +133,24 @@ class _TicketDetailPage extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.dispatch(setBusy(true));
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    TicketsAPI.getTicket(id).then((ticket) => {
+      this.props.dispatch(setBusy(false));
+      this.setState({ ticket });
+    }).catch(() => this.props.history.push('/not-found'));
+  }
+
   handleModal(boolean) {
     this.setState({ isVisible: boolean });
   }
 
   handleValidate(boolean) {
     this.setState({ isVisible: false, validating: boolean });
-  }
-
-  componentWillMount() {
-    this.props.dispatch(setBusy(true));
-  }
-
-  componentDidMount() {
-    const id = this.props.match.params.id;
-    TicketsAPI.getTicket(id).then((ticket) => {
-      this.props.dispatch(setBusy(false));
-      this.setState({ ticket });
-    }).catch(e => this.props.history.push('/not-found'));
   }
 
   render() {
@@ -165,7 +163,7 @@ class _TicketDetailPage extends Component {
             ? (
               <StyledTicket user={user} ticket={ticket}>
                 {ticket.validated ? <div className="shadow" /> : null}
-                <ValidationComponent ticket={ticket} validating={validating} closeValidation={bool => this.handleValidate(bool)} />
+                <ValidationComponent ticket={ticket} validating={validating} closeValidation={(bool) => this.handleValidate(bool)} />
                 <Modal isVisible={this.state.isVisible} bottom="35%">
                   <p className="question">Are you sure you want to validate your ticket?</p>
                   <p className="description">Remember you should validate your ticket when you are with the person is doing you the favor.</p>
@@ -177,10 +175,22 @@ class _TicketDetailPage extends Component {
                 </Modal>
                 <img src={ticket.favorId.pictureUrls[0]} alt={ticket.favorId.name} />
                 <div className="info">
-                  <p className="text donor">Donor: <span className="light capitalize">{ticket.donorId.username}</span></p>
-                  <p className="text receiver">Receiver: <span className="light capitalize">{ticket.receiverId.username}</span></p>
-                  <p className="text ticketId">Ticket id: <span className="light">{ticket._id}</span></p>
-                  <p className="text date">Date: <span className="light">{formatDate(new Date(ticket.date))}</span></p>
+                  <p className="text donor">
+                    Donor:
+                    <span className="light capitalize">{ticket.donorId.username}</span>
+                  </p>
+                  <p className="text receiver">
+                    Receiver:
+                    <span className="light capitalize">{ticket.receiverId.username}</span>
+                  </p>
+                  <p className="text ticketId">
+                    Ticket id:
+                    <span className="light">{ticket._id}</span>
+                  </p>
+                  <p className="text date">
+                    Date:
+                    <span className="light">{formatDate(new Date(ticket.date))}</span>
+                  </p>
                   <div className="favorDescription">
                     <p className="title">
                       <span className="name">{ticket.favorId.name}</span>
@@ -191,11 +201,14 @@ class _TicketDetailPage extends Component {
                 </div>
                 <div className="validation">
                   {user._id !== ticket.donorId._id
-                    ? <Button link="" onClick={() => this.handleModal(true)} className={`${ticket.validated ? "disable " : ""}btn btn-primary`}>Validate ticket</Button>
+                    ? <Button link="" onClick={() => this.handleModal(true)} className={`${ticket.validated ? 'disable ' : ''}btn btn-primary`}>Validate ticket</Button>
                     : null}
                 </div>
                 <div className="mapLocation">
-                  <p className="location">Location: <span className="light">{ticket.favorId.locationName}</span></p>
+                  <p className="location">
+                    Location:
+                    <span className="light">{ticket.favorId.locationName}</span>
+                  </p>
                   { (window.google)
                     ? (
                       <MapComponent
@@ -206,17 +219,15 @@ class _TicketDetailPage extends Component {
                         }}
                       />
                     )
-                    : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>
-                }
+                    : <p className="noMap">Map can not be shown, sorry for the inconveniences</p>}
                 </div>
               </StyledTicket>
             )
-            : null
-          }
+            : null}
         </div>
       </div>
     );
   }
 }
 
-export const TicketDetailPage = connect(store => ({ user: store.user }))(withRouter(_TicketDetailPage));
+export const TicketDetailPage = connect((store) => ({ user: store.user }))(withRouter(_TicketDetailPage));

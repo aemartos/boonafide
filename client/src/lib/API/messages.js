@@ -12,19 +12,19 @@ export class MessagesAPI {
 
   static getConversations() {
     return axiosInstance.get('/api/messages/conversations')
-      .then(res => res.data)
-      .catch(e => MessagesAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => MessagesAPI.errorHandler(e));
   }
 
   static getMessages(id) {
     return axiosInstance.get(`/api/messages/${id}`)
-      .then(res => res.data)
-      .catch(e => MessagesAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => MessagesAPI.errorHandler(e));
   }
 
   static moreMessages(id, offset) {
     return axiosInstance.get(`/api/messages/getAllMessagesFrom/${id}?offset=${offset}`)
-      .then(res => res.data)
-      .catch(e => MessagesAPI.errorHandler(e));
+      .then((res) => res.data)
+      .catch((e) => MessagesAPI.errorHandler(e));
   }
 }

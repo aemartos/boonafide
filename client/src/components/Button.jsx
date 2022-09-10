@@ -46,7 +46,9 @@ const StyledLink = styled.span`
 `;
 
 const handleClick = (props) => {
-  props.onClick && props.onClick();
+  if (props.onClick) {
+    props.onClick();
+  }
   if (props.redirect) {
     window.location = props.link;
   } else if (props.link) {
@@ -57,7 +59,7 @@ const handleClick = (props) => {
 const _Button = (props) => {
   const { className, children } = props;
   return (
-    <StyledLink className={className} onClick={(e) => { handleClick(props); }}>{children}</StyledLink>
+    <StyledLink className={className} onClick={() => handleClick(props)}>{children}</StyledLink>
   );
 };
 

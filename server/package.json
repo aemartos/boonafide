@@ -24,14 +24,17 @@
     "socket.io": "2.2.0"
   },
   "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19"
   },
   "scripts": {
     "start": "cat ./boonafide && node ./bin/www",
     "dev": "cat ./boonafide && DEBUG=server:* nodemon ./bin/www",
     "dev-windows": "nodemon ./bin/www",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint './**/*.js' --fix"
   },
   "engines": {
     "node": "v14.20.0",

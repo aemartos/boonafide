@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   Switch,
@@ -24,6 +23,8 @@ import { NotificationsPage } from './pages/notifications';
 import Page404 from './pages/page404';
 import { Sockets } from './components/Sockets';
 
+const redirect = (route) => <Redirect to={route} />;
+
 export default class App extends Component {
   render() {
     return (
@@ -32,8 +33,8 @@ export default class App extends Component {
           <Container location={location} history={history}>
             <Switch location={location}>
               <Route exact strict path="/" component={ConditionalUser(HomePage, GetStartedPage)} />
-              <Route path="/login" component={ConditionalUser(() => <Redirect to="/profile" />, LogInPage)} />
-              <Route path="/signup" component={ConditionalUser(() => <Redirect to="/profile" />, SignUpPage)} />
+              <Route path="/login" component={ConditionalUser(redirect('/profile'), LogInPage)} />
+              <Route path="/signup" component={ConditionalUser(redirect('/profile'), SignUpPage)} />
               <Route path="/firstSteps" component={WithUser(FirstStepsPage)} />
               <Route path="/profile/:id" component={WithUser(ProfilePage)} />
               <Route path="/profile" component={WithUser(ProfilePage)} />
@@ -46,7 +47,7 @@ export default class App extends Component {
               <Route path="/messages" component={WithUser(MessagesPage)} />
               <Route path="/notifications" component={WithUser(NotificationsPage)} />
               <Route exact strict path="/not-found" component={Page404} />
-              <Route component={() => <Redirect to="/not-found" />} />
+              <Route component={redirect('/not-found')} />
             </Switch>
           </Container>
           <Sockets />

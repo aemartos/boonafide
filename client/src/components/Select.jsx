@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { colors } from '../lib/common/colors';
 
@@ -39,9 +39,9 @@ export default class Select extends Component {
     return (
       <StyledSelect className={className}>
         <span className="icon b-arrow-short arrowMob" />
-        <select defaultValue="" placeholder="Select categories" name={name} onChange={e => this.handleOption(e.target.value)}>
+        <select defaultValue="" placeholder="Select categories" name={name} onChange={(e) => this.handleOption(e.target.value)}>
           <option value="" disabled hidden>Select categories</option>
-          {options.map(o => <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
+          {options.map((o) => <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
         </select>
       </StyledSelect>
     );
