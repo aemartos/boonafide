@@ -7,39 +7,28 @@
             "config": {
                 "distDir": "build"
             }
-        },
-        {
-            "src": "server/vercel.js",
-            "use": "@vercel/node"
         }
     ],
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "/server/vercel.js"
-        },
-        {
             "src": "/static/(.*)",
-            "dest": "/client/build/static/$1"
+            "dest": "/static/$1"
         },
         {
             "src": "/favicon.ico",
-            "dest": "/client/build/favicon.ico"
+            "dest": "/favicon.ico"
         },
         {
             "src": "/manifest.json",
-            "dest": "/client/build/manifest.json"
+            "dest": "/manifest.json"
         },
         {
             "src": "/images/(.*)",
-            "dest": "/client/build/images/$1"
+            "dest": "/images/$1"
         },
         {
             "src": "/(.*)",
-            "dest": "/client/build/index.html"
+            "dest": "/index.html"
         }
-    ],
-    "env": {
-        "NODE_ENV": "production"
-    }
+    ]
 }
