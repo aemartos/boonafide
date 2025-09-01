@@ -45,7 +45,7 @@ router.post('/signup', isLoggedOut, (req, res) => {
     } else {
       User.findOne({ email }, 'email', (__, userFound) => {
         if (userFound !== null) {
-          req.status(409).send('The email already exists');
+          res.status(409).send('The email already exists');
           return;
         }
 
@@ -88,10 +88,9 @@ router.get('/currentuser', (req, res) => {
   const { user } = req;
   if (user) {
     res.json({ success: 'OK', user });
+  } else {
+    res.status(401).json({ message: 'No user logged in' });
   }
-  // else{
-  //   res.status(401).send("NO USER LOGGED IN");
-  // }
 });
 
 router.get('/logout', isLoggedIn, (req, res) => {

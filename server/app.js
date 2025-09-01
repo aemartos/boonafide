@@ -32,13 +32,17 @@ require('debug')(`${appName}:${path.basename(__filename).split('.')[0]}`);
 const app = express();
 
 // Middleware Setup
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'http://localhost:3001'];
 const corsOptions = {
   origin(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
     const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    callback(null, originIsWhitelisted);
+    return callback(null, originIsWhitelisted);
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 app.enable('trust proxy');
 app.use(cors(corsOptions));
@@ -74,7 +78,14 @@ app.use((req, res, next) => {
 });
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  },
+});
 global.io = io;
 global.io.on('connection', chat);
 

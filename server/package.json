@@ -21,13 +21,13 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "random-hash": "^4.0.1",
-    "socket.io": "2.2.0"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^3.1.10"
   },
   "scripts": {
     "start": "cat ./boonafide && node ./bin/www",
@@ -37,8 +37,8 @@
     "lint": "eslint './**/*.js' --fix"
   },
   "engines": {
-    "node": "v14.20.0",
-    "npm": "6.14.13"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "repository": {
     "type": "git",

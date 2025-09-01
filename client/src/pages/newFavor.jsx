@@ -42,6 +42,7 @@ const StyledAddFavorPage = styled.div`
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+    margin-top: .8em;
     .imgPrev {
       position: relative;
       width: 30%;

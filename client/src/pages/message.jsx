@@ -159,7 +159,7 @@ class _Chat extends React.Component {
 
   componentDidUpdate() {
     if (this.state.messages.length <= 30) {
-      this.bottomScroll();
+      _Chat.bottomScroll();
     }
   }
 
@@ -183,7 +183,7 @@ class _Chat extends React.Component {
   handleReceiveMsg(data) {
     const { user } = this.props;
     this.setState({ messages: [...this.state.messages, data] });
-    if (data.receiverId !== user._id) this.bottomScroll();
+    if (data.receiverId !== user._id) _Chat.bottomScroll();
   }
 
   render() {
