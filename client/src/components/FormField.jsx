@@ -101,10 +101,11 @@ export default class FormField extends Component {
     const {
       label, type, placeholder, onChange, onKeyUp, value, className,
     } = this.props;
+    const id = `controlLabel-${Math.random().toString(36).substring(2, 15)}`;
     return (
       <StyledForm>
-        <label htmlFor="controlLabel" className="label">{label}</label>
-        <input id="controlLabel" className={`input ${className}`} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value} />
+        <label htmlFor={id} className="label">{label}</label>
+        <input id={id} className={`input ${className ?? ''}`} type={type} placeholder={placeholder} onChange={onChange} onKeyUp={onKeyUp} value={value} />
       </StyledForm>
     );
   }

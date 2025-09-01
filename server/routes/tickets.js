@@ -39,9 +39,19 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
   const donorId = ticket.donorId._id;
   const receiverId = ticket.receiverId._id;
   const favorId = ticket.favorId._id;
+
   if (receiverId.toString() === req.user._id.toString()) {
-    Ticket.findByIdAndUpdate(req.params.ticketId, { validated: true })
+    Ticket.findById(req.params.ticketId)
+      .then((existingTicket) => {
+        if (existingTicket.validated) {
+          return res.status(400).json({ error: 'Ticket is already validated' });
+        }
+        
+        return Ticket.findByIdAndUpdate(req.params.ticketId, { validated: true });
+      })
       .then((ticketFound) => {
+        if (!ticketFound) return;
+        
         User.findByIdAndUpdate(donorId, { $push: { currentHelped: receiverId, favDone: favorId } })
           .then((donor) => {
             User.findByIdAndUpdate(receiverId, { $push: { favReceived: favorId } })
@@ -65,6 +75,8 @@ router.post('/:ticketId/validate', isLoggedIn, (req, res, next) => {
           });
       })
       .catch((err) => next(err));
+  } else {
+    res.status(403).json({ error: 'Only the receiver can validate this ticket' });
   }
 });
 

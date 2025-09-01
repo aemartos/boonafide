@@ -35,6 +35,11 @@ export const setMarker = (position, marker, map, icon = '/images/marker.png', dr
 };
 
 export const getScript = (source, id, callback) => {
+  if (document.getElementById(id)) {
+    if (callback) callback();
+    return;
+  }
+
   let script = document.createElement('script');
   const prior = document.getElementsByTagName('script')[0];
 

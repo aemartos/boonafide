@@ -15,6 +15,9 @@
   "plugins": [
     "react"
   ],
+  "ignorePatterns": [
+    "public/vendor/*.js"
+  ],
   "rules": {
     "react/no-access-state-in-setstate": 0,
     "react/destructuring-assignment": 0,

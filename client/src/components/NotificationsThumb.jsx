@@ -168,11 +168,10 @@ export default class NotificationsThumb extends React.Component {
                     <p className="content">
                       You have offered
                       <span className="bold italic">
-                        &quot;{favorId.name}&quot;
+                        {' '}{favorId.name}{' '}
                       </span>
-                      {' '}
                       to
-                      <span className="capitalize bold">{personId.username}</span>
+                      <span className="capitalize bold">{' '}{personId.username}</span>
                       . The ticket generated is available in your profile.
                     </p>
                   )

@@ -427,7 +427,7 @@ class _FavorDetailPage extends Component {
                 <Modal isVisible={this.state.isVisible} bottom="20%">
                   <p className="question">
                     Are you sure you want to
-                    {favor.type === 'Need' ? 'offer' : 'request'}
+                    {favor.type === 'Need' ? ' offer' : ' request'}
                     {' '}
                     the favor?
                   </p>

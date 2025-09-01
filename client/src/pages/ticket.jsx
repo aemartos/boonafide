@@ -32,6 +32,16 @@ const StyledTicket = styled.div`
     width: 90%;
     margin: 1em auto;
   }
+  .validation {
+    .validated-message {
+      text-align: center;
+      background-color: ${colors.lightGrey};
+      color: ${colors.purple};
+      border-radius: 5px;
+      font-style: italic;
+      padding: 1em;
+    }
+  }
   .info {
     color: ${colors.purple};
     font-family: "Baloo Bhaina";
@@ -177,19 +187,19 @@ class _TicketDetailPage extends Component {
                 <div className="info">
                   <p className="text donor">
                     Donor:
-                    <span className="light capitalize">{ticket.donorId.username}</span>
+                    <span className="light capitalize"> {ticket.donorId.username}</span>
                   </p>
                   <p className="text receiver">
                     Receiver:
-                    <span className="light capitalize">{ticket.receiverId.username}</span>
+                    <span className="light capitalize"> {ticket.receiverId.username}</span>
                   </p>
                   <p className="text ticketId">
                     Ticket id:
-                    <span className="light">{ticket._id}</span>
+                    <span className="light"> {ticket._id}</span>
                   </p>
                   <p className="text date">
                     Date:
-                    <span className="light">{formatDate(new Date(ticket.date))}</span>
+                    <span className="light"> {formatDate(new Date(ticket.date))}</span>
                   </p>
                   <div className="favorDescription">
                     <p className="title">
@@ -200,14 +210,17 @@ class _TicketDetailPage extends Component {
                   </div>
                 </div>
                 <div className="validation">
-                  {user._id !== ticket.donorId._id
-                    ? <Button link="" onClick={() => this.handleModal(true)} className={`${ticket.validated ? 'disable ' : ''}btn btn-primary`}>Validate ticket</Button>
+                  {user._id === ticket.receiverId._id && !ticket.validated
+                    ? <Button link="" onClick={() => this.handleModal(true)} className="btn btn-primary">Validate ticket</Button>
+                    : null}
+                  {ticket.validated
+                    ? <p className="validated-message">Ticket already validated</p>
                     : null}
                 </div>
                 <div className="mapLocation">
                   <p className="location">
                     Location:
-                    <span className="light">{ticket.favorId.locationName}</span>
+                    <span className="light"> {ticket.favorId.locationName}</span>
                   </p>
                   { (window.google)
                     ? (

@@ -172,7 +172,7 @@ export default class PhilosophyPage extends Component {
           <div className="box cannot">
             <h2 className="title">
               CAN
-              <span className="not">NOT</span>
+              <span className="not">{' '}NOT</span>
             </h2>
             <ul className="list cannotList">
               <li className="item">Buy or sell favors or boons.</li>
@@ -184,7 +184,7 @@ export default class PhilosophyPage extends Component {
 
           <div className="box copyright">
             <h2 className="title">
-              boonafide© by
+              boonafide© by{' '}
               <a href="https://github.com/aemartos/boonafide" target="_blank" rel="noopener noreferrer">anæstrada</a>
             </h2>
           </div>
