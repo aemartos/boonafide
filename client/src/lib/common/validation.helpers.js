@@ -72,6 +72,7 @@ export function validateStart(callback, isAlreadyValidated = false) {
   const drag = document.querySelector('#drag');
 
   if (!path || !drawPath || !drag) {
+    // eslint-disable-next-line no-console
     console.error('Required SVG elements not found');
     return;
   }

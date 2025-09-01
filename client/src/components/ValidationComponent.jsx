@@ -134,6 +134,7 @@ class _ValidationComponent extends React.Component {
         this.setState({ validated: true });
         this.handleValidationCheck();
       } else if (error.error === 'Only the receiver can validate this ticket') {
+        // eslint-disable-next-line no-alert
         alert('Only the receiver can validate this ticket');
         this.handleClose();
       } else {

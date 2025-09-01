@@ -238,7 +238,10 @@ export default class FirstStepsPage extends Component {
           })
           .catch(() => this.props.dispatch(setBusy(false)));
       })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(e);
+        });
     });
   }
 
