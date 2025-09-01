@@ -185,7 +185,6 @@ const HoursSelect = styled.div`
     }
   }
   .timePickerComponent {
-    width: 8em;
     background-color: transparent;
     border: 0;
     border-top: 1px solid ${colors.darkGrey};
@@ -201,8 +200,11 @@ const HoursSelect = styled.div`
         }
       }
     }
-    .react-time-picker__inputGroup input {
-      color: ${colors.purple};
+    .react-time-picker__inputGroup {
+      min-width: calc((2px * 3) + 0.54em * 6 + 0.217em * 2);
+      input {
+        color: ${colors.purple};
+      }
     }
   }
 `;
