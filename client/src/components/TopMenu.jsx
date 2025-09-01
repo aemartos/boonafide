@@ -19,6 +19,7 @@ const TopNav = styled.nav`
   background-color: ${colors.purple};
   box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.33);
   z-index: 2;
+  padding-bottom: 1em;
   .pathName {
     font-family: "Baloo Bhaina";
     font-size: 1.3em;

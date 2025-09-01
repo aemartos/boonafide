@@ -1,27 +1,34 @@
 import React from 'react';
-import posed, { PoseGroup } from 'react-pose';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const ModalContent = posed.div({
-  enter: {
+const modalVariants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  visible: {
     y: 0,
     opacity: 1,
-    delay: 300,
     transition: {
-      y: { type: 'spring', stiffness: 1000, damping: 15 },
-      default: { duration: 300 },
+      duration: 0.3,
+      ease: 'easeOut',
     },
   },
   exit: {
-    y: 50,
+    y: 20,
     opacity: 0,
-    transition: { duration: 150 },
+    transition: {
+      duration: 0.2,
+      ease: 'easeIn',
+    },
   },
-});
+};
 
-const Shade = posed.div({
-  enter: { opacity: 1 },
-  exit: { opacity: 0 },
-});
+const shadeVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
 
 export default class Modal extends React.Component {
   render() {
@@ -46,16 +53,33 @@ export default class Modal extends React.Component {
       borderRadius: '.5em',
       zIndex: '4',
     };
+
     return (
-      <PoseGroup>
-        {isVisible && [
-          // If animating more than one child, each needs a `key`
-          <Shade style={shadowStyle} key="shade" className="shade" />,
-          <ModalContent style={modalStyle} key="modal" id="modalBox" className="modal">
-            {children}
-          </ModalContent>,
-        ]}
-      </PoseGroup>
+      <AnimatePresence>
+        {isVisible && (
+          <>
+            <motion.div
+              style={shadowStyle}
+              className="shade"
+              variants={shadeVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            />
+            <motion.div
+              style={modalStyle}
+              id="modalBox"
+              className="modal"
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {children}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     );
   }
 }
