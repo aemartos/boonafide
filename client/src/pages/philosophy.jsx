@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
-import FlipNumbers from 'react-flip-numbers';
+import CountUp from 'react-countup';
 import { BoonsAPI } from '../lib/API/boons';
 import { colors } from '../lib/common/colors';
 
@@ -107,16 +107,18 @@ export default class PhilosophyPage extends Component {
       <div className="contentBox">
         <Container>
           <div className="box boonsNum">
-            {/* <span className="number">{this.state.boons}</span> */}
-            <FlipNumbers
-              height={60}
-              width={40}
-              color="red"
-              background={colors.grey}
-              play
-              durationSeconds={2}
-              numbers={boons.toString()}
-              numberStyle={{ color: colors.purple }}
+            <CountUp
+              end={boons}
+              duration={2}
+              useEasing
+              style={{
+                color: colors.purple,
+                fontSize: '55px',
+                lineHeight: '55px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             />
             <i className="icon b-boon" />
           </div>
@@ -170,10 +172,7 @@ export default class PhilosophyPage extends Component {
           </div>
 
           <div className="box cannot">
-            <h2 className="title">
-              CAN
-              <span className="not">{' '}NOT</span>
-            </h2>
+            <h2 className="title">CAN<span className="not">{' '}NOT</span></h2>
             <ul className="list cannotList">
               <li className="item">Buy or sell favors or boons.</li>
               <li className="item">Change 1 favor for several favors.</li>

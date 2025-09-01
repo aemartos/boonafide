@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import TimePicker from 'react-time-picker';
 import moment from 'moment';
-import Switch, { State } from 'react-switchable';
+import Switch from '../components/Switch';
 import Calendar from '../components/Calendar';
 import { colors } from '../lib/common/colors';
 import FormField from '../components/FormField';
@@ -14,7 +14,6 @@ import { addFavorPictures } from '../lib/API/cloudinary';
 import { setMarker } from '../lib/common/helpers';
 import InputMapSearch from '../components/map/InputMapSearch';
 import MapComponent from '../components/map/MapComponent';
-import 'react-switchable/dist/main.css';
 import { FavorsAPI } from '../lib/API/favors';
 import { AuthAPI } from '../lib/API/auth';
 import { updateUser, setBusy } from '../lib/redux/actions';
@@ -248,14 +247,20 @@ export default class _NewFavorPage extends Component {
       shifts: {
         ...this.state.shifts,
         [this.state.selectedDay]:
-      [...this.state.shifts[this.state.selectedDay].slice(0, idx), ...this.state.shifts[this.state.selectedDay].slice(idx + 1)],
+          [...this.state.shifts[this.state.selectedDay].slice(0, idx), ...this.state.shifts[this.state.selectedDay].slice(idx + 1)],
       },
     });
   }
 
   handleAddHours() {
     if (this.state.selectedHour !== undefined) {
-      this.setState({ shifts: { ...this.state.shifts, [this.state.selectedDay]: [...(this.state.shifts[this.state.selectedDay] || []), this.state.selectedHour] }, selectedHour: undefined });
+      this.setState({
+        shifts: {
+          ...this.state.shifts,
+          [this.state.selectedDay]: [...(this.state.shifts[this.state.selectedDay] || []), this.state.selectedHour],
+        },
+        selectedHour: undefined,
+      });
     }
   }
 
@@ -272,7 +277,7 @@ export default class _NewFavorPage extends Component {
         imagePreviewUrl,
       });
     };
-    reader.readAsDataURL(img);
+    if (img) reader.readAsDataURL(img);
   }
 
   handleSwitch(type) {
@@ -369,19 +374,18 @@ export default class _NewFavorPage extends Component {
             <div className="categoriesFav">
               {categories.length > 0 ? categories.map((c, i) => (
                 <span key={i}>
-                  {c}
-                  {' '}
+                  {c}{' '}
                   <span tabIndex={0} aria-hidden="true" role="button" className="icon b-cross" onClick={() => this.handleDeleteCategory(i)} />
                 </span>
               ))
                 : <p className="categoriesLabel">First of all, select the favor categories, please :)</p>}
             </div>
             <Select className="catSelect" name="categories" options={categoriesArr} onSelectOption={(option) => this.handleAddCategory(option)} />
-
-            <Switch onValueChange={(newValue) => this.handleSwitch(newValue)}>
-              <State active value="Offer">Offer</State>
-              <State active value="Need">Need</State>
-            </Switch>
+            <Switch
+              value={this.state.type}
+              options={['Offer', 'Need']}
+              onChange={(next) => this.handleSwitch(next)}
+            />
 
             <div className="previewImg">
               {[...Array(3)].map((u, i) => (
@@ -399,15 +403,14 @@ export default class _NewFavorPage extends Component {
             <div className="dateAndHourBox">
               <div className="text">Select preferred days and hours</div>
               <div className="dateAndHour">
-                <Calendar onSelectDay={() => this.onSelectDay()} selectedDay={selectedDay} />
+                <Calendar onSelectDay={(day, isSelected) => this.onSelectDay(day, isSelected)} selectedDay={selectedDay} />
                 { selectedDay ? (
                   <HoursSelect>
                     <div className="activeDay">{selectedDay}</div>
                     <div className="availableHours">
                       {availableTimesForSelectedDay.map((time, i) => (
                         <p key={i}>
-                          {time}
-                          {' '}
+                          {time}{' '}
                           <span tabIndex={0} aria-hidden="true" role="button" className="b-cross" onClick={() => this.handleDeleteHour(i)} />
                         </p>
                       ))}
@@ -416,7 +419,7 @@ export default class _NewFavorPage extends Component {
                       <TimePicker
                         className="timePickerComponent"
                         value={selectedHour}
-                        onChange={() => this.onChangeHour()}
+                        onChange={(val) => this.onChangeHour(val)}
                         disableClock
                       />
                     </div>

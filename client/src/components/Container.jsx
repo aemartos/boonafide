@@ -50,7 +50,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-const _Container = (props) => {
+function _Container(props) {
   const {
     children, user, location, history,
   } = props;
@@ -62,6 +62,6 @@ const _Container = (props) => {
       {(user && !user.newUser) ? <BottomMenu location={location} /> : null}
     </StyledContainer>
   );
-};
+}
 
 export const Container = connect((state) => ({ user: state.user }))(_Container);

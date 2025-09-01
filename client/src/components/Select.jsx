@@ -16,6 +16,7 @@ const StyledSelect = styled.div`
     }
   }
   select {
+    height: 2.4em;
     width: 100%;
     padding: .4em .7em;
     margin-bottom: 1em;
@@ -27,6 +28,12 @@ const StyledSelect = styled.div`
     color: ${colors.midPurple};
     border: 1px solid ${colors.midPurple};
     border-radius: 5em;
+    appearance: none;
+    -webkit-appearance: none; /* Safari, Chrome */
+    -moz-appearance: none;    /* Firefox */
+    &::-ms-expand {
+      display: none;
+    }
   }
 `;
 export default class Select extends Component {

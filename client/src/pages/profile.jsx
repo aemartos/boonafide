@@ -3,8 +3,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
-import Switch, { State } from 'react-switchable';
+import CountUp from 'react-countup';
 // import { addProfilePicture } from '../lib/API/cloudinary';
+import Switch from '../components/Switch';
 import { AuthAPI } from '../lib/API/auth';
 import { BoonsAPI } from '../lib/API/boons';
 import { updateUser, setBusy } from '../lib/redux/actions';
@@ -14,8 +15,6 @@ import { Button } from '../components/Button';
 import { FavorThumb } from '../components/FavorThumb';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-import 'react-switchable/dist/main.css';
 
 const ContentBox = styled.div`
   width: 90%;
@@ -109,8 +108,21 @@ const ContentBox = styled.div`
       color: ${colors.purple};
       .statItem {
         text-align: center;
+        .number {
+          font-size: 2em;
+          font-weight: bold;
+          color: ${colors.purple};
+          margin-bottom: 1em;
+        }
+        .text {
+          margin-top: .5em;
+        }
         &.boons {
           margin-top: -.7em;
+          .b-boon{
+            font-size: 1.4em;
+            margin-left: .2em;
+          }
           .number {
             margin-bottom: .2em;
           }
@@ -173,7 +185,7 @@ class _ProfilePage extends Component {
     super(props);
     this.state = {
       // file: null,
-      // switchFav: 'Offer',
+      type: 'Offer',
       favOffer: [],
       favNeed: [],
       currentHelped: [],
@@ -205,11 +217,11 @@ class _ProfilePage extends Component {
     }
   }
 
-  handleSwitch(switchFav) {
-    // this.setState({ switchFav });
-    if (switchFav === 'Offer') {
+  handleSwitch(type) {
+    this.setState({ type });
+    if (type === 'Offer') {
       this.slider.slickGoTo(0);
-    } else if (switchFav === 'Need') {
+    } else if (type === 'Need') {
       this.slider.slickGoTo(1);
     }
   }
@@ -279,18 +291,29 @@ class _ProfilePage extends Component {
                   <div className="stats">
                     <div className="statsBox">
                       <div className="statItem received">
-                        <p className="number">{user.favReceived.length}</p>
+                        <CountUp
+                          end={user.favReceived.length}
+                          duration={1.5}
+                          useEasing
+                          className="number"
+                        />
                         <p className="text">received</p>
                       </div>
                       <div className="statItem done">
-                        <p className="number">{user.favDone.length}</p>
+                        <CountUp
+                          end={user.favDone.length}
+                          duration={1.5}
+                          className="number"
+                        />
                         <p className="text">done</p>
                       </div>
                       <div className="statItem boons">
-                        <p className="number">
-                          {user.boons.length}
-                          <span className="b-boon" />
-                        </p>
+                        <CountUp
+                          end={user.boons.length}
+                          duration={1.5}
+                          className="number"
+                        />
+                        <span className="b-boon" />
                         <p className="text">boons</p>
                       </div>
                     </div>
@@ -312,10 +335,11 @@ class _ProfilePage extends Component {
                 </form> : null} */}
 
                   <div className="favSwitch">
-                    <Switch onValueChange={(newValue) => this.handleSwitch(newValue)}>
-                      <State active value="Offer">Offer</State>
-                      <State active value="Need">Need</State>
-                    </Switch>
+                    <Switch
+                      value={this.state.type}
+                      options={['Offer', 'Need']}
+                      onChange={(newValue) => this.handleSwitch(newValue)}
+                    />
 
                     <div className="favors">
                       {/* eslint-disable-next-line no-return-assign */}

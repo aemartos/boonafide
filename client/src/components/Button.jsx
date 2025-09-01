@@ -56,11 +56,11 @@ const handleClick = (props) => {
   }
 };
 
-const _Button = (props) => {
+function _Button(props) {
   const { className, children } = props;
   return (
     <StyledLink className={className} onClick={() => handleClick(props)}>{children}</StyledLink>
   );
-};
+}
 
 export const Button = withRouter(_Button);
