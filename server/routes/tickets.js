@@ -81,9 +81,19 @@ router.post('/newTicket', isLoggedIn, (req, res) => {
               favor.remainingFavNum--;
               favor.save().then(() => {
                 User.findById(tick.receiverId).then((user) => {
+                  if (!user || !user.boons || user.boons.length === 0) {
+                    res.status(400).send('User has no boons available');
+                    return;
+                  }
+                  
                   const boon = user.boons.pop();
                   user.save().then(() => {
                     User.findOne({ role: 'Bank' }, (err, ibo) => {
+                      if (!ibo) {
+                        res.status(500).send('Bank user not found.');
+                        return;
+                      }
+                      
                       ibo.boons.push(boon._id);
                       ibo.save().then(() => {
                         Notification.create({

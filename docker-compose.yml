@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   server:
     build:
@@ -7,37 +5,30 @@ services:
       dockerfile: Dockerfile
     image: boonafide-server
     container_name: boonafide-node-server
-    command: yarn dev
+    command: npm run dev
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - "3001:3001"
-    depends_on:
-      - mongo
-    env_file: ./server/.env
+    env_file: 
+      - ./server/.env
     environment:
       - NODE_ENV=development
     networks:
       - app-network
-  mongo:
-    image: mongo
-    volumes:
-      - data-volume:/data/db
-    ports:
-      - "27017:27017"
-    networks:
-      - app-network
+    # MongoDB dependency is optional - will be ignored if mongo service isn't running
+
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
     image: boonafide-client
     container_name: boonafide-react-client
-    command: yarn start
+    command: npm start
     volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
+      - ./client/:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - server
     ports:
@@ -45,12 +36,26 @@ services:
     networks:
       - app-network
 
+  mongo:
+    image: mongo:5.0
+    container_name: boonafide-mongo
+    profiles:
+      - database
+      - full
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=boonafide
+    networks:
+      - app-network
+    restart: unless-stopped
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  data-volume:
-  node_modules:
-  web-root:
+  mongo-data:
     driver: local

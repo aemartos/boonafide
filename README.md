@@ -73,16 +73,36 @@ $ docker-compose build
 ```
 
 ###### Starting the services
-To start the multi-container system using the following simple command:
+
+**Option 1: Run without MongoDB (client + server only)**
 ```bash
 $ docker-compose up
+```
+
+**Option 2: Run with MongoDB (full stack)**
+```bash
+$ docker-compose --profile database up
+# or
+$ docker-compose --profile full up
+```
+
+**Option 3: Run only specific services**
+```bash
+# Only client and server
+$ docker-compose up client server
+
+# Only MongoDB
+$ docker-compose --profile database up mongo
+
+# Only client
+$ docker-compose up client
 ```
 
 | App            | URL                      |
 |:---------------|:-------------------------|
 | Client App     | `http://localhost:3000`  |
 | Backend Server | `http://localhost:3001`  |
-| MongoDB        | `http://localhost:27017` |
+| MongoDB        | `http://localhost:27017` (only when using database profile) |
 
 ###### Maintenance & Inspection
 We can inspect running services using the following command:
@@ -93,6 +113,11 @@ $ docker-compose ps
 To dump the logs of all the running services:
 ```bash
 $ docker-compose logs
+```
+
+To follow logs of a specific service:
+```bash
+$ docker-compose logs -f [service_name]
 ```
 
 ###### Stopping the containers
@@ -106,12 +131,49 @@ To bring everything down and remove the containers entirely, with the data volum
 $ docker-compose down --volumes
 ```
 
+**Note**: MongoDB data is persisted in a Docker volume (`mongo-data`). Use `docker-compose down -v` to completely remove all data.
+
+###### Database Seeding
+When running with MongoDB, you may need to seed the database with initial data:
+
+**Option 1: Using Docker MongoDB**
+```bash
+# Run MongoDB with database profile
+$ docker-compose --profile database up mongo
+
+# In another terminal, run the seeding script
+$ docker-compose exec server node bin/seeds.js
+```
+
+**Option 2: Using External MongoDB**
+```bash
+# Make sure your server is running and connected to your external MongoDB
+$ docker-compose up server
+
+# In another terminal, run the seeding script
+$ docker-compose exec server node bin/seeds.js
+```
+
+**Option 3: Local Development (without Docker)**
+```bash
+# Navigate to server directory
+$ cd server
+
+# Install dependencies (if not already done)
+$ npm install
+
+# Run the seeding script
+$ node bin/seeds.js
+```
+
+This will create the necessary Bank user and other initial data required for the application to function properly.
+
 #### Environment variables
 You have to create a `.env` file, where you must specify this variables:
 
 | Key           | Description |
 |:-------------|:-------------|
-| DBURL | database URL (`mongodb://mongo:27017/test` with docker-compose) |
+| DBURL | database URL (`mongodb://mongo:27017/test` with docker-compose, or your external MongoDB URL) |
 | CLOUDINARY_NAME | the name of your Cloudinary account. Used to build the public URL for the media assets. |
 | CLOUDINARY_KEY | used together with the API secret to communicate with the Cloudinary API and sign requests. |
 | CLOUDINARY_SECRET | used together with the API key to communicate with the Cloudinary API and sign requests. |

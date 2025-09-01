@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const User = require('../models/User');
+const Boon = require('../models/Boon');
+const Favor = require('../models/Favor');
+const Ticket = require('../models/Ticket');
 const createUsers = require('./seedsUsers');
 const createBoons = require('./seedsBoons');
 const createFavors = require('./seedsFavors');
@@ -26,33 +29,61 @@ const calcNumBoons = (role) => {
   }
 };
 
-createUsers()
-  .then((users) => {
+const runSeeding = async () => {
+  try {
+    // Drop all collections once at the start
+    await User.collection.drop().catch(() => console.log('User collection already empty'));
+    await Boon.collection.drop().catch(() => console.log('Boon collection already empty'));
+    await Favor.collection.drop().catch(() => console.log('Favor collection already empty'));
+    await Ticket.collection.drop().catch(() => console.log('Ticket collection already empty'));
+    
+    const users = await createUsers();
     console.log(`Created ${users.length} users`);
-    users.forEach((u) => {
+    
+    // Process each user using array methods
+    await users.reduce(async (promise, user) => {
+      await promise;
+      const numBoons = calcNumBoons(user.role);
+      const boons = await createBoons(numBoons);
+      
       const offerCategories = selectRandomFromArray(CATEGORIES_ENUM, 5);
       const needCategories = selectRandomFromArray(CATEGORIES_ENUM, 5);
-      const otherUsers = users.filter((us) => (us._id.toString() !== u._id.toString()) && us.role === 'User').map((us) => us._id.toString());
+      const otherUsers = users.filter((us) => (us._id.toString() !== user._id.toString()) && us.role === 'User').map((us) => us._id.toString());
       const whoNeedsId = selectRandomFromArray(otherUsers, 2);
       const whoseFavId = selectRandomFromArray(otherUsers, 2);
-      const numBoons = calcNumBoons(u.role);
-      createBoons(numBoons).then((boons) => {
-        let fields = { boons, offerCategories, needCategories };
-        if (u.role === 'User') {
-          createFavors(u._id.toString(), whoNeedsId, whoseFavId).then((favors) => {
-            const favOffer = favors.filter((f) => f.type === 'Offer');
-            const favNeed = favors.filter((f) => f.type === 'Need');
-            if (favNeed.length > 0) {
-              createTickets(selectRandomFromArray(otherUsers, 1)[0], u._id.toString(), favNeed[0]._id.toString()).then(() => console.log('Created ticket')).catch((ticketError) => console.error({ ticketError }));
-            }
-            fields = { ...fields, favNeed, favOffer };
-            User.findByIdAndUpdate(u._id, fields).then(() => console.log(`Created ${favors.length} favors`));
-          }).catch((favorError) => console.error({ favorError }));
-        } else {
-          User.findByIdAndUpdate(u._id, fields).then(() => console.log(`Created ${boons.length} boons`));
+      
+      let fields = { boons, offerCategories, needCategories };
+      
+      if (user.role === 'User') {
+        const favors = await createFavors(user._id.toString(), whoNeedsId, whoseFavId);
+        const favOffer = favors.filter((f) => f.type === 'Offer');
+        const favNeed = favors.filter((f) => f.type === 'Need');
+        
+        if (favNeed.length > 0) {
+          try {
+            await createTickets(selectRandomFromArray(otherUsers, 1)[0], user._id.toString(), favNeed[0]._id.toString());
+            console.log('Created ticket');
+          } catch (ticketError) {
+            console.error({ ticketError });
+          }
         }
-      }).catch((boonError) => console.error({ boonError }));
-    });
-  }).catch((e) => console.error(e));
+        
+        fields = { ...fields, favNeed, favOffer };
+        await User.findByIdAndUpdate(user._id, fields);
+        console.log(`Created ${favors.length} favors for user ${user.username}`);
+      } else {
+        await User.findByIdAndUpdate(user._id, fields);
+        console.log(`Created ${boons.length} boons for user ${user.username}`);
+      }
+    }, Promise.resolve());
+    
+    console.log('Seeding completed successfully!');
+  } catch (error) {
+    console.error('Seeding failed:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log('Disconnected from MongoDB');
+  }
+};
 
-setTimeout(() => mongoose.disconnect(), 10000);
+runSeeding();

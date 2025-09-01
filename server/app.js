@@ -19,7 +19,10 @@ const { chat } = require('./middlewares/chat');
 
 mongoose.connect(process.env.DBURL, { useNewUrlParser: true })
   .then((x) => { console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`); })
-  .catch((err) => { console.error('Error connecting to mongo', err); });
+  .catch((err) => {
+    console.error('Error connecting to mongo', err);
+    console.log('Continuing without database connection...');
+  });
 
 // eslint-disable-next-line import/extensions
 const appName = require('./package.json').name;

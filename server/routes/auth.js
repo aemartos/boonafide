@@ -53,6 +53,11 @@ router.post('/signup', isLoggedOut, (req, res) => {
         const hashPass = bcrypt.hashSync(password, salt);
 
         User.findOne({ role: 'Bank' }, (err, ibo) => {
+          if (!ibo) {
+            res.status(500).send('Bank user not found.');
+            return;
+          }
+          
           const boons = ibo.boons.splice(0, 3).map((b) => b._id);
           ibo.save()
             .then(() => {
