@@ -1,174 +1,117 @@
-# 🚀 Full-Stack Vercel Deployment Guide
+# 🚀 Render.com Deployment Guide
 
-This guide will help you deploy your **Boonafide full-stack application** (React client + Node.js backend) to Vercel with automated deployments triggered by Git tags.
+This guide explains how to automatically deploy your Boonafide application to Render.com using GitHub Actions.
 
 ## 📋 Prerequisites
 
-1. **Install Vercel CLI:**
-   ```bash
-   npm i -g vercel
-   ```
+1. **Render.com account** - [Sign up here](https://render.com)
+2. **MongoDB database** - Use MongoDB Atlas (free tier available)
+3. **GitHub repository** with your code
+4. **Render.com Web Service** already created and connected to your repo
 
-2. **Have a Vercel account** - [Sign up here](https://vercel.com/signup)
+## 🏗️ Initial Setup
 
-## 🛠️ Initial Setup
+### 1. Create Render.com Web Service
 
-### 1. Login to Vercel
-```bash
-vercel login
-```
+1. Go to [Render.com Dashboard](https://dashboard.render.com)
+2. Click "New +" and select "Web Service"
+3. Connect your GitHub repository
+4. Render will automatically detect your `Dockerfile`
+5. Set environment variables:
+   - `NODE_ENV`: production
+   - `DBURL`: Your MongoDB connection string
+   - `CLOUDINARY_KEY`: Your Cloudinary API key
+   - `CLOUDINARY_NAME`: Your Cloudinary cloud name
+   - `CLOUDINARY_SECRET`: Your Cloudinary API secret
 
-### 2. Initialize Vercel Project (from root directory)
-```bash
-vercel
-```
+### 2. Configure Auto-Deploy
 
-Follow the prompts to set up your project. Make sure to:
-- Set the root directory to `./` (root of your project)
-- Choose "Other" as the framework
-- The build command will be handled by our custom configuration
+In your Render.com service settings:
+- ✅ **Auto-Deploy**: Enabled
+- ✅ **Branch**: `master` (or your main branch)
+- ✅ **Build Command**: Auto-detected from Dockerfile
+- ✅ **Start Command**: Auto-detected from Dockerfile
 
-### 3. Get Your Project Details
+## 🚀 Automatic Deployment Workflow
 
-You'll need these values for GitHub Actions:
+### How It Works
 
-- **VERCEL_TOKEN**: Found in your Vercel account settings → Tokens
-- **VERCEL_ORG_ID**: Found in your Vercel account settings → General → Team ID
-- **VERCEL_PROJECT_ID**: Found in your project settings → General → Project ID
+1. **Push a tag** (e.g., `v1.0.0`)
+2. **GitHub Actions** automatically triggers
+3. **Render.com** detects the new commit and redeploys
+4. **Your app** is automatically updated
 
-## 🔐 GitHub Secrets Setup
-
-Go to your GitHub repository → Settings → Secrets and variables → Actions, and add:
-
-1. `VERCEL_TOKEN` - Your Vercel authentication token
-2. `VERCEL_ORG_ID` - Your Vercel organization ID  
-3. `VERCEL_PROJECT_ID` - Your Vercel project ID
-
-## 🏗️ Project Structure
-
-Your project will be deployed as:
-
-- **Frontend**: `https://your-app.vercel.app` (React app)
-- **Backend API**: `https://your-app.vercel.app/api/*` (Node.js serverless functions)
-
-## 🚀 Automated Deployment
-
-### Deploy by Pushing a Tag
+### Deploy Automatically
 
 ```bash
-# 1. Update version in package.json (if needed)
-# Change "version": "1.0.0" to "version": "1.0.1"
+# Create and push a version tag
+git tag v1.0.0
+git push origin v1.0.0
 
-# 2. Commit version change
-git add .
-git commit -m "release: v1.0.1"
-git push origin main
-
-# 3. Create and push tag
-git tag v1.0.1
-git push origin v1.0.1
+# GitHub Actions will automatically trigger deployment to Render.com! 🎉
 ```
-
-**GitHub Actions will automatically deploy both client and server to Vercel!** 🎉
 
 ### Alternative: Create a GitHub Release
 
-1. Go to your repository → Releases → Create a new release
+1. Go to your repository → **Releases** → **Create a new release**
 2. Choose a tag or create a new one
 3. Publish the release
-4. Automatic deployment to Vercel
+4. **Automatic deployment to Render.com** 🚀
 
-## 🔧 Manual Deployment
-
-```bash
-# Deploy to preview
-vercel
-
-# Deploy to production
-vercel --prod
-```
-
-## 🌍 Environment Variables in Vercel
-
-Set these in your Vercel project settings:
-
-- `DBURL`: Your MongoDB connection string
-- `NODE_ENV`: Set to `production`
-- `SESSION_SECRET`: A secure random string for session encryption
-- `GOOGLE_MAPS_API_KEY`: Your Google Maps API Key
-- `CLOUDINARY_KEY`: Your Cloudinary API key
-- `CLOUDINARY_NAME`: Your Cloudinary cloud name
-- `CLOUDINARY_SECRET`: Your Cloudinary API secret
-- Any other environment variables your backend needs
-
-## 📦 Version Management
+## 📝 Version Management
 
 ### Release Workflow
 
-1. **Update version in package.json**
-   ```json
-   "version": "1.0.2"
-   ```
+```bash
+# 1. Update package.json version
+# Change "version": "1.0.2" to "version": "1.0.3"
 
-2. **Commit and push the version change**
-   ```bash
-   git add .
-   git commit -m "release: v1.0.2"
-   git push origin main
-   ```
+# 2. Commit version change
+git add package.json
+git commit -m "release: v1.0.3"
+git push origin master
 
-3. **Create and push tag**
-   ```bash
-   git tag v1.0.2
-   git push origin v1.0.2
-   ```
+# 3. Create and push tag
+git tag v1.0.3
+git push origin v1.0.3
 
-4. **GitHub Actions automatically deploys both client and server to Vercel!** 🚀
+# 4. GitHub Actions automatically triggers deployment! 🚀
+```
 
 ### Version Naming Convention
 
-- Use semantic versioning: `MAJOR.MINOR.PATCH`
+- Use **semantic versioning**: `MAJOR.MINOR.PATCH`
 - Examples: `v1.0.0`, `v1.2.3`, `v2.0.0`
-- Tag must start with `v` to trigger deployment
+- **Tag must start with `v`** to trigger deployment
 
-## 🔍 Troubleshooting
+## 🔧 Manual Deployment
 
-### Common Issues
+If you need to deploy manually:
 
-1. **Build fails**: Check that all dependencies are in package.json files
-2. **Environment variables not working**: Ensure they're set in Vercel dashboard
-3. **API routes not working**: Check that server/vercel.js is properly configured
-4. **Database connection issues**: Verify DBURL environment variable
+1. Go to your Render.com dashboard
+2. Find your service
+3. Click **"Manual Deploy"**
+4. Select the branch/commit to deploy
 
-### Check Deployment Status
+## 🌐 Service URLs
 
-```bash
-vercel ls
-```
+After deployment, you'll get:
+- **Full Application**: `https://boonafide.onrender.com` (both frontend and backend)
 
-### View Logs
-
-```bash
-vercel logs [deployment-url]
-```
-
-### Test API Endpoints
+## 🎯 Quick Deploy Commands
 
 ```bash
-# Health check
-curl https://your-app.vercel.app/api/health
+# Deploy version 1.0.0
+git tag v1.0.0
+git push origin v1.0.0
 
-# Test other endpoints
-curl https://your-app.vercel.app/api/auth/login
+# Deploy version 1.0.1
+git tag v1.0.1
+git push origin v1.0.1
+
+# Deploy version 2.0.0
+git tag v2.0.0
+git push origin v2.0.0
 ```
 
-## 📚 Additional Resources
-
-- [Vercel Documentation](https://vercel.com/docs)
-- [Vercel CLI Reference](https://vercel.com/docs/cli)
-- [Vercel Serverless Functions](https://vercel.com/docs/functions)
-- [GitHub Actions with Vercel](https://vercel.com/docs/deployments/git)
-
----
-
-**Happy Full-Stack Deploying! 🎉**
+**That's it! Every time you push a tag, your app automatically deploys to Render.com! 🚀**
