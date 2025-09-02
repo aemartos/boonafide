@@ -184,3 +184,4 @@ Cloudinary hosting [configuration link](https://cloudinary.com/documentation/sol
 
 Boonafide is available under [MIT License](./LICENSE).
 boonafide©2019 by [anæstrada](https://www.linkedin.com/in/aemartos/).
+# Test deployment
