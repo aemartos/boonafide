@@ -1,7 +1,7 @@
 # boonafide
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d3063bad3df7460caa6f37f021f1d10e)](https://www.codacy.com/gh/aemartos/boonafide/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=aemartos/boonafide&amp;utm_campaign=Badge_Grade)
 
-### [https://boonafide.herokuapp.com/](https://boonafide.herokuapp.com/)
+### [https://boonafide.onrender.com/](https://boonafide.onrender.com/)
 *"When someone does you a big favor, don't pay it back... PAY IT FORWARD!"*
 Change the world through a "favors chain". A person must perform or help three people in a disinterested way. They also have to help three others and so on, until a favors chain, that improves the lives of citizens, is spread around the world.
 
@@ -184,4 +184,3 @@ Cloudinary hosting [configuration link](https://cloudinary.com/documentation/sol
 
 Boonafide is available under [MIT License](./LICENSE).
 boonafide©2019 by [anæstrada](https://www.linkedin.com/in/aemartos/).
-# Test deployment
