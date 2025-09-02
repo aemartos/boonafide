@@ -18,9 +18,6 @@ jobs:
           echo "🚀 Deploying version ${{ github.ref_name }} to Render.com"
           echo "Tag: ${{ github.ref_name }}"
           echo "Commit: ${{ github.sha }}"
-          
-          # Render.com will automatically redeploy when it detects new commits
-          # Since we're pushing a tag, the latest commit will trigger a redeploy
           echo "✅ Render.com will automatically redeploy from the latest commit"
           echo "🌐 Check your Render.com dashboard for deployment status"
           
