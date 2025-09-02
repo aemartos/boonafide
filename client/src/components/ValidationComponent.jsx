@@ -105,7 +105,8 @@ class _ValidationComponent extends React.Component {
   }
 
   componentDidMount() {
-    validateStart(this.handleValidate);
+    const { ticket } = this.props;
+    validateStart(this.handleValidate, ticket?.validated);
   }
 
   componentWillUnmount() {

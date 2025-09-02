@@ -150,6 +150,13 @@ export function validateStart(callback, isAlreadyValidated = false) {
 
     // Check if validation is complete
     if (prog > 0.994 && callback) {
+      gsap.to([path, drawPath, drag], {
+        opacity: 0,
+        duration: 0.1,
+        delay: 0.4,
+        ease: 'sine.out', // 'power2.out'
+      });
+
       callback();
       // eslint-disable-next-line no-param-reassign
       callback = null;
