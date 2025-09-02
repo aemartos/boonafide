@@ -1,6 +1,6 @@
 {
   "name": "boonafide-server",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "main": "./bin/www",
   "dependencies": {
     "bcryptjs": "2.4.3",
